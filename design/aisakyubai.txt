@@ -1,0 +1,102 @@
+a game about giving drugs to canabalistic demon spawn to make them pretend to be your friend
+
+progress (followers, found items, follower experence) is not eroded over time
+social mechanics give more rewards but erode over time (followers can have relation ship with other player's followers -> form guilds, rank battles, tinder equivlent called ember)
+status effects do erode over time (happiness, stress, fullness after meal (hunger), satisfaction after summoning, modfication to intelegnece, to sensitivity to stats)
+
+
+want to form long chains of action to allow people to get what they want
+	to unlock this follower, i need a follower such as a, b, c, d
+	to rank up this follower, i need to feed it other followers, but by giving it item A, it needs less food to be full/ rank up. and the effects of item A last longer if i use item b
+	use item A to decease food capacity, feed, then increase summon capacity to increase metabolisim to digest food quicker, so you can feed and continue to incease rank. 
+	is there some way of adjusting metabolisim? or just incease summon capacity (actually, that is not that bad)
+
+at start
+one meal is a relative rank -1 follower, which takes 12 hours to digest
+does the effect of summoning not incease with rank, so summon a rank 0 follower, they are stisfied for 12 hours (at default happiness, 6 hours if unhappy, 24 hours is happy)
+at rank 1, at default capacity summoning, takes 2 summons, rank 2, 4 summons, rank 3, 8 summons. 
+summoning cost displine, (60?) of total (360?) what ways can you improve summoning satifaction? improve happiness/ limbic state? size of summoning stone (which halfs with each rank up of follower)
+
+
+
+allowed to transmute items?
+followers (can be ranked up/ fed. can be given perks. nb of perks and perk rank limited by follower rank)
+perks, need 4 n rank perks to make a n + 1 rank perk, also cash sink, additional cash sink by having to purchase perk effectiviness with more resources (customisation of appearance, allowing mastery reward for race stats on practice)
+
+intelegence in some manner is the difficulty of dealing with follower, then also need some benifits of intelegent follower (as well as better understanding od stats, more charry over to owner's stats
+
+race stats
+race start rev up speed
+race start rev down speed
+race start rev target low
+race start rev target high
+race acceleration
+race deacceleration
+race top speed straight
+race top speed corner
+
+personality stats
+happiness
+happiness sensitivity
+limbic / towards/ away / stress
+limbic sensitivity
+food
+food capacity
+summon
+summon capacity
+intelegence
+
+derrived
+metabolisim (difference between summon and summon capacity)
+hunger (difference between food and food capacity)
+
+
+happiness degrades by hunger
+limbic degrades by invert intelegence (takes longer to forget towards or away if smart? is away and towards response degraded by same?)
+food degrades by metabolisim
+summon degrades by invert happiness (if happy, takes longer for glow to leave)
+effects on intelegence, and other sensitivity, degrade by metabolisim
+
+
+limbic response/ stress can have negative/ positive (away/ towards) SCARF (status, certainty, autonomy, relatablity, fairness)
+limbic calculated as baseline (ie status of rank relative to highest known rank), then add effects from events that have happened rencently (user took away a perk)
+as well as a response for limbic sensitivity (dialog trigger for stress, breakdown too much stress) the stress value is used as happiness base value?
+stress value * intelegence * 0.5 is the happiness base value?
+the rate at which limbic effect values wear off? invert intelegence?
+the rate at which limbic sensitivity effect wear off? metabolism? 
+if limbic response towards is over sensitivity capacity, gift items are generated?
+
+happiness as collection of reward effects (visited by summononer, talked to) added to a happiness base line (limbic state, fullness, summon glow)
+happiness over capacity generates cash (positive happiness generates cash over time?)
+happiness effects erode at rate driven by invert food (hunger)
+happiness sensitivity effect wear off at metabolisim rate
+
+metabolisim is determined by hysteria/lust. like hunger but for summoning, difference between summon stat and summon capacity
+this is the rate at which food is digested? 
+
+
+"provide users with interesting decisions"
+
+dift girls for summoning mechanic
+what is the social mechanic, guilds, follower relasionships/ time commitments 
+guild-
+	follower can like someone, and be liked by someone
+	to join a guild, follower rank must be equal or greater than nb of followers in guild
+
+
+
+
+killers, acievers, exploers, socializers
+
+options tied to a character, results in banter
+mechanical and emotional seniblities
+
+happiness sensitivity
+limbic sensitivity
+food
+summon
+intelegence
+
+
+locale_key
+name_[happiness]_[limbic]_[food]_[summon]_[intelegence]
