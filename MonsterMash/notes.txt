@@ -1,0 +1,13 @@
+forgot that once in system, if not root body object (which is system position)
+all positions need to be relative to parent body, so we can change radius.
+this could result in seperation if two bodies shrink? need two way relative if origin of second is outside the first's radius ouch
+
+
+BodyInSystemParent
+	m_parentPart
+	parentAnchorRadiusRelativeX
+	parentAnchorRadiusRelativeY
+	childAnchorRadiusRelativeX
+	childAnchorRadiusRelativeY
+	m_arrayChildrenPart = []
+	

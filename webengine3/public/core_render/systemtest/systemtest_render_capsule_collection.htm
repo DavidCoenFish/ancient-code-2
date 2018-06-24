@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>render capsule collection</title>
+	</head>
+	<!-- <body style='background-color: #000000'> -->
+	<body>
+		<div id="containerId" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;justify-content: flex-start;">
+			<div>
+				<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+					This text is displayed if your browser does not support HTML5 Canvas.
+				</canvas>
+				<br/>
+				<button type="button" onclick="gMain.Stop()">Stop</button>
+				<span>FPS:</span>
+				<span id="fpsId">n/a</span>
+			</div>
+		</div>
+
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+Main = function(in_renderer, in_sceneCameraTransform, in_sceneCamera, in_dagMatrixVP, in_container, in_fpsDiv){
+	this.m_renderer = in_renderer;
+	this.m_sceneCameraTransform = in_sceneCameraTransform;
+	this.m_sceneCamera = in_sceneCamera;
+	this.m_dagMatrixV = in_sceneCameraTransform.GetMatrixInvert();
+	this.m_dagMatrixP = in_sceneCamera.GetMatrix();
+	this.m_dagMatrixVP = in_dagMatrixVP;
+	this.m_container = in_container;
+	this.m_fpsDiv = in_fpsDiv;
+	this.m_keepGoing = true;
+	this.m_time = 0.0;
+
+	this.m_arrayRender = [];
+	this.m_arrayRender.push({Render : function(in_render){
+		in_render.Clear(c.ColourRGBA.s_grey, 1.0);
+		}});
+
+	c.SceneGrid.Factory(this.m_arrayRender, this.m_dagMatrixVP, this.m_renderer);
+
+	this.MakeModelTransform();
+	this.MakeModel();
+
+	return;
+};
+
+Main.Factory = function(){	
+
+	var renderer = undefined;
+	var canvas = document.getElementById('canvasId');	
+	paramObject = {
+		depth : true
+	};
+	var renderer = c.Render.Factory(canvas, paramObject);
+
+	var container = document.getElementById('containerId');
+	var fpsDiv = document.getElementById('fpsId');
+
+	var sceneCameraTransform = c.SceneTransformOrbit.Factory(0, 0, 0, 0, 0, 50.0);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "PosX", -100, 100, sceneCameraTransform.GetDagPosX());
+	c.UISlider.Factory(document, div, "PosY", -100, 100, sceneCameraTransform.GetDagPosY());
+	c.UISlider.Factory(document, div, "PosZ", -100, 100, sceneCameraTransform.GetDagPosZ());
+	c.UISlider.Factory(document, div, "Latitude", -90, 90, sceneCameraTransform.GetLatitude());
+	c.UISlider.Factory(document, div, "Longitude", -180, 180, sceneCameraTransform.GetLongitude());
+	c.UISlider.Factory(document, div, "Distance", 0, 200, sceneCameraTransform.GetDistance());
+	container.appendChild(div);
+
+	var sceneCamera = c.SceneCameraFov.Factory(renderer.GetViewport(), 0.1, 100, 90);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "Near", 0.1, 1000.0, sceneCamera.GetDagNear());
+	c.UISlider.Factory(document, div, "Far", 0.1, 1000.0, sceneCamera.GetDagFar());
+	c.UISlider.Factory(document, div, "Fov", 5, 150, sceneCamera.GetDagFov());
+	container.appendChild(div);
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+	};
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node, //V
+			"node" : sceneCameraTransform.GetMatrixInvert()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,  //P
+			"node" : sceneCamera.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagMatrixVP = c.DagNodeCalculate.Factory("MatrixMV", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(sceneCameraTransform.GetMatrixInvert(), dagMatrixVP);
+	c.DagNodeCollection.SetNodesLinked(sceneCamera.GetMatrix(), dagMatrixVP);
+
+	return new Main(renderer, sceneCameraTransform, sceneCamera, dagMatrixVP, container, fpsDiv);
+}
+
+Main.prototype.MakeModelTransform = function(){	
+	var objectTransform = c.SceneTransform.Factory(0, 0, 0, 0, 0, 0);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "PosX", -20, 20, objectTransform.GetDagPosX());
+	c.UISlider.Factory(document, div, "PosY", -20, 20, objectTransform.GetDagPosY());
+	c.UISlider.Factory(document, div, "PosZ", -20, 20, objectTransform.GetDagPosZ());
+	c.UISlider.Factory(document, div, "Heading", -180, 180, objectTransform.GetHeading());
+	c.UISlider.Factory(document, div, "Altitude", -90, 90, objectTransform.GetAltitude());
+	c.UISlider.Factory(document, div, "Bank", -180, 180, objectTransform.GetBank());
+	this.m_container.appendChild(div);
+	this.m_dagMatrixM = objectTransform.GetMatrix();
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+	};
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : objectTransform.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : this.m_sceneCameraTransform.GetMatrixInvert()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagMatrixMV = c.DagNodeCalculate.Factory("MatrixMV", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(objectTransform.GetMatrix(), dagMatrixMV);
+	c.DagNodeCollection.SetNodesLinked(this.m_sceneCameraTransform.GetMatrixInvert(), dagMatrixMV);
+	this.m_dagMatrixMV = dagMatrixMV;
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : dagMatrixMV
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : this.m_sceneCamera.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagNodeMVP = c.DagNodeCalculate.Factory("MVP", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(this.m_sceneCamera.GetMatrix(), dagNodeMVP);
+	c.DagNodeCollection.SetNodesLinked(dagMatrixMV, dagNodeMVP);
+	this.m_dagMatrixMVP = dagNodeMVP;
+
+	return;
+}
+
+
+Main.prototype.MakeModel = function(){	
+	this.m_capsuleCollection = c.CapsuleCollection.Factory(this.m_renderer, 100, this.m_dagMatrixV, this.m_dagMatrixP, this.m_sceneCamera.GetNearFarFocalLengthAspect());
+	this.m_arrayRender.push(this.m_capsuleCollection);
+	return;
+}
+
+Main.prototype.Stop = function(){
+	this.m_keepGoing = false;
+	this.m_fpsDiv.innerHTML = "n/a";
+}
+
+Main.prototype.OnRun = function(in_timeDelta){
+	if (false === this.m_keepGoing){
+		return false;
+	}
+
+	//update 
+	this.m_time += in_timeDelta;
+	this.m_fpsDiv.innerHTML = 1.0 / in_timeDelta;
+	this.m_capsuleCollection.Begin();
+	var midPoint;
+	var normal;
+	for (var index = 0; index < 16; ++index){
+		var inc = (Math.PI * 2.0 * index / 16.0);
+		var as = Math.sin(inc);
+		var ac = Math.cos(inc);
+		var bs = Math.sin(this.m_time + inc);
+		var bc = Math.cos(this.m_time + inc);
+		//in_midPoint, in_normal, in_radius, in_halfLength
+		midPoint = c.Vector3.Factory(as * 50.0, 0.0, ac * 50.0, midPoint);
+		normal = c.Vector3.Factory(0.0, bs, bc, normal);
+		this.m_capsuleCollection.AddCapsule(midPoint, normal, 10.0, 25.0);
+	}
+	this.m_capsuleCollection.Flush(this.m_renderer);
+
+	//draw
+	for (var index = 0, count = this.m_arrayRender.length; index < count; ++index){
+		var render = this.m_arrayRender[index];
+		render.Render(this.m_renderer);
+	}
+
+	//console.log(c.Matrix4.AsString(this.m_dagMatrixMV.GetValue()));
+	//console.log(this.m_sceneCamera.GetNearFarFocalLengthAspect().GetValue());
+
+	return this.m_keepGoing;
+}
+
+var gMain = undefined;
+
+c.OnPageLoad = function() {
+	console.info("OnPageLoad");
+	var task = function(in_timeDelta){
+		if (undefined === gMain){
+			gMain = Main.Factory();
+		}
+		return gMain.OnRun(in_timeDelta);
+	};
+	c.Framework.Factory(task);
+}
+
+c.OnShutdown = function() {
+	console.info("OnShutdown");
+}
+
+window.addEventListener('load', c.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

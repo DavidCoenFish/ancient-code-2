@@ -1,0 +1,111 @@
+for (var index = 0, total = myArray.length; index < total; index++) {
+
+
+prepend key with the following
+	ignore:key_name
+	number:key_name
+	string:key_name //default?
+	boolean:key_name
+	null:key_name
+	sheet_object:key_name
+	sheet_array:key_name
+	sheet_continue:key_name
+	object:key_name:member:name
+	array:key_name:index:
+
+
+
+{"op":"index_dupe","data":0}	{"op":"push_dng","data":"race"}	{"op":"push_dng","data":"gender"}	{"op":"join","data":"."}	
+{"op":"push_const","data":"physical_strength"}	
+{"op":"collection_id_field","data":"character_attribute_max"}	{"op":"sub"}	{"op":"push_const","data":0}	{"op":"max"}	{"op":"push_const","data":2}	{"op":"div"}	{"op":"sub"}
+
+
+
+
+sheet key[2] collecton:
+	spreadsheetID, sheetName -> array of objects with optional "_id" key. values in first row are used for member names
+
+	_id, key0, key1, key2
+	foo, 1, 2, 3
+	bar, 4, 5, 6
+
+	-> [{_id : "foo", key0 : 1, key1 : 2, key2 : 3}, {_id : "bar", key0 : 4, key1 : 5, key2 : 6}]
+
+
+sheet key[1] json:name
+	parse the cell contents from string into a json object
+
+
+sheet key[1] ignore:name
+	skip this column
+
+
+sheet key[2] keyvalue:name
+	spreadsheetID, sheetName -> object 
+
+	foo, 1
+	bar, 4
+	json:moo, [1,2,3]
+	keyvalue:goo, spreadsheetID, sheetName
+
+	-> {foo : 1, bar : 4, moo : [1,2,3], goo : {}}
+
+
+
+move towards a Sheet to JSON reflection, with the stipulation that the top level is object (set of collections) and each collection is an array of objects with an optional _id
+mongo will auto generate a _id if none in each object
+{ collectionName0 : [{},{},...], collectionName1 : [{},{},...],...}
+
+table_of_contents/ inpoint/ database root
+
+	spreadsheetID, sheetName, collectionName,
+	xxxx,	rules,	combat_test_rules,
+	xxxx,	meta,	combat_test_meta,
+
+	=>
+
+	collectionName
+	sheetArrayObjects:collectionName0, spreadsheetID, sheetName,
+
+json: number, string, boolean, array, object, null
+
+~ each sheet is an object, or an array of objects? determined by the link to the sheet
+	
+
+sheet:name	first row are keys
+	sheet:key //values in column are spreadsheetID, next column value is sheetName, convert references sheet into an array of objects
+	object:key //values in column are spreadsheetID, next column value is sheetName, convert references sheet into an object
+	json:key //values in column are JSON.parse'ed
+	null:key //values in column ar null
+	boolean:key //convert values in column to javascript bool
+	string:key
+	number:key
+	key // treat values in column as string
+	ignore:key //ignore column
+	//? array:type:name //? make a monic array of following values? type -> [number, string, boolean, json]
+	//? continue:name //reference to sheet, convert sheet to object and append the current object? allow multiple sheets to add data to one collection?
+
+object:name first columm is object member name, second column (+?) are the values of the member
+	sheet:name //reference to sheet, convert sheet to array of objects
+	object:name //reference to sheet, convert sheet to object
+	json:name //convert cell contents as string to object via JSON.Parse
+	null:name 
+	boolean:name //convert cell to javascript true/ false
+	string:name
+	number:name
+	name //treat cell as string
+	ignore:name
+	//? array:type:name //? make a monic array of following values? type -> [number, string, boolean, json]
+	//? continue:name //reference to sheet, convert sheet to object and append the current object? allow multiple sheets to add data to one collection?
+
+	nb. inside an object, if an array with the same name is encounted, append the arrays. both sheet: and array: generate arrays
+
+sheettomongo. sheet inpoint (table of contents) is a sheet as object, where each member name is used as a collection and is expected to be an array
+
+1.sheet => 2.javascript object => 3.mongo
+2.javascript object, the member names of the 
+
+improvement. the top level object is consummed a collection at a time, the first time a collection is hit, it is dropped....
+
+
+

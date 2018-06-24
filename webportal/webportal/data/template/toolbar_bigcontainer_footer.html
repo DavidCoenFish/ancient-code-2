@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html lang="{{locale}}" class="pagebackground">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="{{description}}">
+	<meta name="author" content="{{author}}">
+
+	<title>{{title}}</title>
+
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/style/{{style}}.css">
+</head>
+
+<body class="fillverticle">
+
+	<div class ="pagebackground flowonelineright">
+
+{{#menu}}
+		<div class ="popuptarget shadow smallleftrightmargin noselect">
+			<div class="smallleftrightpadding noselect">{{name}}</div>
+			<div class="popup fillverticle pagebackground shadowoutset">
+{{#submenu}}
+					<a href="{{{link}}}" class ="interactive smallleftrightpadding noselect">{{item}}</a>
+{{/submenu}}
+			</div>
+		</div>
+{{/menu}}
+	</div>
+
+
+	<div class ="fillitem pageforeground">
+
+		<div class="bigleftrightmargin">
+			<p class="bodyheader">{{bodyheader}}</p>
+		</div>
+
+		<div class="flowhorizontal">
+{{#container}}
+			<a href="{{{link}}}" class="appbackground center bigmargin bigsquare shadow"><div>{{text}}</div><img src="{{{img}}}"/></a>
+{{/container}}
+		</div>
+	</div>
+
+	<div class ="pagebackground center">
+		{{#footer}}
+			<p class="footertext">{{.}}</p>
+		{{/footer}}
+	</div>
+
+</body>
+</html>

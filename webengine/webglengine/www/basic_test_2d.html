@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <!--<title>test</title>-->
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+  </head>
+  <body style='background-color: #000000'>
+    <canvas id='canvasId' style = 'background-color: #0000FF; width: 640px; height: 360px;' >
+      This text is displayed if your browser does not support HTML5 Canvas.
+    </canvas>
+
+    <script type='text/JavaScript' SRC="javascript/dsc.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/common.js" ></script>
+
+    <!-- dsc dir node graph -->
+    <script type='text/JavaScript' SRC="javascript/dsc/dng.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/container.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/node.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixaxispos.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixlatlongpos.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixperspective.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixpos.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/updatefunction.js" ></script>
+
+    <!-- dsc framework -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/font.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/font/letterdata.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/font/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/button.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/collection.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/drawable.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/pool.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/scrollhorizontal.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/slider.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/gui/text.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/datastream.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/component.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/component/camera.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/component/lightpoint.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/component/renderable.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/displaylist.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/displaylist/data.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/globalcomponent.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/globalcomponent/lightdirect.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/node.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/observer.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/observer/_light.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/observer/_render.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/scene/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/renderpass.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/renderpass/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/rendertarget.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/rendertarget/data.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/rendertarget/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/uniform.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/texture.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/texture/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/widget.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/widget/data.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/widget/pool.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context/_2d.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context/uniform.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context/uniform/_dng.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context/uniform/collection.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/context/webgl.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/input.js" ></script>
+
+    <!-- dsc math -->
+    <script type='text/JavaScript' SRC="javascript/dsc/math.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/colour.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/coordinate.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/frame.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/matrix3.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/matrix4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/quaternion.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/vector2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/vector3.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/vector4.js" ></script>
+
+
+
+    <!-- tasks -->
+    <script type='text/JavaScript' SRC="javascript/task.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/basic.js" ></script>
+
+
+    <!-- __________assets______________ -->
+    <!-- font -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/font/pool/angiesnewhouse.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/font/pool/constructa.js" ></script>
+    <!-- material -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material/pool/blend.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material/pool/blenddepth.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material/pool/default.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/material/pool/depth.js" ></script>
+    <!-- model -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/angiesnewhouse.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/axisapos3acolour4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/boundsapos2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/boundsapos3.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/constructa.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/cubeapos3auv2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/frameapos2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/quadapos2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/quadapos2auv2.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/model/pool/simplegui.js" ></script>
+    <!-- renderTarget -->
+    <!-- renderPass -->
+    <!-- scene -->
+    <script type='text/JavaScript' SRC="javascript/task/basic/scene.js" ></script>
+    <!-- shader -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool/apos2auv2usample0.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool/apos2ucolour4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool/apos2uframe4ucolour4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool/apos3acolour4umatrixmvp.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/shader/pool/apos3auv2usample0umatrixmvp.js" ></script>
+    <!-- texture -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/texture/pool/depthuint.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/texture/pool/rgbbyte.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/texture/pool/rgbhalffloat.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/basic/testtexture64.js" ></script>
+    <!-- widget -->
+    <script type='text/JavaScript' SRC="javascript/dsc/framework/asset/widget/pool/simplegui.js" ></script>
+
+    <!--hook events-->
+    <script type='text/javascript'>
+      <!-- 
+
+DSC.OnPageLoad = function()
+{
+	console.info("OnPageLoad");
+
+	var paramObject = {};
+	var framework = DSC.Framework.Create(document, paramObject);
+
+	var taskObject = Task.Basic.FactoryRaw(framework);
+
+  framework.SetTask(taskObject);
+}
+
+DSC.OnShutdown = function()
+{
+}
+
+//call from framework on having no more tasks
+//there is no shutdown even, just pretend to ballance OnPageLoad
+DSC.OnShutdown = function()
+{
+	console.info("OnShutdown");
+	DSC.Framework.Destroy()
+}
+
+window.addEventListener('load', DSC.OnPageLoad, true);
+
+			// -->
+    </script>
+  </body>
+</html>

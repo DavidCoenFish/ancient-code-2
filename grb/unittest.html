@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>unit test</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/javascript'>
+			<!-- 
+      
+var g_arrayUnitTest = [];
+
+			// -->
+		</script>
+
+
+    <script type='text/javascript' src="script/battleaction.js" ></script>
+    <script type='text/javascript' src="script/battleactionmodifier.js" ></script>
+    <script type='text/javascript' src="script/battleactionmodifierlock.js" ></script>
+    <script type='text/javascript' src="script/battlecharacterdata.js" ></script>
+    <script type='text/javascript' src="script/battledistancestore.js" ></script>
+    <script type='text/javascript' src="script/battledistancestoredata.js" ></script>
+    <script type='text/javascript' src="script/battlereport.js" ></script>
+    <script type='text/javascript' src="script/common.js" ></script>
+    <script type='text/javascript' src="script/commondraw.js" ></script>
+    <script type='text/javascript' src="script/deploycharacterdata.js" ></script>
+    <script type='text/javascript' src="script/descriptiondata.js" ></script>
+    <script type='text/javascript' src="script/game.js" ></script>
+    <script type='text/javascript' src="script/gamecharacter.js" ></script>
+    <script type='text/javascript' src="script/gamedraw.js" ></script>
+    <script type='text/javascript' src="script/gameentity.js" ></script>
+    <script type='text/javascript' src="script/gamemodebattle.js" ></script>
+    <script type='text/javascript' src="script/gamemodedeploy.js" ></script>
+    <script type='text/javascript' src="script/gamemodedrag.js" ></script>
+    <script type='text/javascript' src="script/gamemodedroplist.js" ></script>
+    <script type='text/javascript' src="script/gamemodeedit.js" ></script>
+    <script type='text/javascript' src="script/gamemodeeditmember.js" ></script>
+    <script type='text/javascript' src="script/gamemodehelp.js" ></script>
+    <script type='text/javascript' src="script/gamemodelocalbattle.js" ></script>
+    <script type='text/javascript' src="script/gamemodemain.js" ></script>
+    <script type='text/javascript' src="script/gamemodeonlinebattle.js" ></script>
+    <script type='text/javascript' src="script/gamemoderanking.js" ></script>
+    <script type='text/javascript' src="script/gamemoderesult.js" ></script>
+    <script type='text/javascript' src="script/gamemodeunlockskill.js" ></script>
+    <script type='text/javascript' src="script/gamevar.js" ></script>
+    <script type='text/javascript' src="script/guibackground.js" ></script>
+    <script type='text/javascript' src="script/guibutton.js" ></script>
+    <script type='text/javascript' src="script/guigamebattleminimap.js" ></script>
+    <script type='text/javascript' src="script/guigamebattlenote.js" ></script>
+    <script type='text/javascript' src="script/guigamebattletrace.js" ></script>
+    <script type='text/javascript' src="script/guigamebattleview.js" ></script>
+    <script type='text/javascript' src="script/guigamecharacter.js" ></script>
+    <script type='text/javascript' src="script/guigamecharacterinfo.js" ></script>
+    <script type='text/javascript' src="script/guigameslot.js" ></script>
+    <script type='text/javascript' src="script/guigameslotinfo.js" ></script>
+    <script type='text/javascript' src="script/guigameslotitem.js" ></script>
+    <script type='text/javascript' src="script/guigameslottable.js" ></script>
+    <script type='text/javascript' src="script/guilist.js" ></script>
+    <script type='text/javascript' src="script/guilistdata.js" ></script>
+    <script type='text/javascript' src="script/guipanel.js" ></script>
+    <script type='text/javascript' src="script/guipanelfancy.js" ></script>
+    <script type='text/javascript' src="script/guiscrollbarvertical.js" ></script>
+    <script type='text/javascript' src="script/guitext.js" ></script>
+    <script type='text/javascript' src="script/modaldialog.js" ></script>
+    <script type='text/javascript' src="script/modaldialogbuttondata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacter.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterai.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterbattle.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterclass.js" ></script>
+    <script type='text/javascript' src="script/modifiercharactergender.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterrace.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslot.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdataaction.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdatadescription.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotnodeconnectdata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdragtarget.js" ></script>
+    <script type='text/javascript' src="script/modifiercharactervalid.js" ></script>
+    <script type='text/javascript' src="script/modifiermap.js" ></script>
+    <script type='text/javascript' src="script/modifierplusstat.js" ></script>
+    <script type='text/javascript' src="script/node.js" ></script>
+    <script type='text/javascript' src="script/nodegraph.js" ></script>
+    <script type='text/javascript' src="script/nodeinput.js" ></script>
+    <script type='text/javascript' src="script/vector.js" ></script>
+    <script type='text/javascript' src="script/vector3.js" ></script>
+    
+    <script type='text/javascript'>
+			<!-- 
+InitGameVar();
+
+g_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.UnitTest)
+	{ 
+		var result = in_item.UnitTest(); 
+		document.write('<p>' + result + '<\/p>');
+	} 
+});
+
+//window.defaultStatus = "hello " + g_arrayUnitTest.length;
+
+			// -->
+		</script>
+	</body>
+</html>

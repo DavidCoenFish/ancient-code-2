@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc dng</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Value Node",
+	Run : function()
+	{
+		var asStringFunctor = DSC.DNG.Functor.MakeDefaultValueAsString("test");
+		var dataValue = DSC.DNG.DataValue.Factory(10.3, asStringFunctor);
+		var nodeValue = DSC.DNG.Node.Factory(dataValue);
+		var result = (undefined != nodeValue);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Calculate Node",
+	Run : function()
+	{
+		var asStringFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataCalculate = DSC.DNG.DataCalculate.Factory(DSC.DNG.Functor.CalculateSumNumeric, asStringFunctor);
+		var nodeCalculate = DSC.DNG.Node.Factory(dataCalculate);
+
+		var result = (undefined != nodeCalculate);
+
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Set Value Node",
+	Run : function()
+	{
+		var dataValue = DSC.DNG.DataValue.Factory(0.0);
+		var nodeValue = DSC.DNG.Node.Factory(dataValue);
+		nodeValue.SetValue(10.7);
+		var result = (10.7 == nodeValue.GetValue());
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To get value node as string",
+	Run : function()
+	{
+		var asStringFunctor = DSC.DNG.Functor.MakeDefaultValueAsString("test");
+		var dataValue = DSC.DNG.DataValue.Factory(10.3, asStringFunctor);
+		var nodeValue = DSC.DNG.Node.Factory(dataValue);
+		var asString = nodeValue.AsString();
+		var result = true; //(asString instanceof String); //todo. what class
+		result &= (0 < asString.length);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To get calculate node as string",
+	Run : function()
+	{
+		var asStringCalculateFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataCalculate = DSC.DNG.DataCalculate.Factory(DSC.DNG.Functor.CalculateSumNumeric, asStringCalculateFunctor);
+		var nodeCalculate = DSC.DNG.Node.Factory(dataCalculate);
+		var asString = nodeCalculate.AsString();
+		var result = true; //(asString instanceof String); //todo. what class
+		result &= (0 < asString.length);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To link nodes",
+	Run : function()
+	{
+		var asStringFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataValue = DSC.DNG.DataValue.Factory(10.3, asStringFunctor);
+		var nodeValue = DSC.DNG.Node.Factory(dataValue);
+
+		var asStringCalculateFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataCalculate = DSC.DNG.DataCalculate.Factory(DSC.DNG.Functor.CalculateSumNumeric, asStringCalculateFunctor);
+		var nodeCalculate = DSC.DNG.Node.Factory(dataCalculate);
+
+		nodeCalculate.AttachInput(0, nodeValue);
+
+		var result = (1 == nodeCalculate.GetInputCount());
+		result &= (nodeValue == nodeCalculate.GetInput(0));
+
+		nodeCalculate.DetachInput(0);
+		result &= (0 == nodeCalculate.GetInputCount());
+		result &= (undefined == nodeCalculate.GetInput(0));
+
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To change value of input and calculate value changes",
+	Run : function()
+	{
+		var asStringFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataValue = DSC.DNG.DataValue.Factory(10.3, asStringFunctor);
+		var nodeValue = DSC.DNG.Node.Factory(dataValue);
+
+		var asStringCalculateFunctor = DSC.DNG.Functor.MakeDefaultCalculateAsString("test");
+		var dataCalculate = DSC.DNG.DataCalculate.Factory(DSC.DNG.Functor.CalculateSumNumeric, asStringCalculateFunctor);
+		var nodeCalculate = DSC.DNG.Node.Factory(dataCalculate);
+		nodeCalculate.AttachInput(0, nodeValue);
+
+		nodeValue.SetValue(10.7);
+		var result = (10.7 == nodeCalculate.GetValue());
+		return result;
+	}
+});
+
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.DNG'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>render particle</title>
+	</head>
+	<!-- <body style='background-color: #000000'> -->
+	<body>
+		<div>
+			<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+				This text is displayed if your browser does not support HTML5 Canvas.
+			</canvas>
+		</div>
+		<div>
+			<button type="button" onclick="gMain.Stop()">Stop</button>
+			<label for="fader">verticleFovDeg</label>
+			<input type="range" oninput="gMain.OnInput(this.id, this.value)" id="verticleFovDeg" min="5" max="135" value="90"></input>
+			<label for="fader">cameraPosX</label>
+			<input type="range" oninput="gMain.OnInput(this.id, this.value)" id="cameraPosX" min="-100" max="100" value="0"></input>
+			<label for="fader">cameraPosY</label>
+			<input type="range" oninput="gMain.OnInput(this.id, this.value)" id="cameraPosY" min="-100" max="100" value="0"></input>
+			<label for="fader">cameraPosZ</label>
+			<input type="range" oninput="gMain.OnInput(this.id, this.value)" id="cameraPosZ" min="-100" max="100" value="10"></input>
+		</div>
+
+
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+Main = function(in_renderer){
+	this.m_renderer = in_renderer;
+
+	this.m_keepGoing = true;
+	this.MakeCamera(); //projection matrix * view matrix * model matrix
+
+/*
+	gl_Position = u_matrixMVP * vec4(a_position, 1.0);\
+	gl_Position = u_matrixMVP * vec4(a_sphere.xyz, 1.0);\
+	gl_Position = u_fle*o.z*o.xy/(z2-r2);\
+*/
+	var vertextShader = "\
+uniform ivec4 u_viewport;\
+uniform mat4 u_matrixMVP;\
+uniform mat4 u_matrixView;\
+uniform float u_fle;\
+attribute vec4 a_sphere;\
+varying float v_a;\
+varying float v_b;\
+varying float v_c;\
+varying float v_d;\
+varying float v_e;\
+varying float v_f;\
+varying vec4 v_data;\
+void main() {\
+	vec3  o = (u_matrixView*vec4(a_sphere.xyz, 1.0)).xyz;\
+\
+	float r2 = a_sphere.w*a_sphere.w;\
+	float z2 = o.z*o.z;\
+	float l2 = dot(o,o);\
+\
+	vec2 axa = u_fle*sqrt(-r2*(r2-l2)/((l2-z2)*(r2-z2)*(r2-z2)))*vec2( o.x,o.y);\
+	vec2 axb = u_fle*sqrt(-r2*(r2-l2)/((l2-z2)*(r2-z2)*(r2-l2)))*vec2(-o.y,o.x);\
+\
+	float aspect = float(u_viewport.z)/float(u_viewport.w);\
+	gl_Position = vec4(u_fle*o.z*o.x/((z2-r2)*aspect),u_fle*o.z*o.y/(z2-r2),o.z/100.0,1.0);\
+	gl_PointSize = max(length(axa),length(axb)) * float(u_viewport.w);\
+	v_data.xy = gl_Position.xy - (vec2(float(gl_PointSize)*0.5) / float(u_viewport.w));\
+	v_data.z = float(gl_PointSize) / float(u_viewport.w);\
+	v_data.w = aspect * float(gl_PointSize) / float(u_viewport.w);\
+\
+	v_a = r2 - o.y*o.y - z2;\
+	v_b = r2 - o.x*o.x - z2;\
+	v_c = 2.0*o.x*o.y;\
+	v_d = 2.0*o.x*o.z*u_fle;\
+	v_e = 2.0*o.y*o.z*u_fle;\
+	v_f = (r2-l2+z2)*u_fle*u_fle;\
+}";
+
+	var fragmentShader = "\
+precision mediump float;\
+uniform vec4 u_colour;\
+varying float v_a;\
+varying float v_b;\
+varying float v_c;\
+varying float v_d;\
+varying float v_e;\
+varying float v_f;\
+varying vec4 v_data;\
+void main() {\
+	vec2 p = v_data.xy + (v_data.zw * gl_PointCoord.xy);\
+	float impl = v_a*p.x*p.x + v_b*p.y*p.y + v_c*p.x*p.y + v_d*p.x + v_e*p.y + v_f;\
+\
+	gl_FragColor = vec4(p.x, p.y, impl, 1.0);\
+}";
+
+	this.m_shader = this.m_renderer.NewShader(
+		vertextShader,
+		fragmentShader,
+		{ "a_sphere": null }, 
+		{ 
+			"u_viewport" : null,
+			"u_colour" : null, 
+			"u_viewport" : null,
+			"u_matrixMVP" : null,
+			"u_matrixView" : null,
+			"u_fle" : null,
+		}
+	);
+
+	this.m_material = c.Material.Factory(
+		this.m_shader,
+		{ 
+			"u_viewport" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Integer4,
+				this.m_renderer.GetViewport()
+				),
+			
+			"u_colour" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float4,
+				c.DagNodeValue.Factory("u_colour", c.ColourRGBA.s_blue)
+				),
+			"u_matrixMVP" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagNodeMVP
+				),
+			"u_matrixView" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagNodeView
+				),
+			"u_fle" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float,
+				this.m_dagNodeFle
+				),
+		}
+	);
+
+	this.m_model = this.m_renderer.NewModel(
+		c.WebGL.POINTS,
+		27, 
+		{
+			"a_sphere" : c.ModelDataStream.Factory(
+				c.WebGL.BYTE,
+				4,
+				new Int8Array([
+					-5, -5, -5, 1,
+					 0, -5, -5, 1,
+					 5, -5, -5, 1,
+					-5,  0, -5, 1,
+					 0,  0, -5, 1,
+					 5,  0, -5, 1,
+					-5,  5, -5, 1,
+					 0,  5, -5, 1,
+					 5,  5, -5, 1,
+					-5, -5,  0, 1,
+					 0, -5,  0, 1,
+					 5, -5,  0, 1,
+					-5,  0,  0, 1,
+					 0,  0,  0, 1,
+					 5,  0,  0, 1,
+					-5,  5,  0, 1,
+					 0,  5,  0, 1,
+					 5,  5,  0, 1,
+					-5, -5,  5, 1,
+					 0, -5,  5, 1,
+					 5, -5,  5, 1,
+					-5,  0,  5, 1,
+					 0,  0,  5, 1,
+					 5,  0,  5, 1,
+					-5,  5,  5, 1,
+					 0,  5,  5, 1,
+					 5,  5,  5, 1,
+					]),
+				c.WebGL.STATIC_DRAW,
+				false
+				)
+		}
+	);
+
+	return;
+};
+
+Main.Factory = function(){
+	var renderer = undefined;
+	var canvas = document.getElementById('canvasId');	
+	paramObject = {
+		"extentions" : [
+			//"OES_texture_float", 
+			//"OES_texture_float_linear",
+			//"OES_texture_half_float",
+			//"OES_texture_half_float_linear",
+			]
+		};
+	var renderer = c.Render.Factory(canvas, paramObject);
+	//renderer.SetViewport(new Int32Array([128, 64, 256, 128]));
+	return new Main(renderer);
+}
+
+Main.prototype.Stop = function(){
+	this.m_keepGoing = false;
+}
+
+Main.prototype.MakeCamera = function(){
+	this.m_dagNodeMVP = undefined;
+
+	var arrayCalculate = [];
+	var mapDagNode = {};
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+		"matrix_inv" : function(src, _prevValue) { 
+			return c.Matrix4.Inverse(src, _prevValue);
+		},
+		//"matrix_perspective" : function(in_near, in_far, in_right, in_top, _prevValue) { 
+		//	return c.Matrix4.FactoryPerspectiveFrustum(in_near, in_far, in_right, in_top, _prevValue);
+		//},
+		"matrix_fov_perspective" : function(in_verticleFovRad, in_viewport, in_near, in_far, _prevValue) { 
+			var sizeX = in_viewport[2];
+			var sizeY = in_viewport[3];
+			var top = Math.tan(in_verticleFovRad * 0.5) * in_near;
+			var right = (top * sizeX) / sizeY;
+			return c.Matrix4.FactoryPerspectiveFrustum(in_near, in_far, right, top, _prevValue);
+			//return c.Matrix4.s_identity;
+		},
+		"matrix_fov_perspective2" : function(in_verticleFovRad, in_viewport, in_near, in_far, _prevValue) { 
+			var sizeX = in_viewport[2];
+			var sizeY = in_viewport[3];
+			var aspect = sizeX / sizeY;
+			return c.Matrix4.FactoryPerspectiveFrustum2(in_near, in_far, in_verticleFovRad, aspect, _prevValue);
+			//return c.Matrix4.s_identity;
+		},
+		"matrix_at_up_pos" : function(in_at, in_up, in_pos, _prevValue) { 
+			return c.Matrix4.FactoryAtUp(in_at, in_up, undefined, undefined, in_pos, _prevValue);
+		},
+		"vector3_factory" : c.Vector3.Factory,
+		"fov_to_fle" : function(in_fov, _prevValue) {
+			return 1.0 / Math.tan(in_fov * 0.5);
+		},
+	};
+
+	//135.0 approx human verticle fov
+	mapDagNode["verticleFovRad"] = c.DagNodeValue.Factory("verticleFovRad", c.Math.DegreeToRadian(90.0));
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "verticleFovRad"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn1,
+			"data" : "fov_to_fle"
+		}
+	]
+	var dagCalculate = c.DagNodeCalculate.Factory("u_fle", instructionArray, instructionContext);
+	mapDagNode["u_fle"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+	this.m_dagNodeFle = dagCalculate;
+
+	mapDagNode["viewport"] = this.m_renderer.GetViewport();
+	mapDagNode["near"] = c.DagNodeValue.Factory("near", 0.1);
+	mapDagNode["far"] = c.DagNodeValue.Factory("far", 100.0);
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "far"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "near"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "viewport"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "verticleFovRad"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn4,
+			"data" : "matrix_fov_perspective2"
+		},
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("matrixProjection", instructionArray, instructionContext);
+	mapDagNode["matrixProjection"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+
+	mapDagNode["modelPos"] = c.DagNodeValue.Factory("modelPos", c.Vector3.Factory(0.0, 0.0, 0.0));
+	mapDagNode["modelAt"] = c.DagNodeValue.Factory("modelAt", c.Vector3.Factory(0.0, 1.0, 0.0));
+	mapDagNode["modelUp"] = c.DagNodeValue.Factory("modelUp", c.Vector3.Factory(0.0, 0.0, 1.0));
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "modelPos"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "modelUp"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "modelAt"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn3,
+			"data" : "matrix_at_up_pos"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("matrixModel", instructionArray, instructionContext);
+	mapDagNode["matrixModel"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+
+	mapDagNode["cameraPosX"] = c.DagNodeValue.Factory("cameraPosX", 0.0);
+	mapDagNode["cameraPosY"] = c.DagNodeValue.Factory("cameraPosY", 0.0);
+	mapDagNode["cameraPosZ"] = c.DagNodeValue.Factory("cameraPosZ", 10.0);
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraPosZ"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraPosY"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraPosX"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn3,
+			"data" : "vector3_factory"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("cameraPos", instructionArray, instructionContext);
+	mapDagNode["cameraPos"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+
+	mapDagNode["cameraAt"] = c.DagNodeValue.Factory("cameraAt", c.Vector3.Factory(0.0, 1.0, 0.0));
+	mapDagNode["cameraUp"] = c.DagNodeValue.Factory("cameraUp", c.Vector3.Factory(0.0, 0.0, 1.0));
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraPos"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraUp"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "cameraAt"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn3,
+			"data" : "matrix_at_up_pos"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("matrixCamera", instructionArray, instructionContext);
+	mapDagNode["matrixCamera"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "matrixCamera"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn1,
+			"data" : "matrix_inv"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("u_matrixView", instructionArray, instructionContext);
+	mapDagNode["u_matrixView"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+	this.m_dagNodeView = dagCalculate;
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "matrixModel"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "u_matrixView"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("matrixMV", instructionArray, instructionContext);
+	mapDagNode["matrixMV"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "matrixMV"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"data" : "matrixProjection"
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagCalculate = c.DagNodeCalculate.Factory("matrixMVP", instructionArray, instructionContext);
+	mapDagNode["matrixMVP"] = dagCalculate;
+	arrayCalculate.push(dagCalculate);
+	this.m_dagNodeMVP = dagCalculate;
+
+	this.m_cameraDagCollection = c.DagNodeCollection.Factory(mapDagNode, arrayCalculate);
+
+	return;
+}
+
+Main.prototype.OnInput = function(in_id, in_value){
+	switch (in_id){
+	default:
+		this.m_cameraDagCollection.SetValue(in_id, in_value);
+		break;
+	case "verticleFovDeg":
+		this.m_cameraDagCollection.SetValue("verticleFovRad", c.Math.DegreeToRadian(in_value));
+		break;
+	}
+
+	return;
+}
+
+Main.prototype.OnRun = function(in_timeDelta){
+	//draw
+	this.m_renderer.Clear(c.ColourRGBA.s_red);
+	this.m_renderer.RenderModel(this.m_material, this.m_model);
+
+	return this.m_keepGoing;
+}
+
+var gMain = undefined;
+
+c.OnPageLoad = function() {
+	console.info("OnPageLoad");
+	var task = function(in_timeDelta){
+		if (undefined === gMain){
+			gMain = Main.Factory();
+		}
+		return gMain.OnRun(in_timeDelta);
+	};
+	c.Framework.Factory(task);
+}
+
+c.OnShutdown = function() {
+	console.info("OnShutdown");
+}
+
+window.addEventListener('load', c.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

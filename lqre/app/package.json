@@ -1,0 +1,25 @@
+{
+	"name": "lqre",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "David Coen",
+	"license": "UNLICENSED",
+	"private": true,
+	"dependencies" : {
+		"angular" : "latest"
+		,"bcrypt-nodejs" : "latest"
+		,"body-parser" : "latest"
+		,"cookie-session" : "latest"
+		,"express" : "latest"
+		,"helmet" : "latest"
+		,"mongodb" : "latest"
+		,"q" : "latest"
+		,"vm" : "latest"
+		,"whiskers" : "latest"
+	}
+}

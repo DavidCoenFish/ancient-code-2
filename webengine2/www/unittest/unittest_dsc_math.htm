@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc math</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test value is almost zero",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostZero(0.0));
+		result &= (false == DSC.Math.AlmostZero(10.0));
+		result &= (false == DSC.Math.AlmostZero(-10.0));
+		result &= (true == DSC.Math.AlmostZero(0.0, 0.001));
+		result &= (true == DSC.Math.AlmostZero(0.001, 0.001));
+		result &= (true == DSC.Math.AlmostZero(-0.001, 0.001));
+		result &= (false == DSC.Math.AlmostZero(0.1, 0.001));
+		result &= (false == DSC.Math.AlmostZero(-0.1, 0.001));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test value is almost equal",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(0.0, 0.0));
+		result &= (true == DSC.Math.AlmostEqual(5.0, 5.0));
+		result &= (false == DSC.Math.AlmostEqual(-5.0, 5.0));
+		result &= (true == DSC.Math.AlmostEqual(0.0, 0.0001, 0.001));
+		result &= (true == DSC.Math.AlmostEqual(5.0, 5.0001, 0.001));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Lerp a value",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(10.0, DSC.Math.Lerp(10.0, 20.0, 0.0)));
+		result &= (true == DSC.Math.AlmostEqual(15.0, DSC.Math.Lerp(10.0, 20.0, 0.5)));
+		result &= (true == DSC.Math.AlmostEqual(20.0, DSC.Math.Lerp(10.0, 20.0, 1.0)));
+		result &= (true == DSC.Math.AlmostEqual(-5.0, DSC.Math.Lerp(10.0, -20.0, 0.5)));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clamp a value",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(10.0, DSC.Math.Clamp(10.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(10.0, DSC.Math.Clamp(0.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(15.0, DSC.Math.Clamp(15.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(20.0, DSC.Math.Clamp(20.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(20.0, DSC.Math.Clamp(30.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(0.0, DSC.Math.Clamp(0.0, -10.0, 10.0)));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Wrap a value",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(10.0, DSC.Math.Wrap(10.0, 10.0, 20.0)));
+		//console.info(""  + DSC.Math.Wrap(10.0, 10.0, 20.0) + " " + result);
+		result &= (true == DSC.Math.AlmostEqual(15.0, DSC.Math.Wrap(5.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(15.0, DSC.Math.Wrap(15.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(15.0, DSC.Math.Wrap(25.0, 10.0, 20.0)));
+		result &= (true == DSC.Math.AlmostEqual(-15.0, DSC.Math.Wrap(-25.0, -20.0, -10.0)));
+		result &= (true == DSC.Math.AlmostEqual(-15.0, DSC.Math.Wrap(-15.0, -20.0, -10.0)));
+		result &= (true == DSC.Math.AlmostEqual(-15.0, DSC.Math.Wrap(-5.0, -20.0, -10.0)));
+
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Smooth a value",
+	Run : function()
+	{
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(0.0, DSC.Math.Smooth(0.0)));
+		result &= (true == DSC.Math.AlmostEqual(1.0, DSC.Math.Smooth(1.0)));
+		result &= (true == (DSC.Math.Smooth(0.0) < DSC.Math.Smooth(0.1)));
+		result &= (true == (DSC.Math.Smooth(0.9) < DSC.Math.Smooth(1.0)));
+
+
+		return result;
+	}
+});
+
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Math'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

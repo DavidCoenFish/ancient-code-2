@@ -1,0 +1,176 @@
+core [4]	// starts at 1, increaced with practice
+			// success twice (level 1 -> 2) fibonachi series, or exponential
+			// falure gains half as much experence as sucess? 
+			// difficulty modifies experence?
+physical mellee
+physical range
+mental mellee
+mental range
+
+stats [4]	// consumed, starts at equivalent of core (or == core is 100%)
+			// over 100% increaces needs
+health
+confidence
+disipline
+happyness
+
+needs [4]	// increaces at rate of core (on faliure at actions?
+hunger
+sleep
+lonelyness
+lust
+
+seven sins [7]	// track story line progress, getting and removing
+lust, envy, greed, glutony, envy, hubris, sloth
+
+seven virtues [7] // track story line progress, getting and removing
+paticence, clenliness, forgiveness, genorisity, chaste, mercy, frugalness
+
+- gameplay. spend stats to satisfy needs, build up core. customise character
+
+player discription
+inventory
+sorrundings
+actions
+map
+
+//so why did london use cards to give actions? randomness? 
+//use time of day, location, random to determin if events can occur
+
+//all scenes give you the 4 core choices? fight, flight, passive engage, think
+// percentile chance of sucess? your core / (difficulty + your core) < random
+//  or several sorts of resolutions, random, core / difficulty < random. core + skill + random < difficulty 
+//looking at inentory is the same as choosing think
+into. scene 00 The cave
+	contemplation 
+	noise and some glimers of light break te gloom of the cells you find yourself in
+
+	Hands grab your shoulders pulling you towards the brightness.
+	Fight
+		[fail] The hands grip you tighter and pull you forward
+		[Pass] Twisting you body you lash out, your left foot and right fist sucessfully land blows on the owner of the hands that grabed you
+	Fight, don't leave cell //gained on playthrough?
+	Flee
+		[fail] The hands grip you tighter and pull you forward
+		[Pass] You twist violently and escape the hands. you make for the cells single exit, the open door
+	Engage
+		[fail] You are at a loss of things to say, unsure how to address the owners of te hands on your shoulders
+		[Pass] You catch the eye of the two people standing over you in turn - initiate dialog
+	Think
+		[fail] Nothing makes scene, perhaps with more time you could work out what is happening, but for now te hands rougly dray out out te door of your cell.
+		[Pass] The Cell walls are slightly damp, and the air from outside is slightly warmer, carrying hints of civilisation, or at least burt wood and animal dung.
+			You presume the two people herding you forward with rough hands are guards, one smell little better than te hints of animal dung, the other smells slightly
+			of soap. The guards have urged you forward.
+		[undress] You step out of the simple rags and te two guards in the room seem momentarially taken back
+	what if you undress via te inventory
+	what if on sucessful attack you stay in the room
+	if you attack/ engage not on te first round in a scene, the other have more time to not be surpried
+	//second round
+	Walk out the door
+		[no fail?]
+	Wait
+	Search bodies [if either is knocked out, or option to knock out? kill?]
+	is learning to kill a skill? can you keep skillsa, core stats when you reincarnate?
+	//do they send in more guards if you keep waiting? close the doors and smoke you out/ burn?
+	outside, 2 more guards, 6 crossbow, female priest, male mage plus his enturarge
+	is there a story path to make all inhabitants of city one geneder? travel between cities of different types
+
+physical mellee - strength			- builder				fighter - fight, act
+physical range - coordination		- carpenter				thief	- flee, search
+mental mellee - faith				- organiser				priest	- talk, pray
+mental range - creativity			- artist				magition- observe, think
+
+health, fatigue, concentration, enthusiasm
+hunger, thirst, desire, lonelyness 
+lust, glutony, sloth, envy, greed, wrath, hubris
+
+4 core stats, up over use. strength and practice~ story paths.
+build up 7 deadly sins due to actions (cost of failure, and sometimes success of ablitites)
+	can be temporarily lowered. limits recovery of core needs.
+4 core needs, ablities diminished if reach zero (hunger, thirst, enthusiasm, disipline)
+health? desire? energy? 
+health goes down, bad if zero. 
+sleep? sleep debt, length of time able to sleep, length of time before tired/ need to sleep 
+stress, headache, rage, lonelyness, lust goes up, loss of control if too high
+pleasure? happyness. creativity, depravity (corruption) 
+7 virtues to ballance sins
+mercy, forgiveness, generousity, 
+
+webpage
+	given playerID, 
+		get location
+		get options (performable actions)
+		get profile
+		get inventory
+		perform action
+
+// when you meet someone new, introduction allow screen,  renaming of yourself, or reuse of existing name?
+
+being in darkness, hands pull at you leading towards an suddenly bright open door
+choices, 
+	tell name, partake in ceromony - priest
+	fight you way out - fighter
+	run - theif
+	say nothing/ stip naked and parade around - mage
+paths are not set, but try to allow for 4 flavours of solution to each player gap
+on removal of your rags in te inventory for first time, allowed to pick gender,
+	hints at racial type? does everyone look te same or mixed.
+	 
+dialog
+	introduce yourself
+	//depending on level of (mental mellee) is dialog choices. talk about topic rather than lines of dialog
+	// also things you know about te individual? things you want to know in a situation
+	//convince person to do your bidding
+	//concential happy time
+	//vampire path? feed? on resurect you loose 50% of core stats/ skills? (round down, min 1)
+what are your aims with dialog
+	get information
+	get money, item
+	change behaviour of subject
+		get them to help
+		get them to follow?
+		get tem to not intervien, stop blocking way
+	initiate action
+
+first scene
+	to get mage's attention- have a certain amount of confidence (not speaking, taking off cloths)
+	to get priest's attention- have to follow orders
+	else sent with guards
+	or successfully escape to te theives
+	(resurection path, with/ without flight) fight city, or kill certain individuals
+		or try to gain power?
+
+core stat	nb of success attempts to increace
+1			2		2
+2			4		3
+3			8		5
+4			16		8
+5			32		13
+6			64		21
+7			128		34
+8			256		55
+9			512		89
+10			1024	144
+failure is worth half (quater?) experence. still costs energy to perform, adds to negative accumulation (needs)
+success adds smaller amount (or nothing?) to needs
+
+get different actions if needs are full (eat, kill, fuck, giveup and nap~ substance abbuse)
+alchohole? enery dirnks~ magic potions
+
+or success increaces core, failure increces need. either cost stat
+stats are recovered (reduced) through sleep.
+
+get different (more extream options) when needs are greater than core, want a better list of needs
+(sleep, hunger, lust, lonelyness)
+
+//too adventure game, not enough choose your path?
+//rem COC, very sparce world with carefully written encounters
+// get better at combat, have more risk/ result options?
+likewise with any core/ stat/ skill test. get more options with improvement - is a lot to write
+
+the initial guards sent into the cell have no weapons? they fear resureceted players
+resurected player - escape (flee or fight), revenge, size power, pretend to be weak to escape or hide in 
+
+needs? lust, blood lust (revenge), greed, hubris. priest can use mind control to plant hints? mage can modify body?
+need blood lust over core to intentionally kill?
+ 

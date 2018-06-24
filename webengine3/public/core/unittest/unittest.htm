@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>unittest core</title>
+	</head>
+	<body>
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [
+	"unittestdagnode",
+];
+var s_passCount = 0;
+var s_failCount = 0;
+var s_failedMessage = "";
+
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	document.write('<iframe id="' + in_item + '" src="' + in_item + '.htm" name="' + in_item + '" width="0" height="0" scrolling="no"><\/iframe>');
+	document.write('<span><a href="' + in_item + '.htm">' + in_item + '<\/a><\/span><br\/>');
+});
+
+var OnMessage = function(in_data)
+{	
+	if (true == in_data.data[1])
+	{
+		s_passCount += 1;
+	}
+	else
+	{
+		if (0 < s_failCount)
+		{
+			s_failedMessage += ", ";
+		}
+		s_failCount += 1;
+		s_failedMessage += in_data.data[2];
+	}
+
+	var element = document.getElementById('status');
+	element.firstChild.nodeValue = "" + s_passCount + " tests of " + s_arrayUnitTest.length + " passed, " + s_failCount + " failed " + s_failedMessage;
+}
+
+window.addEventListener('message', OnMessage, false);
+
+			// -->
+		</script>
+		<div id='status'>Loading</div>
+	</body>
+</html>

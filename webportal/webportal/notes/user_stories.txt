@@ -1,0 +1,22 @@
+U underway
+F finished
+
+user stories
+U		i want a combat test web page
+F		i want to make a character
+F		i want to edit a character
+F		i want to delete a character
+U		i want to make a combat instance
+U		i want to edit a combat instance
+F		i want to delete a combat instance
+			i want the server to generate the results of a combat session
+		i want to see the results of a combat session
+		i want to make a monster
+		i want to edit a monster
+		i want to delete a monster
+
+
+
+
+
+

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="notes\HTML5_Canvas_Cheat_Sheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes\notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bat\build_library_core.bat" />
+    <None Include="bat\clean_library_core.bat" />
+    <None Include="bat\rebuild_library_core.bat" />
+    <None Include="library\core\dsc.js" />
+    <None Include="library\core\dsc\common.js" />
+    <None Include="library\core\dsc\dng.js" />
+    <None Include="library\core\dsc\dng\datacalculate.js" />
+    <None Include="library\core\dsc\dng\datainterface.js" />
+    <None Include="library\core\dsc\dng\datavalue.js" />
+    <None Include="library\core\dsc\dng\functor.js" />
+    <None Include="library\core\dsc\dng\node.js" />
+    <None Include="library\core\dsc\math.js" />
+    <None Include="library\core\dsc\math\vector2.js" />
+    <None Include="www\javascript\dsc_core.js" />
+    <None Include="www\unittest\unittest_dsc_dng.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="www\unittest\unittest_dsc_math_vector2.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4AE6531E-8308-42C7-BA7B-10DE8DB12CE4}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectName>library_core</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeBuildCommandLine>bat\build_library_core.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>bat\rebuild_library_core.bat</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>bat\clean_library_core.bat</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Pack Colour 2</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+    <canvas id='canvasId' style = 'background-color: #00FF00; width: 256px; height: 256px;' >
+      This text is displayed if your browser does not support HTML5 Canvas.
+    </canvas>
+
+    <!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+Render = function(out_buf, in_data, in_width, in_height)
+{
+  for (var y = 0; y < in_height; ++y)
+  {
+    for (var x = 0; x < in_width; ++x)
+    {
+      var index = (y * in_width) + x;
+      var data = in_data[index];
+      
+      var colourRed = Math.max(Math.min(data[0], 255), 0);
+      var colourGreen = Math.max(Math.min(data[1], 255), 0);
+      var colourBlue = Math.max(Math.min(data[2], 255), 0);
+      var colour = (colourRed) | (colourGreen << 8) | (colourBlue << 16) | (255 << 24);
+      out_buf[index] = colour;
+    }
+  }
+}
+
+//============================================================
+//  framework
+//============================================================
+function OnPageLoad()
+{
+	console.info("OnPageLoad");
+
+  var width = 256;
+  var height = 256;
+
+	var canvas = document.getElementById('canvasId');
+  var context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
+  var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  var buf = new ArrayBuffer(imageData.data.length);
+  var buf8 = new Uint8ClampedArray(buf);
+  var data = new Uint32Array(buf);
+
+  var arrayData = [];
+  for (var indexY = 0; indexY < height; ++indexY)
+  {
+    for (var indexX = 0; indexX < width; ++indexX)
+    {
+      var green = Math.floor(indexX / 8) * 8;
+      var blue = Math.floor(indexY / 8) * 8;
+      var red = (((indexY % 8) * 8) + (indexX % 8)) * 4;
+        
+      arrayData.push([red, green, blue]);
+    }
+  }
+  
+  Render(data, arrayData, width, height);
+  imageData.data.set(buf8);
+  context.putImageData(imageData, 0, 0);        
+  
+	return;
+}
+
+window.addEventListener('load', OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

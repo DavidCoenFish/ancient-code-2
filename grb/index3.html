@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>gratuitous rpg battles</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+    <!--[if IE]><script src="script/excanvas.js"></script><![endif]-->
+  </head>
+  <body>
+		<canvas id="canvasId" width="760" height="620">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+    <script type='text/javascript' src="script/grb.compiled.js" ></script>
+    <script type='text/javascript'>
+			<!-- 
+var g_canvas = document.getElementById('canvasId');
+var g_context = g_canvas.getContext('2d');
+var g_mouseDown = false;
+var g_mouseDownOld = false;
+var g_mouseEdge = false;
+var g_mouseXOld = 0;
+var g_mouseX = 0;
+var g_mouseYOld = 0;
+var g_mouseY = 0;
+
+var g_game = null;
+
+var s_targetFPS = 30.0;
+
+
+/////////////////////////////////////////////////////////////////////////////
+//private methods
+function OnPageLoadInit()
+{
+  g_canvas.addEventListener("mousedown", CallbackMouseDown, false);
+  g_canvas.addEventListener("mouseup", CallbackMouseUp, false);
+  g_canvas.addEventListener("mousemove", CallbackMouseMove, false);
+  g_canvas.addEventListener("touchstart", TouchHandler, false);
+  g_canvas.addEventListener("touchmove", TouchHandler, false);
+  g_canvas.addEventListener("touchend", TouchHandler, false);
+  g_canvas.addEventListener("touchcancel", TouchHandler, false);  
+
+  InitGameVar();
+  g_game = new Game(g_context, g_canvas);
+
+  //setInterval(CallbackInterval, 1000/s_targetFPS);
+  CallbackInterval();
+}
+
+function CallbackInterval()
+{
+  g_game.Update(g_context, g_canvas);
+
+  g_mouseDownOld = g_mouseDown;
+  g_mouseEdge = false;  
+  g_mouseXOld = g_mouseX;
+  g_mouseYOld = g_mouseY;
+  
+  setTimeout(CallbackInterval, 0) ; 
+}
+
+function CallbackMouseDown(in_event)
+{
+  g_mouseDown = true;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function CallbackMouseUp(in_event)
+{
+  g_mouseDown = false;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function GetTrueOffsetLeft(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetLeft || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function GetTrueOffsetTop(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetTop || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function CallbackMouseMove(in_event)
+{
+  g_mouseX = in_event.clientX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = in_event.clientY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+}
+
+function TouchHandler(in_event)
+{
+  in_event.preventDefault();
+  var touches = in_event.changedTouches;
+  var first = touches[0];
+
+  switch(event.type)
+  {
+    case "touchmove":  
+      break;
+    case "touchstart": 
+      CallbackMouseDown(in_event);
+      break;
+    case "touchend":   
+    case "touchcancel":   
+      CallbackMouseUp(in_event);
+      break;
+    default: 
+      return;
+  }
+  g_mouseX = first.pageX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = first.pageY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+  
+  return;
+}
+
+//onpageload operations
+window.addEventListener('load', OnPageLoadInit, true);
+
+			// -->
+		</script>
+	</body>
+</html>

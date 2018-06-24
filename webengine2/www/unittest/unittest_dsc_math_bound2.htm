@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc math bound2</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Bound2",
+	Run : function()
+	{
+		var bound2a = DSC.Math.Bound2.Factory();
+		var result = (undefined != bound2a);
+		var bound2b = DSC.Math.Bound2.Factory(8.0, 0.5, 16.0, 4.0);
+		result &= (undefined != bound2b);
+		result &= (DSC.Math.Bound2.GetLowX(bound2b) == 8.0);
+		result &= (DSC.Math.Bound2.GetLowY(bound2b) == 0.5);
+		result &= (DSC.Math.Bound2.GetHighX(bound2b) == 16.0);
+		result &= (DSC.Math.Bound2.GetHighY(bound2b) == 4.0);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Express Bound2 as string",
+	Run : function()
+	{
+		var boundA = DSC.Math.Bound2.Factory(8.0, 0.5, 2.0, 3.0);
+		var boundB = DSC.Math.Bound2.Factory(8.0, 0.6, 2.0, 3.0);
+		var stringA = DSC.Math.Bound2.AsString(boundA);
+		var stringB = DSC.Math.Bound2.AsString(boundB);
+		var stringC = DSC.Math.Bound2.AsString(boundA);
+		var result = ("string" == (typeof stringA));
+		result &= ("string" == (typeof stringB));
+		result &= (stringA != stringB);
+		result &= (stringA == stringC);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Set and Get values in Bound2",
+	Run : function()
+	{
+		var bound = DSC.Math.Bound2.Factory();
+		var result = (undefined != bound);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowX(bound), 0.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowY(bound), 0.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighX(bound), 0.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighY(bound), 0.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeX(bound), 0.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeY(bound), 0.0);
+		DSC.Math.Bound2.Set(bound, 2.0, 3.0, 4.0, 6.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowX(bound), 2.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowY(bound), 3.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighX(bound), 4.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighY(bound), 6.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeX(bound), 2.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeY(bound), 3.0);
+		DSC.Math.Bound2.SetLowX(bound, 6.0);
+		DSC.Math.Bound2.SetLowY(bound, 7.0);
+		DSC.Math.Bound2.SetHighX(bound, 8.0);
+		DSC.Math.Bound2.SetHighY(bound, 10.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowX(bound), 6.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetLowY(bound), 7.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighX(bound), 8.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetHighY(bound), 10.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeX(bound), 2.0);
+		result &= DSC.Math.AlmostEqual(DSC.Math.Bound2.GetSizeY(bound), 3.0);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clone a Bound2",
+	Run : function()
+	{
+		var boundA = DSC.Math.Bound2.Factory(7.0, 8.0, 9.0, 10.0);
+		var boundB = DSC.Math.Bound2.Clone(boundA);
+		var boundC = DSC.Math.Bound2.Factory();
+		var boundD = DSC.Math.Bound2.Clone(boundA, boundC);
+
+		var result = (undefined != boundB);
+		result &= (undefined != boundD);
+		result &= (DSC.Math.Bound2.GetLowX(boundB) == 7.0);
+		result &= (DSC.Math.Bound2.GetLowY(boundB) == 8.0);
+		result &= (DSC.Math.Bound2.GetHighX(boundB) == 9.0);
+		result &= (DSC.Math.Bound2.GetHighY(boundB) == 10.0);
+
+		result &= (DSC.Math.Bound2.GetLowX(boundC) == 7.0);
+		result &= (DSC.Math.Bound2.GetLowY(boundC) == 8.0);
+		result &= (DSC.Math.Bound2.GetHighX(boundC) == 9.0);
+		result &= (DSC.Math.Bound2.GetHighY(boundC) == 10.0);
+
+		result &= (DSC.Math.Bound2.GetLowX(boundD) == 7.0);
+		result &= (DSC.Math.Bound2.GetLowY(boundD) == 8.0);
+		result &= (DSC.Math.Bound2.GetHighX(boundD) == 9.0);
+		result &= (DSC.Math.Bound2.GetHighY(boundD) == 10.0);
+		return result;
+	}
+});
+
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test Bound2 is almost zero",
+	Run : function()
+	{
+		var result = true;
+		var vectorA = DSC.Math.Bound2.Factory();
+		var vectorB = DSC.Math.Bound2.Factory(0.001, -0.001, 0.001, -0.001);
+		var vectorC = DSC.Math.Bound2.Factory(3.0, 4.0, 5.0, 6.0);
+
+		result &= (true == DSC.Math.Bound2.AlmostZero(vectorA));
+		result &= (true == DSC.Math.Bound2.AlmostZero(vectorB, 0.01));
+		result &= (false == DSC.Math.Bound2.AlmostZero(vectorC));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test Bound2 is almost equal",
+	Run : function()
+	{
+		var result = true;
+		var result = true;
+		var vectorA = DSC.Math.Bound2.Factory();
+		var vectorB = DSC.Math.Bound2.Factory(0.001, -0.001, 0.001, -0.001);
+		var vectorC = DSC.Math.Bound2.Factory(3.0, 4.0, 5.0, 6.0);
+		var vectorD = DSC.Math.Bound2.Factory(3.0, 0.0, 0.0, 0.0);
+		var vectorE = DSC.Math.Bound2.Factory(0.0, 4.0, 0.0, 0.0);
+		var vectorF = DSC.Math.Bound2.Factory(3.0, 0.0, 5.0, 0.0);
+		var vectorG = DSC.Math.Bound2.Factory(3.0, 0.0, 0.0, 6.0);
+
+		result &= (true == DSC.Math.Bound2.AlmostEqual(vectorA, vectorA));
+		result &= (true == DSC.Math.Bound2.AlmostEqual(vectorA, vectorB, 0.01));
+		result &= (false == DSC.Math.Bound2.AlmostEqual(vectorB, vectorC));
+		result &= (false == DSC.Math.Bound2.AlmostEqual(vectorA, vectorD));
+		result &= (false == DSC.Math.Bound2.AlmostEqual(vectorA, vectorE));
+		result &= (false == DSC.Math.Bound2.AlmostEqual(vectorA, vectorF));
+		result &= (false == DSC.Math.Bound2.AlmostEqual(vectorA, vectorG));
+		return result;
+	}
+});
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Math.Bound2'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

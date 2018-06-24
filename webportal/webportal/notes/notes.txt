@@ -1,0 +1,119 @@
+//javascript
+console.log("document:" + JSON.stringify(document));
+console.log(Object.getOwnPropertyNames(Math));
+for (var index = 0, total = myArray.length; index < total; index++) {
+for (var property in dataMap) {
+	if (dataMap.hasOwnProperty(property)) {
+
+if( Object.prototype.toString.call( someVar ) === '[object Array]' ) {
+
+//sling
+t=en
+(translation locale)
+s=2
+(style)
+
+/combattest/characters
+/combattest/characters.61b53c36-55ab-4ec8-ad10-17bcb0515b8c.
+//todo character can be type humanoid or monster....
+/combattest/character_presets
+/combattest/party?  no
+/combattest/character_presets.
+/combattest/combats.
+
+//html
+ style="background:#EE0"
+
+
+//design
+just use dag nodes that can hold array of game objects rather than 'equipt item which attaches nodes'
+so 
+
+combat
+	game_object_list		//flat copy of document
+	game_object_ref_list	//id
+
+armor (game object)
+	stat key //like race on character
+	damage_absorbed // value
+	defense //derrived
+	absorption //derrived
+	speed_penalty //derrived
+
+
+	
+
+character
+	equipment list
+	armor list (max 1?) //is dag node, other things can request array values. dag node outputting an array of game objects
+	left, right hand mellee
+	left, right hand range
+
+
+when making a flat copy
+
+{
+	m_type:character, 
+	m_id:undefined, 
+	m_writeLock:0, 
+	m_dagCollection:{
+		m_mapNameNode:{
+			name:{m_name:name, m_value:fred, m_outputArray:[]}, 
+			dead:{m_name:dead, m_value:false, m_outputArray:[able_to_participate_combat]}, 
+			experence:{m_name:experence, m_value:100, m_outputArray:[level]}, 
+			race:{m_name:race, m_value:human, m_outputArray:[physical_strength, stamina, agility, manual_dexterity, perception, willpower, faith]}, 
+			gender:{m_name:gender, m_value:male, m_outputArray:[physical_strength, stamina, agility, manual_dexterity, perception, willpower, faith]}, 
+			spent_physical_strength:{m_name:spent_physical_strength, m_value:9, m_outputArray:[spent_attribute_points, physical_strength]}, 
+			spent_stamina:{m_name:spent_stamina, m_value:0, m_outputArray:[spent_attribute_points, stamina]}, 
+			spent_agility:{m_name:spent_agility, m_value:0, m_outputArray:[spent_attribute_points, agility]}, 
+			spent_manual_dexterity:{m_name:spent_manual_dexterity, m_value:0, m_outputArray:[spent_attribute_points, manual_dexterity]}, 
+			spent_perception:{m_name:spent_perception, m_value:0, m_outputArray:[spent_attribute_points, perception]}, 
+			spent_willpower:{m_name:spent_willpower, m_value:0, m_outputArray:[spent_attribute_points, willpower]}, 
+			spent_faith:{m_name:spent_faith, m_value:0, m_outputArray:[spent_attribute_points, faith]}, 
+			handedness:{m_name:handedness, m_value:right, m_outputArray:[]}, 
+			physical_damage:{m_name:physical_damage, m_value:0, m_outputArray:[current_damage_tollerance]}, 
+			fatigue:{m_name:fatigue, m_value:0, m_outputArray:[current_damage_tollerance]}, 
+			armor:{m_name:armor, m_value:, m_outputArray:[speed_penalty]}, 
+			height:{m_name:height, m_value:182, m_outputArray:[size]}, 
+			action_meelee:{m_name:action_meelee, m_value:[object Object], m_outputArray:[]}, 
+			action_range:{m_name:action_range, m_value:, m_outputArray:[]}, 
+			receive_severity_damage:{m_name:receive_severity_damage, m_value:true, m_outputArray:[]}, 
+			alignment_global:{m_name:alignment_global, m_value:neutral, m_outputArray:[]}, 
+			alignment_local:{m_name:alignment_local, m_value:neutral, m_outputArray:[]}, 
+			alignment_personal:{m_name:alignment_personal, m_value:neutral, m_outputArray:[]}, 
+			armor_damage_absorption:{m_name:armor_damage_absorption, m_value:0, m_outputArray:[]}, 
+			level:{m_name:level, m_value:undefined, m_dirty:true, m_outputArray:[attribute_points, combat_level, defense]}, 
+			attribute_points:{m_name:attribute_points, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			spent_attribute_points:{m_name:spent_attribute_points, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			physical_strength:{m_name:physical_strength, m_value:undefined, m_dirty:true, m_outputArray:[vigor, brawn]}, 
+			stamina:{m_name:stamina, m_value:undefined, m_dirty:true, m_outputArray:[brawn, daily_healing_rate, damage_death]}, 
+			agility:{m_name:agility, m_value:undefined, m_dirty:true, m_outputArray:[coordination, vigor, raw_defense]}, 
+			manual_dexterity:{m_name:manual_dexterity, m_value:undefined, m_dirty:true, m_outputArray:[coordination, hand_eye]}, 
+			perception:{m_name:perception, m_value:undefined, m_dirty:true, m_outputArray:[hand_eye, intelligence, speed]}, 
+			willpower:{m_name:willpower, m_value:undefined, m_dirty:true, m_outputArray:[charisma, intelligence, max_magic_items, damage_unconcious]}, 
+			faith:{m_name:faith, m_value:undefined, m_dirty:true, m_outputArray:[charisma]}, 
+			coordination:{m_name:coordination, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			vigor:{m_name:vigor, m_value:undefined, m_dirty:true, m_outputArray:[speed]}, 
+			hand_eye:{m_name:hand_eye, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			brawn:{m_name:brawn, m_value:undefined, m_dirty:true, m_outputArray:[damage_tolerance]}, 
+			charisma:{m_name:charisma, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			intelligence:{m_name:intelligence, m_value:undefined, m_dirty:true, m_outputArray:[max_classes]}, 
+			speed:{m_name:speed, m_value:undefined, m_dirty:true, m_outputArray:[speed_in_armor]}, 
+			daily_healing_rate:{m_name:daily_healing_rate, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			max_magic_items:{m_name:max_magic_items, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			max_classes:{m_name:max_classes, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			damage_tolerance:{m_name:damage_tolerance, m_value:undefined, m_dirty:true, m_outputArray:[current_damage_tollerance]}, 
+			damage_unconcious:{m_name:damage_unconcious, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			damage_death:{m_name:damage_death, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			current_damage_tollerance:{m_name:current_damage_tollerance, m_value:undefined, m_dirty:true, m_outputArray:[able_to_participate_combat]}, 
+			weapon_level:{m_name:weapon_level, m_value:undefined, m_dirty:true, m_outputArray:[combat_level]}, 
+			combat_level:{m_name:combat_level, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			parry:{m_name:parry, m_value:undefined, m_dirty:true, m_outputArray:[defense]}, 
+			raw_defense:{m_name:raw_defense, m_value:undefined, m_dirty:true, m_outputArray:[defense]}, 
+			defense_penalty:{m_name:defense_penalty, m_value:undefined, m_dirty:true, m_outputArray:[defense]}, 
+			defense:{m_name:defense, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			speed_penalty:{m_name:speed_penalty, m_value:undefined, m_dirty:true, m_outputArray:[speed_in_armor]}, 
+			speed_in_armor:{m_name:speed_in_armor, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			attack_bonus:{m_name:attack_bonus, m_value:undefined, m_dirty:true, m_outputArray:[]}, size:{m_name:size, m_value:undefined, m_dirty:true, m_outputArray:[]}, 
+			able_to_participate_combat:{m_name:able_to_participate_combat, m_value:undefined, m_dirty:true, m_outputArray:[]}}}]
+

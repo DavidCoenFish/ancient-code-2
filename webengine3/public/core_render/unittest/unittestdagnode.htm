@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>unittest dag node</title>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Value Node",
+	Run : function()
+	{
+		var dagNode = c.DagNodeValue.Factory("foo", 10.3);
+		var result = (undefined !== dagNode);
+		var result = (null !== dagNode);
+		var result = ("foo" === dagNode.GetName());
+		var result = (10.3 === dagNode.GetValue());
+		dagNode.SetValue(7.4);
+		var result = (7.4 === dagNode.GetValue());
+		var outString = dagNode.toString();
+		var result = (undefined !== outString);
+		var result = (null !== outString);
+		var result = ("" !== outString);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Calculate Node",
+	Run : function()
+	{
+		var instructionArray = [{
+			"op" : c.DagNodeInstructionEnum.push_const,
+			"data" : "bar"
+		}];
+		var instructionContext = {};
+		var dagNode = c.DagNodeCalculate.Factory("foo", instructionArray, instructionContext);
+		var result = (undefined !== dagNode);
+		var result = (null !== dagNode);
+		var result = ("foo" === dagNode.GetName());
+		var result = ("bar" === dagNode.GetValue());
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Collection Node",
+	Run : function()
+	{
+		var arrayCalculate = [];
+		var mapDagNode = {};
+		mapDagNode["a"] = c.DagNodeValue.Factory("a", 10);
+		mapDagNode["b"] = c.DagNodeValue.Factory("b", 20);
+		var instructionArray = [
+			{
+				"op" : c.DagNodeInstructionEnum.push_node,
+				"data" : "a"
+			},
+			{
+				"op" : c.DagNodeInstructionEnum.push_node,
+				"data" : "b"
+			},
+			{
+				"op" : c.DagNodeInstructionEnum.fn2,
+				"data" : "add"
+			},
+		];
+		var instructionContext = {
+			"add" : function(lhs, rhs) { return lhs + rhs; }
+		};
+		var dagCalculate = c.DagNodeCalculate.Factory("foo", instructionArray, instructionContext);
+		mapDagNode["foo"] = dagCalculate;
+		arrayCalculate.push(dagCalculate);
+
+		var dagCollection = c.DagNodeCollection.Factory(mapDagNode, arrayCalculate);
+
+		var result = (undefined !== dagCollection);
+		var result = (null !== dagCollection);
+		var result = (30 === dagCollection.GetValue("foo"));
+
+		dagCollection.SetValue("b", 40);
+		var dirtyArray = dagCollection.GetDirtyArray();
+
+		var result = (-1 !== dirtyArray.indexOf("foo"));
+		var result = (50 === dagCollection.GetValue("foo"));
+
+		return result;
+	}
+});
+
+
+
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'c.DNG'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

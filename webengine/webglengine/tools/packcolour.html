@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Pack Colour</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+    <canvas id='canvasId' style = 'background-color: #00FF00; width: 256px; height: 256px;' >
+      This text is displayed if your browser does not support HTML5 Canvas.
+    </canvas>
+
+    <!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+//============================================================
+//  Lattice
+//============================================================
+Lattice = function(in_arrayData, in_width, in_height)
+{
+  this.m_width = in_width;
+  this.m_height = in_height;
+  // first try straight cpy
+  this.m_arrayData = in_arrayData;
+  this.m_trainIndex = 0;
+  this.m_trainCount = 100;  
+}
+
+Lattice.prototype.Train = function()
+{
+  for (var y = 0; y < this.m_height; ++y)
+  {
+    for (var x = 0; x < this.m_width; ++x)
+    {
+      var average = this.GetAverage(x, y, 3);
+      this.SwapIfBetter(x, y, 3, average);
+    }
+  }
+
+  this.m_trainIndex += 1;
+  return (this.m_trainIndex <= this.m_trainCount);
+}
+
+Lattice.prototype.GetAverage = function(in_x, in_y, in_radius)
+{
+  var sum = [0.0, 0.0, 0.0];
+  var sumCoverage = 0;
+  var radiusSquared = in_radius * in_radius;
+  for (var indexY = in_y - Math.ceil(in_radius); indexY <= in_y + Math.ceil(in_radius); ++indexY)
+  {
+    for (var indexX = in_x - Math.ceil(in_radius); indexX <= in_x + Math.ceil(in_radius); ++indexX)
+    {
+      if ((in_x == indexX) && 
+          (in_y == indexY))
+         continue;
+      var distSqr = EuclideanDistanceSquared([in_x, in_y], [indexX, indexY]);
+      if (radiusSquared < distSqr)
+        continue;
+      var coverage = 1.0 - (Math.sqrt(distSqr) / in_radius);
+      if (0.0 == coverage)
+        continue;
+      var safeX = (indexX + this.m_width) % this.m_width;
+      var safeY = (indexY + this.m_height) % this.m_height;
+      var index = (safeY * this.m_width) + safeX;
+     
+      var data = this.m_arrayData[index];
+      sumCoverage += coverage;
+      sum[0] += data[0] * coverage;
+      sum[1] += data[1] * coverage;
+      sum[2] += data[2] * coverage;
+    }
+  }
+  
+  if (sumCoverage != 0.0)
+  {
+    sum[0] /= sumCoverage;
+    sum[1] /= sumCoverage;
+    sum[2] /= sumCoverage;
+  }
+  
+  return sum;
+}
+
+Lattice.prototype.SwapIfBetter = function(in_x, in_y, in_radius, in_average)
+{
+  var radiusSquared = in_radius * in_radius;
+  var centerIndex = (in_y * this.m_width) + in_x;
+  var centerData = this.m_arrayData[centerIndex];
+  var centerDiff = EuclideanDistanceSquared(centerData, in_average);
+  var bestIndex = undefined;
+  for (var indexY = in_y - Math.ceil(in_radius); indexY <= in_y + Math.ceil(in_radius); ++indexY)
+  {
+    for (var indexX = in_x - Math.ceil(in_radius); indexX <= in_x + Math.ceil(in_radius); ++indexX)
+    {
+      if ((in_x == indexX) && 
+          (in_y == indexY))
+         continue;
+      var distSqr = EuclideanDistanceSquared([in_x, in_y], [indexX, indexY]);
+      if (radiusSquared < distSqr)
+        continue;
+      var coverage = 1.0 - (Math.sqrt(distSqr) / in_radius);
+      if (0.0 == coverage)
+        continue;
+      var safeX = (indexX + this.m_width) % this.m_width;
+      var safeY = (indexY + this.m_height) % this.m_height;
+      var index = (safeY * this.m_width) + safeX;
+      var data = this.m_arrayData[index];
+      var diff = EuclideanDistanceSquared(data, in_average) / coverage;
+      if (diff < centerDiff)
+      {
+        centerDiff = diff;
+        bestIndex = index;
+      }
+    }
+  }
+  
+  if (undefined != bestIndex)
+  {
+    this.m_arrayData[centerIndex] = this.m_arrayData[bestIndex];
+    this.m_arrayData[bestIndex] = centerData;
+  }
+}
+
+Lattice.prototype.Render = function(out_buf)
+{
+  for (var y = 0; y < this.m_height; ++y)
+  {
+    for (var x = 0; x < this.m_width; ++x)
+    {
+      var index = (y * this.m_width) + x;
+      var data = this.m_arrayData[index];
+      
+      var colourRed = Math.max(Math.min(data[0], 255), 0);
+      var colourGreen = Math.max(Math.min(data[1], 255), 0);
+      var colourBlue = Math.max(Math.min(data[2], 255), 0);
+      var colour = (colourRed) | (colourGreen << 8) | (colourBlue << 16) | (255 << 24);
+      out_buf[index] = colour;
+    }
+  }
+}
+Lattice.prototype.Log = function()
+{
+}
+
+//============================================================
+//  methods
+//============================================================
+function EuclideanDistanceSquared(in_lhs, in_rhs)
+{
+  var sum = 0;
+  for (var index = 0; index < in_lhs.length; ++index)
+  {
+    var diff = in_lhs[index] - in_rhs[index];
+    sum += (diff * diff);
+  }
+  return sum;
+}
+
+function EuclideanDistance(in_lhs, in_rhs)
+{
+  var sum = EuclideanDistanceSquared(in_lhs, in_rhs);
+  return Math.sqrt(sum);
+}
+
+//============================================================
+//  framework
+//============================================================
+function OnPageLoad()
+{
+	console.info("OnPageLoad");
+
+  var width = 256;
+  var height = 256;
+
+	var canvas = document.getElementById('canvasId');
+  var context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
+  var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  var buf = new ArrayBuffer(imageData.data.length);
+  var buf8 = new Uint8ClampedArray(buf);
+  var data = new Uint32Array(buf);
+
+  var arrayData = [];
+  var redCount = (1<<6);
+  var greenCount = (1<<5);
+  var blueCount = (1<<5);
+  for (var indexBlue = 0; indexBlue < blueCount; ++indexBlue)
+  {
+    for (var indexRed = 0; indexRed < redCount; ++indexRed)
+    {
+      for (var indexGreen = 0; indexGreen < greenCount; ++indexGreen)
+      {
+        var red = Math.min(Math.max(Math.round(255 * indexRed / (redCount - 1)), 0), 255);
+        var green = Math.min(Math.max(Math.round(255 * indexGreen / (greenCount - 1)), 0), 255);
+        var blue = Math.min(Math.max(Math.round(255 * indexBlue / (blueCount - 1)), 0), 255);
+        
+        arrayData.push([red, green, blue]);
+      }
+    }
+  }
+  
+  var lattice = new Lattice(arrayData, width, height);
+  
+  var callback = function()
+  {
+    if (!lattice.Train())
+    {
+      lattice.Log();
+    	console.info("Exit");
+      return;
+    }
+
+    lattice.Render(data);
+    imageData.data.set(buf8);
+    context.putImageData(imageData, 0, 0);        
+    
+		window.requestAnimationFrame(function(in_timeStamp){callback();});
+  }
+
+  callback();
+  
+	return;
+}
+
+window.addEventListener('load', OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+
+
+business logic
+CreateGame (string gameID, string languageKey)
+DestroyGame (string gameID)
+GetGameStatus (string gameID) : data { array pending choices, array pending cinematics, array combat, money, fate stones }
+Preferences/
+	Set (string name, string value)
+	Get (string name) : string value
+	GetAll
+	SetAll
+Cinematic/
+	GetUnlocked
+	GetDescription
+Choice/
+	GetDescription
+	SetChoice
+Hero/
+Follower/
+Faculty/
+Eploration/
+
+
+hero starts out with extra skills
+"hero inheritance" - get to make a skill perminant when you reincarnate
+"hero tears of fate" - get a fate stone 
+
+
+
+celtic creatures
+imp
+Incubus 
+banshee
+bugbear
+cockatrice
+doppelganger
+ettin
+galley beggar
+griffin
+harpy
+hellhound
+Lamia
+winged lion
+mermaid
+ogre
+salamander
+unicorn
+vampire
+warg
+wight
+wyrm
+
+mediterranean
+Apedemak //human, lion head
+Arachnidae
+blemmyes //humanoids without head
+Bucentaur
+centaur
+Cerberus
+Chimera
+Cyclops
+Dragon, Babylonian 
+Efriti
+ghoul
+Giant, Cacus
+golem
+Lamassu
+satyr
+minotaur
+phoenix
+rakshasa
+posionous sheep
+yeti
+
+tome of terrors
+giant ant
+giant spider
+giant vampire bat
+Baykok
+bear
+demon
+giant rat
+skeleton
+
+

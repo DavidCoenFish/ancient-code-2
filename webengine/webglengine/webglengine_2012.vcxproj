@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="notes\HTML5_Canvas_Cheat_Sheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes\notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tools\loadlwo.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="tools\packcolour.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="tools\packcolour2.html" />
+    <None Include="tools\somcolour.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="www\basic_resize_2d.html" />
+    <None Include="www\basic_resize_3d.html" />
+    <None Include="www\basic_test_2d.html" />
+    <None Include="www\basic_test_3d.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="www\cloth00.html" />
+    <None Include="www\defered00.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="www\javascript\dsc.js" />
+    <None Include="www\javascript\dsc\common.js" />
+    <None Include="www\javascript\dsc\dng.js" />
+    <None Include="www\javascript\dsc\dng\container.js" />
+    <None Include="www\javascript\dsc\dng\node.js" />
+    <None Include="www\javascript\dsc\dng\pool.js" />
+    <None Include="www\javascript\dsc\dng\pool\matrixaxispos.js" />
+    <None Include="www\javascript\dsc\dng\pool\matrixlatlongpos.js" />
+    <None Include="www\javascript\dsc\dng\pool\matrixperspective.js" />
+    <None Include="www\javascript\dsc\dng\pool\matrixpos.js" />
+    <None Include="www\javascript\dsc\dng\updatefunction.js" />
+    <None Include="www\javascript\dsc\framework.js" />
+    <None Include="www\javascript\dsc\framework\asset.js" />
+    <None Include="www\javascript\dsc\framework\asset\font.js" />
+    <None Include="www\javascript\dsc\framework\asset\font\letterdata.js" />
+    <None Include="www\javascript\dsc\framework\asset\font\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\font\pool\angiesnewhouse.js" />
+    <None Include="www\javascript\dsc\framework\asset\font\pool\constructa.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\button.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\collection.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\drawable.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\scrollhorizontal.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\slider.js" />
+    <None Include="www\javascript\dsc\framework\asset\gui\text.js" />
+    <None Include="www\javascript\dsc\framework\asset\material.js" />
+    <None Include="www\javascript\dsc\framework\asset\material\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\material\pool\blend.js" />
+    <None Include="www\javascript\dsc\framework\asset\material\pool\blenddepth.js" />
+    <None Include="www\javascript\dsc\framework\asset\material\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\material\pool\depth.js" />
+    <None Include="www\javascript\dsc\framework\asset\model.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\datastream.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\generatepointgridapos2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\angiesnewhouse.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\axisapos3acolour4.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\boundsapos2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\boundsapos3.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\constructa.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\cubeapos3anormal3.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\cubeapos3auv2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\frameapos2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\planeapos3anormal3.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\quadapos2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\quadapos2auv2.js" />
+    <None Include="www\javascript\dsc\framework\asset\model\pool\simplegui.js" />
+    <None Include="www\javascript\dsc\framework\asset\renderpass.js" />
+    <None Include="www\javascript\dsc\framework\asset\renderpass\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\renderpass\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\rendertarget.js" />
+    <None Include="www\javascript\dsc\framework\asset\rendertarget\data.js" />
+    <None Include="www\javascript\dsc\framework\asset\rendertarget\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\rendertarget\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\camera.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\calcforce.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\calcpos.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\calcvelocity.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\generatemesh.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\initialwritepos.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\cloth\resource.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\lightpoint.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\lightpointshadow.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\component\renderable.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\displaylist.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\displaylist\data.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\globalcomponent.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\globalcomponent\lightdirect.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\node.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\observer.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\observer\_light.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\observer\_render.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\observer\_update.js" />
+    <None Include="www\javascript\dsc\framework\asset\scene\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2auv2uframe4usample0.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2auv2usample0.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2ucolour4.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2ucolour4ucolour4ucolour4.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2uframe4ucolour4.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos2usphere4ucolour4umatrixmv.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3acolour4umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3auv2usample0umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3ucolour4umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3upointsizeumatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3uscale3ucolour4umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\apos3uscale3umatrixmvp.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\shader\uniform.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\default.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\depthuint.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\rgbabyte.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\rgbahalffloat.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\rgbbyte.js" />
+    <None Include="www\javascript\dsc\framework\asset\texture\pool\rgbhalffloat.js" />
+    <None Include="www\javascript\dsc\framework\asset\widget.js" />
+    <None Include="www\javascript\dsc\framework\asset\widget\data.js" />
+    <None Include="www\javascript\dsc\framework\asset\widget\pool.js" />
+    <None Include="www\javascript\dsc\framework\asset\widget\pool\simplegui.js" />
+    <None Include="www\javascript\dsc\framework\context.js" />
+    <None Include="www\javascript\dsc\framework\context\uniform.js" />
+    <None Include="www\javascript\dsc\framework\context\uniform\collection.js" />
+    <None Include="www\javascript\dsc\framework\context\uniform\_dng.js" />
+    <None Include="www\javascript\dsc\framework\context\webgl.js" />
+    <None Include="www\javascript\dsc\framework\context\_2d.js" />
+    <None Include="www\javascript\dsc\framework\context\_webgl.js" />
+    <None Include="www\javascript\dsc\framework\input.js" />
+    <None Include="www\javascript\dsc\math.js" />
+    <None Include="www\javascript\dsc\math\angle.js" />
+    <None Include="www\javascript\dsc\math\colour.js" />
+    <None Include="www\javascript\dsc\math\coordinate.js" />
+    <None Include="www\javascript\dsc\math\dualquaternion.js" />
+    <None Include="www\javascript\dsc\math\frame.js" />
+    <None Include="www\javascript\dsc\math\matrix3.js" />
+    <None Include="www\javascript\dsc\math\matrix4.js" />
+    <None Include="www\javascript\dsc\math\quaternion.js" />
+    <None Include="www\javascript\dsc\math\vector2.js" />
+    <None Include="www\javascript\dsc\math\vector3.js" />
+    <None Include="www\javascript\dsc\math\vector4.js" />
+    <None Include="www\javascript\legendaryquest.js" />
+    <None Include="www\javascript\legendaryquest\bestiary.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\enum.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\antgiantdewpot.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\antgiantqueen.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\antgiantwarrior.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\antgiantworker.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\spidergiantaboveaverage.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\spidergiantaverage.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\spidergiantbelowaverage.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\example\spidergiantexceptional.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\monster.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\pool.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\pool\antgiant.js" />
+    <None Include="www\javascript\legendaryquest\bestiary\pool\spidergiant.js" />
+    <None Include="www\javascript\legendaryquest\combat.js" />
+    <None Include="www\javascript\legendaryquest\combat\combatant.js" />
+    <None Include="www\javascript\legendaryquest\combat\combatant\_character.js" />
+    <None Include="www\javascript\legendaryquest\combat\combatant\_monster.js" />
+    <None Include="www\javascript\legendaryquest\combat\enum.js" />
+    <None Include="www\javascript\legendaryquest\combat\environment.js" />
+    <None Include="www\javascript\legendaryquest\combat\side.js" />
+    <None Include="www\javascript\legendaryquest\gamestate.js" />
+    <None Include="www\javascript\legendaryquest\gamestate\character.js" />
+    <None Include="www\javascript\legendaryquest\roll.js" />
+    <None Include="www\javascript\legendaryquest\rules.js" />
+    <None Include="www\javascript\legendaryquest\rules\data.js" />
+    <None Include="www\javascript\legendaryquest\rules\dngkeys.js" />
+    <None Include="www\javascript\legendaryquest\rules\enum.js" />
+    <None Include="www\javascript\task.js" />
+    <None Include="www\javascript\task\basic.js" />
+    <None Include="www\javascript\task\basic\scene.js" />
+    <None Include="www\javascript\task\basic\testtexture64.js" />
+    <None Include="www\javascript\task\cloth00.js" />
+    <None Include="www\javascript\task\cloth00\scene\scene00.js" />
+    <None Include="www\javascript\task\cloth00\shader\cloth00.js" />
+    <None Include="www\javascript\task\defered00.js" />
+    <None Include="www\javascript\task\defered00\model\model00.js" />
+    <None Include="www\javascript\task\defered00\scene\scene00.js" />
+    <None Include="www\javascript\task\defered00\shader\light8pointshadow.js" />
+    <None Include="www\javascript\task\defered00\shader\passinitial16stone00.js" />
+    <None Include="www\javascript\task\defered00\shader\passinitial16test00.js" />
+    <None Include="www\javascript\task\defered00\shader\passinitial8flat00.js" />
+    <None Include="www\javascript\task\defered00\shader\passinitial8stone00.js" />
+    <None Include="www\javascript\task\defered00\shader\passinitial8test00.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight16ambient.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight16direct.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight16point.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight8ambient.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight8direct.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight8point.js" />
+    <None Include="www\javascript\task\defered00\shader\passlight8pointshadow.js" />
+    <None Include="www\javascript\task\defered00\shader\passlightskybox.js" />
+    <None Include="www\javascript\task\defered00\shader\passpresent.js" />
+    <None Include="www\javascript\task\defered00\texture\noise3d64.js" />
+    <None Include="www\javascript\task\lqmockmenu00.js" />
+    <None Include="www\javascript\task\lqmockmenu00\asset\ring00.js" />
+    <None Include="www\javascript\task\lqmockmenu00\menu.js" />
+    <None Include="www\javascript\task\lqmockmenu00\menu\icon.js" />
+    <None Include="www\javascript\task\lqmockmenu00\menu\manager.js" />
+    <None Include="www\javascript\task\lqmockmenu00\menu\slice.js" />
+    <None Include="www\javascript\task\pointcloud00.js" />
+    <None Include="www\javascript\task\pointcloud00\model00.js" />
+    <None Include="www\javascript\task\pointcloud00\scene00.js" />
+    <None Include="www\javascript\task\quad00.js" />
+    <None Include="www\javascript\task\quaddefered00.js" />
+    <None Include="www\javascript\task\raymarch00.js" />
+    <None Include="www\javascript\task\raymarch00\raymarch00.js" />
+    <None Include="www\lqmockmenu00.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="www\pointcloud00.html" />
+    <None Include="www\quad00.html" />
+    <None Include="www\quaddefered00.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="www\raymarch00.html" />
+    <None Include="www\unittest.html" />
+    <None Include="www\unittestlegendaryquest00.html" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EBA2AE85-494D-4853-9CB3-FD0C2E90C744}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

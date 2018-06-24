@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>render perspective</title>
+	</head>
+	<!-- <body style='background-color: #000000'> -->
+	<body>
+		<div id="containerId" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;justify-content: flex-start;">
+			<div>
+				<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+					This text is displayed if your browser does not support HTML5 Canvas.
+				</canvas>
+				<br/>
+				<button type="button" onclick="gMain.Stop()">Stop</button>
+			</div>
+		</div>
+
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+Main = function(in_renderer, in_sceneCameraTransform, in_sceneCamera, in_dagMatrixVP, in_container){
+	this.m_renderer = in_renderer;
+	this.m_sceneCameraTransform = in_sceneCameraTransform;
+	this.m_sceneCamera = in_sceneCamera;
+	this.m_dagMatrixV = in_sceneCameraTransform.GetMatrixInvert();
+	this.m_dagMatrixP = in_sceneCamera.GetMatrix();
+	this.m_dagMatrixVP = in_dagMatrixVP;
+	this.m_container = in_container;
+	this.m_keepGoing = true;
+
+	this.m_arrayRender = [];
+	this.m_arrayRender.push({Render : function(in_render){
+		in_render.Clear(c.ColourRGBA.s_white);
+		}});
+
+	c.SceneGrid.Factory(this.m_arrayRender, this.m_dagMatrixVP, this.m_renderer);
+	this.MakeModelTransform();
+	this.MakeModelA();
+	this.MakeModelB();
+
+	return;
+};
+
+Main.Factory = function(){	
+
+	var renderer = undefined;
+	var canvas = document.getElementById('canvasId');	
+	paramObject = {};
+	var renderer = c.Render.Factory(canvas, paramObject);
+
+	var container = document.getElementById('containerId');	
+
+	var sceneCameraTransform = c.SceneTransformOrbit.Factory(0, 0, 0, 0, 0, 50.0);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "PosX", -50, 50, sceneCameraTransform.GetDagPosX());
+	c.UISlider.Factory(document, div, "PosY", -50, 50, sceneCameraTransform.GetDagPosY());
+	c.UISlider.Factory(document, div, "PosZ", -50, 50, sceneCameraTransform.GetDagPosZ());
+	c.UISlider.Factory(document, div, "Latitude", -90, 90, sceneCameraTransform.GetLatitude());
+	c.UISlider.Factory(document, div, "Longitude", -180, 180, sceneCameraTransform.GetLongitude());
+	c.UISlider.Factory(document, div, "Distance", 0, 100, sceneCameraTransform.GetDistance());
+	container.appendChild(div);
+
+	var sceneCamera = c.SceneCameraFov.Factory(renderer.GetViewport(), 0.1, 100, 90);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "Near", 0.1, 1000.0, sceneCamera.GetDagNear());
+	c.UISlider.Factory(document, div, "Far", 0.1, 1000.0, sceneCamera.GetDagFar());
+	c.UISlider.Factory(document, div, "Fov", 5, 150, sceneCamera.GetDagFov());
+	container.appendChild(div);
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+	};
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node, //V
+			"node" : sceneCameraTransform.GetMatrixInvert()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,  //P
+			"node" : sceneCamera.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagMatrixVP = c.DagNodeCalculate.Factory("MatrixMV", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(sceneCameraTransform.GetMatrixInvert(), dagMatrixVP);
+	c.DagNodeCollection.SetNodesLinked(sceneCamera.GetMatrix(), dagMatrixVP);
+
+	return new Main(renderer, sceneCameraTransform, sceneCamera, dagMatrixVP, container);
+}
+
+Main.prototype.MakeModelTransform = function(){	
+	var objectTransform = c.SceneTransform.Factory(0, 0, 0, 0, 0, 0);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "PosX", -20, 20, objectTransform.GetDagPosX());
+	c.UISlider.Factory(document, div, "PosY", -20, 20, objectTransform.GetDagPosY());
+	c.UISlider.Factory(document, div, "PosZ", -20, 20, objectTransform.GetDagPosZ());
+	c.UISlider.Factory(document, div, "Heading", -180, 180, objectTransform.GetHeading());
+	c.UISlider.Factory(document, div, "Altitude", -90, 90, objectTransform.GetAltitude());
+	c.UISlider.Factory(document, div, "Bank", -180, 180, objectTransform.GetBank());
+	this.m_container.appendChild(div);
+	this.m_dagMatrixM = objectTransform.GetMatrix();
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+	};
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : objectTransform.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : this.m_sceneCameraTransform.GetMatrixInvert()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagMatrixMV = c.DagNodeCalculate.Factory("MatrixMV", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(objectTransform.GetMatrix(), dagMatrixMV);
+	c.DagNodeCollection.SetNodesLinked(this.m_sceneCameraTransform.GetMatrixInvert(), dagMatrixMV);
+
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : dagMatrixMV
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : this.m_sceneCamera.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagNodeMVP = c.DagNodeCalculate.Factory("MVP", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(this.m_sceneCamera.GetMatrix(), dagNodeMVP);
+	c.DagNodeCollection.SetNodesLinked(dagMatrixMV, dagNodeMVP);
+	this.m_dagMatrixMVP = dagNodeMVP;
+
+	return;
+}
+
+Main.prototype.MakeModelA = function(){	
+	var vertextShader = "\
+attribute vec3 a_pos;\
+uniform mat4 u_matrixMVP;\
+void main() {\
+	gl_Position = (u_matrixMVP*vec4(a_pos.xyz, 1.0));\
+}";
+
+	var fragmentShader = "\
+precision mediump float;\
+uniform vec4 u_colour;\
+void main() {\
+		gl_FragColor = u_colour;\
+}";
+
+	var shader = this.m_renderer.NewShader(
+		vertextShader,
+		fragmentShader,
+		{ 
+			"a_pos": null
+		}, 
+		{ 
+			"u_colour" : null, 
+			"u_matrixMVP" : null,
+		}
+	);
+
+	var material = c.Material.Factory(
+		shader,
+		{ 
+			"u_colour" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float4,
+				c.DagNodeValue.Factory("u_colour", c.ColourRGBA.s_red)
+				),
+			"u_matrixMVP" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagMatrixMVP
+				),
+		}
+	);
+
+	var model = this.m_renderer.NewModel(
+		c.WebGL.LINES,
+		24, 
+		{
+			"a_pos" : c.ModelDataStream.Factory(
+				c.WebGL.BYTE,
+				3,
+				new Int8Array([
+					 -10,  -10,  -10,
+					 -10,  10,  -10,
+
+					 -10,  10,  -10,
+					 10,  10,  -10,
+
+					 10,  10,  -10,
+					 10,  -10,  -10,
+
+					 10,  -10,  -10,
+					 -10,  -10,  -10,
+
+					 -10,  -10,  -10,
+					 -10,  -10,  10,
+
+					 -10,  10,  -10,
+					 -10,  10,  10,
+
+					 10,  10,  -10,
+					 10,  10,  10,
+
+					 10,  -10,  -10,
+					 10,  -10,  10,
+
+					 -10,  -10,  10,
+					 -10,  10,  10,
+
+					 -10,  10,  10,
+					 10,  10,  10,
+
+					 10,  10,  10,
+					 10,  -10,  10,
+
+					 10,  -10,  10,
+					 -10,  -10,  10,
+
+					]),
+				c.WebGL.STATIC_DRAW,
+				false
+				),
+		}
+	);
+
+	this.m_arrayRender.push(c.RenderData.Factory(model, material));
+	return;
+}
+
+
+Main.prototype.MakeModelB = function(){	
+	var vertextShader = "\
+attribute vec3 a_pos;\
+uniform mat4 u_matrixM;\
+uniform mat4 u_matrixV;\
+uniform mat4 u_matrixP;\
+void main() {\
+	mat4 MV = u_matrixV*u_matrixM;\
+	gl_Position = ((u_matrixP*MV)*vec4(a_pos.xyz, 1.0));\
+}";
+
+	var fragmentShader = "\
+precision mediump float;\
+uniform vec4 u_colour;\
+void main() {\
+		gl_FragColor = u_colour;\
+}";
+
+	var shader = this.m_renderer.NewShader(
+		vertextShader,
+		fragmentShader,
+		{ 
+			"a_pos": null
+		}, 
+		{ 
+			"u_colour" : null, 
+			"u_matrixM" : null,
+			"u_matrixV" : null,
+			"u_matrixP" : null,
+		}
+	);
+
+	var material = c.Material.Factory(
+		shader,
+		{ 
+			"u_colour" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float4,
+				c.DagNodeValue.Factory("u_colour", c.ColourRGBA.s_blue)
+				),
+			"u_matrixM" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagMatrixM
+				),
+			"u_matrixV" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagMatrixV
+				),
+			"u_matrixP" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float16,
+				this.m_dagMatrixP
+				),
+		}
+	);
+
+	var model = this.m_renderer.NewModel(
+		c.WebGL.LINES,
+		24, 
+		{
+			"a_pos" : c.ModelDataStream.Factory(
+				c.WebGL.BYTE,
+				3,
+				new Int8Array([
+					 -9, -9, -9,
+					 -10,  20,  -10,
+
+					 -10,  10,  -10,
+					 10,  10,  -10,
+
+					 10,  10,  -10,
+					 10,  -10,  -10,
+
+					 20,  -10,  -10,
+					 -9, -9, -9,
+
+					 -9, -9, -9,
+					 -10,  -10,  20,
+
+					 -10,  10,  -10,
+					 -10,  10,  10,
+
+					 10,  10,  -10,
+					 10,  10,  10,
+
+					 10,  -10,  -10,
+					 10,  -10,  10,
+
+					 -10,  -10,  10,
+					 -10,  10,  10,
+
+					 -10,  10,  10,
+					 10,  10,  10,
+
+					 10,  10,  10,
+					 10,  -10,  10,
+
+					 10,  -10,  10,
+					 -10,  -10,  10,
+
+					]),
+				c.WebGL.STATIC_DRAW,
+				false
+				),
+		}
+	);
+
+	this.m_arrayRender.push(c.RenderData.Factory(model, material));
+	return;
+}
+
+
+
+Main.prototype.Stop = function(){
+	this.m_keepGoing = false;
+}
+
+Main.prototype.OnRun = function(in_timeDelta){
+	//draw
+	for (var index = 0, count = this.m_arrayRender.length; index < count; ++index){
+		var render = this.m_arrayRender[index];
+		render.Render(this.m_renderer);
+	}
+
+	//console.log(c.Matrix4.AsString(this.m_dagMatrixMVP.GetValue()));
+
+	return this.m_keepGoing;
+}
+
+var gMain = undefined;
+
+c.OnPageLoad = function() {
+	console.info("OnPageLoad");
+	var task = function(in_timeDelta){
+		if (undefined === gMain){
+			gMain = Main.Factory();
+		}
+		return gMain.OnRun(in_timeDelta);
+	};
+	c.Framework.Factory(task);
+}
+
+c.OnShutdown = function() {
+	console.info("OnShutdown");
+}
+
+window.addEventListener('load', c.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

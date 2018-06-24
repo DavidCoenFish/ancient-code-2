@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<!--<title>test</title>-->
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body style='background-color: #000000'>
+		<canvas id='canvasId' style = 'background-color: #FFFFFF; width: 600px; height: 600px;' >
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+		<script type='text/JavaScript' SRC="javascript/dsc.js" ></script>
+
+		<script type='text/JavaScript' SRC="javascript/dsc/common.js" ></script>
+
+		<script type='text/JavaScript' SRC="javascript/dsc/framework.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/framework/input.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/dsc/math.js" ></script>
+
+    <script type='text/JavaScript' SRC="javascript/task.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/destination.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/destinationtoken.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/gameboard.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/gamestate.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/gamestateplayer.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/task/token.js" ></script>
+
+
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+DSC.OnPageLoad = function()
+{
+	console.info("OnPageLoad");
+
+	var taskObject = Task.FactoryRaw();
+	var framework = DSC.Framework.Create(document, taskObject);
+}
+
+DSC.OnShutdown = function()
+{
+}
+
+//call from framework on having no more tasks
+//there is no shutdown even, just pretend to ballance OnPageLoad
+DSC.OnShutdown = function()
+{
+	console.info("OnShutdown");
+	DSC.Framework.Destroy()
+}
+
+window.addEventListener('load', DSC.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

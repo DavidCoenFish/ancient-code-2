@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc math Matrix4</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Matrix4",
+	Run : function()
+	{
+		var data = DSC.Math.Matrix4.Factory();
+		var result = (undefined != data);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Express Matrix4 as string",
+	Run : function()
+	{
+		var dataA = DSC.Math.Matrix4.Factory(8.0, 0.5, 2.0, 7.0, 1.0, 2.0, 3.0, 4.0, 0.0, 1.0, 2.0, 3.0, 0.0, 1.0, 2.0, 3.0);
+		var dataB = DSC.Math.Matrix4.Factory(8.0, 0.5, 2.0, 7.1, 1.0, 2.0, 3.0, 4.0, 0.0, 1.0, 2.0, 3.0, 0.0, 1.0, 2.0, 3.0);
+		var stringA = DSC.Math.Matrix4.AsString(dataA);
+		var stringB = DSC.Math.Matrix4.AsString(dataB);
+		var stringC = DSC.Math.Matrix4.AsString(dataA);
+		var result = ("string" == (typeof stringA));
+		result &= ("string" == (typeof stringB));
+		result &= (stringA != stringB);
+		result &= (stringA == stringC);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Set and Get pos of Matrix4",
+	Run : function()
+	{
+		var data = DSC.Math.Matrix4.Factory();
+		var result = (undefined != data);
+		var pos0 = DSC.Math.Matrix4.GetPosition(data);
+		var pos1 = DSC.Math.Vector3.Factory(8.0, 0.5, 7.1);
+		DSC.Math.Matrix4.SetPosition(data, pos1);
+		var pos2 = DSC.Math.Matrix4.GetPosition(data);
+
+		result &= (true == DSC.Math.Vector3.AlmostEqual(pos0, DSC.Math.Vector3.s_zero));
+		result &= (true == DSC.Math.Vector3.AlmostEqual(pos1, pos2));
+
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clone a Matrix4",
+	Run : function()
+	{
+		var dataA = DSC.Math.Matrix4.Factory(8.0, 0.5, 2.0, 7.0, 1.0, 2.0, 3.0, 4.0, 0.0, 1.0, 2.0, 3.0, 0.0, 1.0, 2.0, 3.0);
+		var dataB = DSC.Math.Matrix4.Clone(dataA);
+		var dataC = DSC.Math.Matrix4.Factory();
+		var dataD = DSC.Math.Matrix4.Clone(dataA, dataC);
+
+		var result = true;
+		result &= (true == DSC.Math.Matrix4.AlmostEqual(dataA, dataB));
+		result &= (true == DSC.Math.Matrix4.AlmostEqual(dataA, dataC));
+		result &= (true == DSC.Math.Matrix4.AlmostEqual(dataA, dataD));
+		return result;
+	}
+});
+
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Math.Matrix4'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

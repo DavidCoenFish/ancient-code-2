@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>render particle</title>
+	</head>
+	<body style='background-color: #000000'>
+		<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+var framework = undefined;
+c.OnPageLoad = function() {
+	console.info("OnPageLoad");
+	var renderer = undefined;
+	var task = function(in_timeDelta){
+		if (undefined === renderer) {
+			var canvas = document.getElementById('canvasId');	
+
+			paramObject = {
+				"extentions" : [
+					//"OES_texture_float", 
+					//"OES_texture_float_linear",
+					//"OES_texture_half_float",
+					//"OES_texture_half_float_linear",
+					]
+				};
+			renderer = c.Render.Factory(canvas, paramObject);
+		}
+			
+		var vertextShader = "\
+attribute vec3 a_position;\
+void main() {\
+	gl_Position = vec4(a_position, 1.0);\
+	gl_PointSize = 128.0;\
+}";
+		var fragmentShader = "\
+precision mediump float;\
+uniform vec4 u_colour;\
+void main() {\
+	vec2 pointCoord = (gl_PointCoord - vec2(0.5, 0.5)) * 2.0;\
+	float dist = dot(pointCoord, pointCoord);\
+	if (1.0 < dist)\
+	{\
+		discard;\
+	}\
+	gl_FragColor = vec4(0.0, gl_PointCoord.x, gl_PointCoord.y, 1.0);\
+}";
+		var shader = renderer.NewShader(
+			vertextShader,
+			fragmentShader,
+			{ "a_position": null }, 
+			{ "u_colour" : null }
+		);
+
+		var material = c.Material.Factory(
+			shader,
+			{ "u_colour" : c.ShaderUniform.Factory(
+				c.ShaderUniform.s_type.Float4,
+				c.DagNodeValue.Factory("u_colour", c.ColourRGBA.s_blue)
+				)
+			}
+		);
+
+		var model = renderer.NewModel(
+			c.WebGL.POINTS,
+			3, 
+			{
+				"a_position" : c.ModelDataStream.Factory(
+					c.WebGL.BYTE,
+					3,
+					new Int8Array([
+						0, 0, 0, 
+						0, 1, 0,
+						1, 0, 0
+						]),
+					c.WebGL.STATIC_DRAW,
+					false
+					)
+			}
+		);
+
+		//draw
+		renderer.Clear(c.ColourRGBA.s_grey);
+		renderer.RenderModel(material, model);
+
+		return false;
+	};
+	framework = c.Framework.Factory(task);
+}
+
+c.OnShutdown = function() {
+	console.info("OnShutdown");
+}
+
+window.addEventListener('load', c.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

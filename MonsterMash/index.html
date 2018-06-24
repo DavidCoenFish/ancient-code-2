@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<head>
+		<title>Monster Mash</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+    <!--[if IE]><script src="script/excanvas.js"></script><![endif]-->
+  </head>
+  <body>
+		<canvas id="canvasId" width="760" height="620">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+		
+    <script type='text/JavaScript' SRC="script/variable.js" ></script>
+        
+    <script type='text/JavaScript' SRC="script/ablity.js" ></script>
+    <script type='text/JavaScript' SRC="script/ablitydigest.js" ></script>
+    <script type='text/JavaScript' SRC="script/ablitystorefat.js" ></script>
+    <script type='text/JavaScript' SRC="script/ablitytransport.js" ></script>
+    <script type='text/JavaScript' SRC="script/common.js" ></script>
+    <script type='text/JavaScript' SRC="script/collision.js" ></script>
+    <script type='text/JavaScript' SRC="script/dragdropmanager.js" ></script>
+    <script type='text/JavaScript' SRC="script/game.js" ></script>
+    <script type='text/JavaScript' SRC="script/gameground.js" ></script>
+    <script type='text/JavaScript' SRC="script/gameinfodialog.js" ></script>
+    <script type='text/JavaScript' SRC="script/gameview.js" ></script>
+    <script type='text/JavaScript' SRC="script/guibox.js" ></script>
+    <script type='text/JavaScript' SRC="script/guibutton.js" ></script>
+    <script type='text/JavaScript' SRC="script/guitext.js" ></script>
+    <script type='text/JavaScript' SRC="script/partbody.js" ></script>
+    <script type='text/JavaScript' SRC="script/partbrain.js" ></script>
+    <script type='text/JavaScript' SRC="script/partmouth.js" ></script>
+    <script type='text/JavaScript' SRC="script/partpoohole.js" ></script> 
+    <script type='text/JavaScript' SRC="script/partcircle.js" ></script>
+    <script type='text/JavaScript' SRC="script/skintype.js" ></script>
+    <script type='text/JavaScript' SRC="script/stateworkbench.js" ></script>
+    <script type='text/JavaScript' SRC="script/system.js" ></script>
+
+    <script type='text/JavaScript'>
+			<!-- 
+/////////////////////////////////////////////////////////////////////////////
+//private methods
+function OnPageLoadInit()
+{
+  g_canvas.addEventListener("mousedown", CallbackMouseDown, false);
+  g_canvas.addEventListener("mouseup", CallbackMouseUp, false);
+  g_canvas.addEventListener("mousemove", CallbackMouseMove, false);
+  g_canvas.addEventListener("touchstart", TouchHandler, false);
+  g_canvas.addEventListener("touchmove", TouchHandler, false);
+  g_canvas.addEventListener("touchend", TouchHandler, false);
+  g_canvas.addEventListener("touchcancel", TouchHandler, false);  
+
+  InitGame();
+  CallbackInterval();
+}
+
+function CallbackInterval()
+{
+  var timeDelta = 0.0;
+  if (undefined == g_time)
+    g_time = (new Date()).getTime();
+  else
+  {
+    var newTime = (new Date()).getTime();
+    timeDelta = (newTime - g_time) / 1000.0;
+    g_time = newTime;
+  }
+
+  //limit frame rate to 20, else you can get a massive delta while away from the page
+  timeDelta = Math.min(0.05, timeDelta);
+    
+  TickGame(timeDelta);
+  DrawGame();
+    
+  g_mouseDoubleClick = false;
+  if (true == g_mouseEdge)
+  {
+    //release a click
+    if (false == g_mouseDown)
+    {
+      if ((g_mouseStateTime <= g_mouseClickThreashold) &&
+          (g_mouseStateTimeSincelLastClick < g_mouseDoubleClickThreashold))
+        g_mouseDoubleClick = true;
+      g_mouseStateTimeSincelLastClick = 0.0;
+    }
+    g_mouseStateTime = 0.0;
+  }
+  else
+  {
+    g_mouseStateTime += timeDelta;
+    g_mouseStateTimeSincelLastClick += timeDelta;
+  }
+  
+  g_mouseDownOld = g_mouseDown;
+  g_mouseEdge = false;  
+  g_mouseXOld = g_mouseX;
+  g_mouseYOld = g_mouseY;  
+
+  setTimeout(CallbackInterval, 0); 
+}
+
+function CallbackMouseDown(in_event)
+{
+  g_mouseDown = true;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function CallbackMouseUp(in_event)
+{
+  g_mouseDown = false;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function GetTrueOffsetLeft(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetLeft || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function GetTrueOffsetTop(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetTop || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function CallbackMouseMove(in_event)
+{
+  g_mouseX = in_event.clientX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = in_event.clientY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+}
+
+function TouchHandler(in_event)
+{
+  in_event.preventDefault();
+  var touches = in_event.changedTouches;
+  var first = touches[0];
+
+  switch(event.type)
+  {
+    case "touchmove":  
+      break;
+    case "touchstart": 
+      CallbackMouseDown(in_event);
+      break;
+    case "touchend":   
+    case "touchcancel":   
+      CallbackMouseUp(in_event);
+      break;
+    default: 
+      return;
+  }
+  g_mouseX = first.pageX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = first.pageY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+  
+  return;
+}
+
+function PrintConsole(in_message)
+{
+  console.log(in_message);
+}
+
+//onpageload operations
+window.addEventListener('load', OnPageLoadInit, true);
+
+			// -->
+		</script>
+	</body>
+</HTML>

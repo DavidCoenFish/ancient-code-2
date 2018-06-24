@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unit test</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="javascript/dsc.js" ></script>
+		<script type='text/javascript'>
+			<!-- 
+DSC.g_arrayUnitTest = [];
+			// -->
+		</script>
+
+		<!-- common  -->
+		<script type='text/JavaScript' SRC="javascript/dsc/common.js" ></script>
+
+    <!-- dng  -->
+    <script type='text/JavaScript' SRC="javascript/dsc/dng.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/node.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/container.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixaxispos.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/updatefunction.js" ></script>
+
+    <!-- math  -->
+		<script type='text/JavaScript' SRC="javascript/dsc/math.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/angle.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/colour.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/coordinate.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/frame.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/matrix3.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/matrix4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/quaternion.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/vector2.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/vector3.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/vector4.js" ></script>
+
+
+    <!-- unittest  -->
+		<script type='text/javascript'>
+			<!-- 
+
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> g_arrayUnitTest.length " + DSC.g_arrayUnitTest.length + "<\/p>");
+
+DSC.g_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.UnitTest)
+	{ 
+		var result = in_item.UnitTest(); 
+		document.write('<span>' + result + '<\/span></br>');
+	} 
+});
+
+			// -->
+		</script>
+	</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc math vector2</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Vector3",
+	Run : function()
+	{
+		var vector2a = DSC.Math.Vector3.Factory();
+		var result = (undefined != vector2a);
+		result &= (DSC.Math.Vector3.GetX(vector2a) == 0.0);
+		result &= (DSC.Math.Vector3.GetY(vector2a) == 0.0);
+		result &= (DSC.Math.Vector3.GetZ(vector2a) == 0.0);
+		var vector2b = DSC.Math.Vector3.Factory(8.0, 0.5, 0.25);
+		result &= (undefined != vector2b);
+		result &= (DSC.Math.Vector3.GetX(vector2b) == 8.0);
+		result &= (DSC.Math.Vector3.GetY(vector2b) == 0.5);
+		result &= (DSC.Math.Vector3.GetZ(vector2b) == 0.25);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Express Vector3 as string",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(8.0, 0.5, 7.0);
+		var vectorB = DSC.Math.Vector3.Factory(8.0, 0.5, 7.1);
+		var stringA = DSC.Math.Vector3.AsString(vectorA);
+		var stringB = DSC.Math.Vector3.AsString(vectorB);
+		var stringC = DSC.Math.Vector3.AsString(vectorA);
+		var result = ("string" == (typeof stringA));
+		result &= ("string" == (typeof stringB));
+		result &= (stringA != stringB);
+		result &= (stringA == stringC);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Set and Get values in Vector3",
+	Run : function()
+	{
+		var vector = DSC.Math.Vector3.Factory();
+		var result = (undefined != vector);
+		result &= (DSC.Math.Vector3.GetX(vector) == 0.0);
+		result &= (DSC.Math.Vector3.GetY(vector) == 0.0);
+		result &= (DSC.Math.Vector3.GetZ(vector) == 0.0);
+		DSC.Math.Vector3.Set(vector, 2.0, 3.0, 4.0);
+		result &= (DSC.Math.Vector3.GetX(vector) == 2.0);
+		result &= (DSC.Math.Vector3.GetY(vector) == 3.0);
+		result &= (DSC.Math.Vector3.GetZ(vector) == 4.0);
+		DSC.Math.Vector3.SetX(vector, 4.0);
+		DSC.Math.Vector3.SetY(vector, 5.0);
+		DSC.Math.Vector3.SetZ(vector, 6.0);
+		result &= (DSC.Math.Vector3.GetX(vector) == 4.0);
+		result &= (DSC.Math.Vector3.GetY(vector) == 5.0);
+		result &= (DSC.Math.Vector3.GetZ(vector) == 6.0);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clone a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(7.0, 8.0, 9.0);
+		var vectorB = DSC.Math.Vector3.Clone(vectorA, undefined);
+		var vectorC = DSC.Math.Vector3.Factory();
+		var vectorD = DSC.Math.Vector3.Clone(vectorA, vectorC);
+
+		var result = (undefined != vectorB);
+		result &= (undefined != vectorD);
+		result &= (DSC.Math.Vector3.GetX(vectorB) == 7.0);
+		result &= (DSC.Math.Vector3.GetY(vectorB) == 8.0);
+		result &= (DSC.Math.Vector3.GetZ(vectorB) == 9.0);
+		result &= (DSC.Math.Vector3.GetX(vectorC) == 7.0);
+		result &= (DSC.Math.Vector3.GetY(vectorC) == 8.0);
+		result &= (DSC.Math.Vector3.GetZ(vectorC) == 9.0);
+		result &= (DSC.Math.Vector3.GetX(vectorD) == 7.0);
+		result &= (DSC.Math.Vector3.GetY(vectorD) == 8.0);
+		result &= (DSC.Math.Vector3.GetZ(vectorD) == 9.0);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Get The Length of a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(3.0, 4.0, 5.0);
+		var lengthSquared = DSC.Math.Vector3.LengthSquared(vectorA);
+		var length = DSC.Math.Vector3.Length(vectorA);
+
+		var result = true;
+		result &= (true == DSC.Math.AlmostEqual(lengthSquared, 50.0));
+		result &= (true == DSC.Math.AlmostEqual(length, 7.0710678118654752440084436210485));
+		return result;
+	}
+});
+
+//DSC.Math.Vector3.DotProduct = function(in_lhs, in_rhs)
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To DotProduct a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 2.0, 3.0);
+		var vectorB = DSC.Math.Vector3.Factory(3.0, 4.0, 5.0);
+
+		var result = true;
+		var dotProduct = DSC.Math.Vector3.DotProduct(vectorA, vectorB);
+		result &= (true == DSC.Math.AlmostEqual(26.0, dotProduct));
+		return result;
+	}
+});
+
+//DSC.Math.Vector3.Plus = function(_result, in_lhs, in_rhs)
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Plus a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 2.0, 3.0);
+		var vectorB = DSC.Math.Vector3.Factory(2.0, 4.0, 6.0);
+		var vectorC = DSC.Math.Vector3.Factory(3.0, 6.0, 9.0);
+		var vectorD = DSC.Math.Vector3.Plus(vectorA, vectorB);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorC, vectorD));
+		return result;
+	}
+});
+
+//DSC.Math.Vector3.Minus = function(_result, in_lhs, in_rhs)
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Minus a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 2.0, 3.0);
+		var vectorB = DSC.Math.Vector3.Factory(2.0, 4.0, 6.0);
+		var vectorC = DSC.Math.Vector3.Factory(-1.0, -2.0, -3.0);
+		var vectorD = DSC.Math.Vector3.Minus(vectorA, vectorB);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorC, vectorD));
+		return result;
+	}
+});
+
+//DSC.Math.Vector3.MultiplyNumeric = function(_result, in_value, in_operand)
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Multiply a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 2.0, 3.0);
+		var vectorB = DSC.Math.Vector3.Factory(2.0, 4.0, 6.0);
+		var vectorC = DSC.Math.Vector3.MultiplyNumeric(vectorA, 2.0);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorB, vectorC));
+		return result;
+	}
+});
+
+//DSC.Math.Vector3.DivideNumeric = function(_result, in_value, in_operand)
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Divide a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 2.0, 3.0);
+		var vectorB = DSC.Math.Vector3.Factory(0.5, 1.0, 1.5);
+		var vectorC = DSC.Math.Vector3.DivideNumeric(vectorA, 2.0);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorB, vectorC));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test Vector3 is almost zero",
+	Run : function()
+	{
+		var result = true;
+		var vectorA = DSC.Math.Vector3.Factory(0.0, 0.0, 0.0);
+		var vectorB = DSC.Math.Vector3.Factory(0.001, -0.001, 0.001);
+		var vectorC = DSC.Math.Vector3.Factory(3.0, 4.0, 5.0);
+
+		result &= (true == DSC.Math.Vector3.AlmostZero(vectorA));
+		result &= (true == DSC.Math.Vector3.AlmostZero(vectorB, 0.01));
+		result &= (false == DSC.Math.Vector3.AlmostZero(vectorC));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test Vector3 is almost equal",
+	Run : function()
+	{
+		var result = true;
+		var result = true;
+		var vectorA = DSC.Math.Vector3.Factory(0.0, 0.0, 0.0);
+		var vectorB = DSC.Math.Vector3.Factory(0.001, -0.001, 0.001);
+		var vectorC = DSC.Math.Vector3.Factory(3.0, 4.0, 5.0);
+		var vectorD = DSC.Math.Vector3.Factory(0.0, 0.0, 5.0);
+		var vectorE = DSC.Math.Vector3.Factory(0.0, 4.0, 0.0);
+		var vectorF = DSC.Math.Vector3.Factory(3.0, 0.0, 0.0);
+
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorA, vectorA));
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorA, vectorB, 0.01));
+		result &= (false == DSC.Math.Vector3.AlmostEqual(vectorB, vectorC));
+		result &= (false == DSC.Math.Vector3.AlmostEqual(vectorA, vectorD));
+		result &= (false == DSC.Math.Vector3.AlmostEqual(vectorA, vectorE));
+		result &= (false == DSC.Math.Vector3.AlmostEqual(vectorA, vectorF));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Lerp a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(10.0, -10.0, 100.0);
+		var vectorB = DSC.Math.Vector3.Factory(20.0, -20.0, 200.0);
+		var vectorC = DSC.Math.Vector3.Factory(10.0, -10.0, 100.0);
+		var vectorD = DSC.Math.Vector3.Factory(15.0, -15.0, 150.0);
+		var vectorE = DSC.Math.Vector3.Factory(20.0, -20.0, 200.0);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorC, DSC.Math.Vector3.Lerp(vectorA, vectorB, 0.0)));
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorD, DSC.Math.Vector3.Lerp(vectorA, vectorB, 0.5)));
+		result &= (true == DSC.Math.Vector3.AlmostEqual(vectorE, DSC.Math.Vector3.Lerp(vectorA, vectorB, 1.0)));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clamp a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(10.0, -10.0, 25.0);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(DSC.Math.Vector3.Factory(10.0, 0.0, 20.0), DSC.Math.Vector3.Clamp(vectorA, 0.0, 20.0)));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Wrap a Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(10.0, -10.0, 35.0);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(DSC.Math.Vector3.Factory(10.0, 10.0, 15.0), DSC.Math.Vector3.Wrap(vectorA, 0.0, 20.0)));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To take the CrossProduct of Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(1.0, 0.0, 0.0);
+		var vectorB = DSC.Math.Vector3.Factory(0.0, 1.0, 0.0);
+		var vectorC = DSC.Math.Vector3.CrossProduct(vectorA, vectorB);
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(DSC.Math.Vector3.Factory(0.0, 0.0, 1.0), vectorC));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To take the Normalise Vector3",
+	Run : function()
+	{
+		var vectorA = DSC.Math.Vector3.Factory(0.0, 0.0, 0.0);
+		var vectorB = DSC.Math.Vector3.Factory(3.0, 4.0, 5.0);
+
+		var vectorC = DSC.Math.Vector3.Normalise(vectorA);
+		var vectorD = DSC.Math.Vector3.Normalise(vectorB);
+
+		var result = true;
+		result &= (true == DSC.Math.Vector3.AlmostEqual(DSC.Math.Vector3.Factory(0.0, 0.0, 0.0), vectorC));
+		result &= (true == DSC.Math.Vector3.AlmostEqual(DSC.Math.Vector3.Factory(0.4242640687119285, 0.565685424949238, 0.7071067811865475), vectorD));
+		return result;
+	}
+});
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Math.Vector3'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

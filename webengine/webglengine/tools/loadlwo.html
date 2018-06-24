@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Load Lwo</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<input type="file" id="file-input" />
+		<pre id="file-content"/>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+AlmostZero = function(in_value, _epsilon)
+{
+	var epsilon = _epsilon || 1e-6;
+	if (Math.abs(in_value) <= epsilon)
+		return true;
+	return false;
+}
+
+CrossProduct = function(in_lhs, in_rhs)
+{
+  var result = [
+		(in_lhs[1] * in_rhs[2]) - (in_lhs[2] * in_rhs[1]),
+		(in_lhs[2] * in_rhs[0]) - (in_lhs[0] * in_rhs[2]),
+		(in_lhs[0] * in_rhs[1]) - (in_lhs[1] * in_rhs[0])
+		];
+	return result;
+}
+
+Normalise = function(inout_vec3)
+{
+	var lengthSquared = (inout_vec3[0] * inout_vec3[0]) + (inout_vec3[1] * inout_vec3[1]) + (inout_vec3[2] * inout_vec3[2]);
+	var mul = 1.0;
+	if ((0.0 != lengthSquared) && (1.0 != lengthSquared))
+	{
+		var length = Math.sqrt(lengthSquared);
+		mul = 1.0 / length;
+	}
+  return [
+    inout_vec3[0] * mul,
+    inout_vec3[1] * mul,
+    inout_vec3[2] * mul
+    ];
+}
+
+
+VertexPool = function()
+{
+  this.m_arrayVertex = [];
+}
+
+VertexPool.Match = function(in_lhs, in_rhs)
+{
+  if (in_lhs.length != in_rhs.length)
+  {
+    alert("invalid vertex length");
+    return false;
+  }
+  for (var index = 0; index < in_lhs.length; ++index)
+  {
+    if (true != AlmostZero(in_lhs[index] - in_rhs[index]))
+      return false;
+  }
+  return true;
+}
+
+VertexPool.prototype.AddVertex = function(in_vertex)
+{
+  for (var index = 0; index < this.m_arrayVertex.length; ++index)
+  {
+    if (true == VertexPool.Match(in_vertex, this.m_arrayVertex[index]))
+    {
+      return index;
+    }
+  }
+  var index = this.m_arrayVertex.length;
+  this.m_arrayVertex.push(in_vertex);
+  return index;
+}
+
+function AddNormalsToModel(inout_model)
+{ 
+  var vertexPool = new VertexPool();
+  var newFaceArray = [];
+	for (var index = 0; index < inout_model.m_faces.length; ++index)
+	{
+		var face = inout_model.m_faces[index];
+    if (face.length != 3)
+      continue;
+    var newFace = [];
+    for (subIndex = 0; subIndex < face.length; ++subIndex)
+    {
+      var indexA = subIndex;
+      var indexB = (subIndex + 1) % 3;
+      var indexC = (subIndex + 2) % 3;
+      var vertexA = [
+        inout_model.m_arrayPos[(face[indexA] * 3) + 0],
+        inout_model.m_arrayPos[(face[indexA] * 3) + 1],
+        inout_model.m_arrayPos[(face[indexA] * 3) + 2]
+        ];
+      var vertexB = [
+        inout_model.m_arrayPos[(face[indexB] * 3) + 0],
+        inout_model.m_arrayPos[(face[indexB] * 3) + 1],
+        inout_model.m_arrayPos[(face[indexB] * 3) + 2]
+        ];
+      var vertexC = [
+        inout_model.m_arrayPos[(face[indexC] * 3) + 0],
+        inout_model.m_arrayPos[(face[indexC] * 3) + 1],
+        inout_model.m_arrayPos[(face[indexC] * 3) + 2]
+        ];
+
+      var crossProduct = CrossProduct(
+        [vertexB[0] - vertexA[0],
+        vertexB[1] - vertexA[1],
+        vertexB[2] - vertexA[2]],
+        [vertexC[0] - vertexA[0],
+        vertexC[1] - vertexA[1],
+        vertexC[2] - vertexA[2]]
+        );
+      var normal = Normalise(crossProduct);
+      
+      var vertex = [vertexA[0], vertexA[1], vertexA[2], normal[0], normal[1], normal[2]];
+      var vertexIndex = vertexPool.AddVertex(vertex);
+      newFace.push(vertexIndex);
+    }
+    newFaceArray.push(newFace);
+  }
+  inout_model.m_faces = newFaceArray;
+  inout_model.m_arrayPos = [];
+  inout_model.m_arrayNorm = [];
+  for (var index = 0; index < vertexPool.m_arrayVertex.length; ++index)
+  {
+    var vertex = vertexPool.m_arrayVertex[index];
+    inout_model.m_arrayPos.push(vertex[0]);
+    inout_model.m_arrayPos.push(vertex[1]);
+    inout_model.m_arrayPos.push(vertex[2]);
+    inout_model.m_arrayNorm.push(vertex[3]);
+    inout_model.m_arrayNorm.push(vertex[4]);
+    inout_model.m_arrayNorm.push(vertex[5]);
+  }
+}
+
+IFFReader = function(_arrayBuffer)
+{
+	this.m_arrayBuffer = _arrayBuffer;
+	this.m_cursor = 0;
+
+	var form = this.ReadForm();
+	if ("FORM" != form)
+	{	
+		console.info("	not an IFF file, expect FORM [" + form + "]");		
+		return;
+	}
+	var lwoLength = this.ReadU32();
+	var type = this.ReadForm();
+	if ("LWOB" != type)
+	{	
+		console.info("	not a LWOB type [" + type + "]");		
+		return;
+	}
+
+  if (lwoLength + 8 != this.m_arrayBuffer.byteLength)
+  {
+		console.info("	lengths do not match array buffer [" + this.m_arrayBuffer.byteLength + "] and lwo chunk + 8 [" + (lwoLength + 8) + "]");		
+		return;
+  }
+
+	console.info("	IFF [" + form + "] [" + lwoLength + "] [" + type + "]");
+
+	while (this.m_cursor < this.m_arrayBuffer.byteLength)
+	{
+		var subType = this.ReadForm();
+		var subTypeLength = this.ReadU32();
+
+		console.info("	   subType [" + subType + "] [" + subTypeLength + "]");
+
+		switch(subType)
+		{
+		default:
+			this.m_cursor += subTypeLength;
+			break;
+		case "PNTS":
+			this.LoadPoints(subTypeLength);
+			break;
+		case "POLS":
+			this.LoadPolygons(subTypeLength);
+			break;
+		}
+	}
+  
+  if (undefined != this.m_faces)
+  {
+    this.m_faces.reverse();
+  }
+  
+  this.m_posScale = 1.0;
+  
+	return;
+}
+
+IFFReader.prototype.ReadU16 = function()
+{
+  if (this.m_arrayBuffer.byteLength < this.m_cursor + 2)
+  {
+		console.info("	   read U16 past end of buffer [" + this.m_cursor + "] [" + this.m_arrayBuffer.byteLength + "] ");    
+    return 0;
+  }
+  //TODO: this is not endian safe
+	var dataView = new DataView(this.m_arrayBuffer, this.m_cursor, 2);
+	this.m_cursor += 2;
+	return dataView.getUint16(0);
+}
+
+IFFReader.prototype.ReadU32 = function()
+{
+  if (this.m_arrayBuffer.byteLength < this.m_cursor + 4)
+  {
+		console.info("	   read U32 past end of buffer [" + this.m_cursor + "] [" + this.m_arrayBuffer.byteLength + "] ");    
+    return 0;
+  }
+  //TODO: this is not endian safe
+	var dataView = new DataView(this.m_arrayBuffer, this.m_cursor, 4);
+	this.m_cursor += 4;
+	return dataView.getUint32(0);
+}
+
+IFFReader.prototype.ReadFloat32 = function()
+{
+  if (this.m_arrayBuffer.byteLength < this.m_cursor + 4)
+  {
+		console.info("	   read float past end of buffer [" + this.m_cursor + "] [" + this.m_arrayBuffer.byteLength + "] ");    
+    return 0;
+  }
+
+  //TODO: this is not endian safe
+  var dataView = new DataView(this.m_arrayBuffer, this.m_cursor, 4);
+	this.m_cursor += 4;
+	return dataView.getFloat32(0);
+}
+
+IFFReader.prototype.ReadForm = function()
+{
+  if (this.m_arrayBuffer.byteLength < this.m_cursor + 4)
+  {
+		console.info("	   read form past end of buffer [" + this.m_cursor + "] [" + this.m_arrayBuffer.byteLength + "] ");    
+    return "";
+  }
+
+  var dataView = new DataView(this.m_arrayBuffer, this.m_cursor, 4);
+	this.m_cursor += 4;
+	var result = "";
+	result += String.fromCharCode(dataView.getUint8(0));
+	result += String.fromCharCode(dataView.getUint8(1));
+	result += String.fromCharCode(dataView.getUint8(2));
+	result += String.fromCharCode(dataView.getUint8(3));
+	return result;
+}
+
+IFFReader.prototype.LoadPoints = function(_lengthBytes)
+{
+	if (undefined == this.m_arrayPos)
+		this.m_arrayPos = [];
+	for (var index = 0; index < _lengthBytes; index += 4)
+	{
+		var value = this.ReadFloat32();
+		this.m_arrayPos.push(value);	
+	}
+	return;
+}
+
+IFFReader.prototype.LoadPolygons = function(_lengthBytes)
+{
+	var end = this.m_cursor + _lengthBytes;
+	if (undefined == this.m_faces)
+		this.m_faces = [];
+
+	while (this.m_cursor < end)
+	{
+		var value = this.ReadU16();
+		var count = value & 1023; //top 6 bits are flags for curve?
+		var arrayVertexIndex = [];
+		for (var index = 0; index < count; ++index)
+		{
+			value = this.ReadU16();
+			arrayVertexIndex.push(value);			
+		}
+		var surface = this.ReadU16();
+		this.m_faces.push(arrayVertexIndex);
+	}
+
+	this.m_cursor = end;
+	return;
+}
+
+NormalToByte = function(in_value)
+{
+	return Math.round(((in_value * 255) - 1.0) / 2.0);
+};
+
+function TriangulateModel(inout_model)
+{
+  var faceArray = [];
+	for (var index = 0; index < inout_model.m_faces.length; ++index)
+	{
+		var face = inout_model.m_faces[index];
+    if (face.length < 3)
+      continue;
+    for (var subIndex = 2; subIndex < face.length; ++subIndex)
+    {
+      var newFace = [];
+      newFace.push(face[0]);
+      newFace.push(face[subIndex - 1]);
+      newFace.push(face[subIndex]);
+      faceArray.push(newFace);
+    }
+  }
+  inout_model.m_faces = faceArray;
+}
+
+function NormaliseModelPos(inout_model)
+{
+  var max = 0.0;
+  for (var index = 0; index < inout_model.m_arrayPos.length; ++index)
+  {
+    max = Math.max(max, Math.abs(inout_model.m_arrayPos[index]));
+  }
+
+  console.info("model pos scale [" + max + "]");
+
+  inout_model.m_posScale = max;
+
+  if (0.0 != max)
+    max = 1.0 / max;
+  for (var index = 0; index < inout_model.m_arrayPos.length; ++index)
+  {
+    inout_model.m_arrayPos[index] *= max;
+  }
+  return;
+}
+
+ModelToStringEdgeByte = function(in_model)
+{
+  if ((undefined == in_model.m_arrayPos) ||
+    (undefined == in_model.m_faces))
+  {
+    return "no data";
+  }
+  
+	var result = "";
+	result += "m_mode : DSC.Framework.Context.WebGL.LINES,\n";
+	result += "m_elementCount : " + (in_model.m_faces.length * 2) + ",\n";
+	result += "m_posScale : " + in_model.m_posScale + ",\n";
+	result += "m_mapDataStream :\n";
+	result += "{\n";
+	result += "		a_position : DSC.Framework.Asset.Model.DataStream.FactoryRaw(\n";
+	result += "		DSC.Framework.Context.WebGL.BYTE,\n";
+	result += "		2,\n";
+	result += "		new DSC.Common.t_s8Array([\n";
+
+  console.info("face array length [" + in_model.m_faces.length + "]");
+	for (var index = 0; index < in_model.m_faces.length; ++index)
+	{
+		var face = in_model.m_faces[index];
+    if (2 != face.length)
+      continue;
+		for (var subIndex = 0; subIndex < face.length; ++subIndex)
+		{
+			var vertexIndex = face[subIndex];
+			var x = NormalToByte(this.m_arrayPos[(vertexIndex * 3) + 0]);
+			var y = NormalToByte(this.m_arrayPos[(vertexIndex * 3) + 2]);
+			result += "" + x + ", " + y + ", ";
+			if (0 != (subIndex & 1))
+			result += "\n";
+		}
+	}
+
+	result += "		]),\n";
+	result += "		undefined,\n";
+	result += "		true\n";
+	result += "		)\n";
+	result += "},\n";
+	result += "m_elementIndex : undefined\n";
+
+	return result;
+}
+
+ElementCountTriangles = function(in_model)
+{
+  var elementCount = 0;
+	for (var index = 0; index < in_model.m_faces.length; ++index)
+	{
+		var face = in_model.m_faces[index];
+    if (face.length < 3)
+      continue;
+    for (var subIndex = 2; subIndex < face.length; ++subIndex)
+    {
+      elementCount += 3;
+    }
+  }
+  return elementCount;
+}
+
+ModelToStringTriangleByteIndex = function(in_model)
+{
+  if ((undefined == in_model.m_arrayPos) ||
+    (undefined == in_model.m_faces))
+  {
+    return "no data";
+  }
+
+  var elementCount = ElementCountTriangles(in_model);
+
+	var result = "";
+	result += "m_mode : DSC.Framework.Context.WebGL.TRIANGLES,\n";
+	result += "m_elementCount : " + elementCount + ",\n";
+	result += "m_posScale : " + in_model.m_posScale + ",\n";
+	result += "m_mapDataStream :\n";
+	result += "{\n";
+	result += "		a_position : DSC.Framework.Asset.Model.DataStream.FactoryRaw(\n";
+	result += "		DSC.Framework.Context.WebGL.BYTE,\n";
+	result += "		3,\n";
+	result += "		new DSC.Common.t_s8Array([\n";
+  
+	for (var index = 0; index < in_model.m_arrayPos.length; index += 3)
+	{
+			var x = NormalToByte(in_model.m_arrayPos[index + 0]);
+			var y = NormalToByte(in_model.m_arrayPos[index + 1]);
+			var z = NormalToByte(in_model.m_arrayPos[index + 2]);
+			result += "" + x + ", " + y + ", " + z + ",\n";
+  }
+
+  result += "		]),\n";
+	result += "		undefined,\n";
+	result += "		true\n";
+	result += "		)\n";
+	result += "},\n";
+  var vertexCount = in_model.m_arrayPos.length / 3;
+  if (vertexCount < 256)
+  	result += "m_elementIndex : new DSC.Common.t_u8Array([\n";
+  else if (vertexCount < 65536)
+  	result += "m_elementIndex : new DSC.Common.t_u16Array([\n";
+  else
+  	result += "m_elementIndex : new DSC.Common.t_u32Array([\n";
+
+  console.info("face array length [" + in_model.m_faces.length + "]");
+	for (var index = 0; index < in_model.m_faces.length; ++index)
+	{
+		var face = in_model.m_faces[index];
+    if (face.length != 3)
+      continue;
+  	result += "" + face[0] + ", " + face[1] + ", " + face[2] + ",\n";
+  }
+
+  result += "]),\n";
+
+	return result;
+}
+
+ModelToStringTrianglePosNormByteIndex = function(in_model)
+{
+  if ((undefined == in_model.m_arrayPos) ||
+    (undefined == in_model.m_faces))
+  {
+    return "no data";
+  }
+
+  var elementCount = ElementCountTriangles(in_model);
+
+	var result = "";
+	result += "m_mode : DSC.Framework.Context.WebGL.TRIANGLES,\n";
+	result += "m_elementCount : " + elementCount + ",\n";
+	result += "m_posScale : " + in_model.m_posScale + ",\n";
+	result += "m_mapDataStream :\n";
+	result += "{\n";
+	result += "		a_position : DSC.Framework.Asset.Model.DataStream.FactoryRaw(\n";
+	result += "		DSC.Framework.Context.WebGL.BYTE,\n";
+	result += "		3,\n";
+	result += "		new DSC.Common.t_s8Array([\n";
+  
+  console.info("position array length [" + in_model.m_arrayPos.length + "]");
+	for (var index = 0; index < in_model.m_arrayPos.length; index += 3)
+	{
+			var x = NormalToByte(in_model.m_arrayPos[index + 0]);
+			var y = NormalToByte(in_model.m_arrayPos[index + 1]);
+			var z = NormalToByte(in_model.m_arrayPos[index + 2]);
+			result += "" + x + ", " + y + ", " + z + ",\n";
+  }
+
+  result += "		]),\n";
+	result += "		undefined,\n";
+	result += "		true\n";
+	result += "	),\n";
+	result += "	a_normal : DSC.Framework.Asset.Model.DataStream.FactoryRaw(\n";
+	result += "		DSC.Framework.Context.WebGL.BYTE,\n";
+	result += "		3,\n";
+	result += "		new DSC.Common.t_s8Array([\n";
+  
+  console.info("normal array length [" + in_model.m_arrayNorm.length + "]");
+	for (var index = 0; index < in_model.m_arrayNorm.length; index += 3)
+	{
+			var x = NormalToByte(in_model.m_arrayNorm[index + 0]);
+			var y = NormalToByte(in_model.m_arrayNorm[index + 1]);
+			var z = NormalToByte(in_model.m_arrayNorm[index + 2]);
+			result += "" + x + ", " + y + ", " + z + ",\n";
+  }
+
+  result += "		]),\n";
+	result += "		undefined,\n";
+	result += "		true\n";
+	result += "	)\n";
+	result += "},\n";
+  var vertexCount = in_model.m_arrayPos.length / 3;
+  if (vertexCount < 256)
+  	result += "m_elementIndex : new DSC.Common.t_u8Array([\n";
+  else if (vertexCount < 65536)
+  	result += "m_elementIndex : new DSC.Common.t_u16Array([\n";
+  else
+  	result += "m_elementIndex : new DSC.Common.t_u32Array([\n";
+
+  console.info("face array length [" + in_model.m_faces.length + "]");
+	for (var index = 0; index < in_model.m_faces.length; ++index)
+	{
+		var face = in_model.m_faces[index];
+    if (face.length != 3)
+      continue;
+  	result += "" + face[0] + ", " + face[1] + ", " + face[2] + ",\n";
+  }
+
+  result += "]),\n";
+
+	return result;
+  
+}
+
+function ReadFileLoad(e)
+{
+	var arrayBuffer = e.target.result;
+	console.info("file loaded of [" + arrayBuffer.byteLength + "]");
+
+	var iffReader = new IFFReader(arrayBuffer);
+
+	//var modelString = ModelToStringEdgeByte(iffReader);
+
+  //TriangulateModel(iffReader);
+  //var modelString = ModelToStringTriangleByteIndex(iffReader);
+
+  TriangulateModel(iffReader);
+  AddNormalsToModel(iffReader);
+  NormaliseModelPos(iffReader);
+  var modelString = ModelToStringTrianglePosNormByteIndex(iffReader);
+
+	document.getElementById("file-content").innerHTML = modelString;
+
+	return;
+}
+
+function ReadFile(e)
+{
+	var file = e.target.files[0];
+	if (!file)
+	{
+		console.info("file undefined");
+	}
+	var reader = new FileReader();
+	reader.onload = ReadFileLoad;
+	reader.readAsArrayBuffer(file);
+
+	return;
+}
+
+function OnPageLoad()
+{
+	console.info("OnPageLoad");
+	
+	document.getElementById("file-input").addEventListener("change", ReadFile, false);
+
+	return;
+}
+
+window.addEventListener('load', OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

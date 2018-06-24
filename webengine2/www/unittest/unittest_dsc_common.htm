@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc common</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Overload Data",
+	Run : function()
+	{
+		var result = true;
+		var Data = 
+		{
+			"foo" : 10,
+			"bar" : 20
+		};
+		var Overload = 
+		{
+			"foo" : 30,
+			"moo" : 40
+		};
+		var Overloaded = DSC.Common.OverloadData(Data, Overload);
+
+		result &= (undefined != Overloaded);
+		result &= (undefined != Overloaded.foo);
+		result &= (undefined != Overloaded.bar);
+		result &= (undefined != Overloaded.moo);
+		result &= (30 == Overloaded.foo);
+		result &= (20 == Overloaded.bar);
+		result &= (40 == Overloaded.moo);
+
+
+		return result;
+	}
+});
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Common'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

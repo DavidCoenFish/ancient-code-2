@@ -1,0 +1,591 @@
+background, grey, faint blue (sky)
+call to action -gold (invert blue)
+button -blue
+destructive button -red
+
+hover - darker
+selected - more saturated
+
+
+
+0000ff
+3f3fff
+7f7fff
+bfbfff
+ffffff
+
+
+
+
+
+
+
+
+
+
+
+html, body {
+	background: #7f7f7f;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: linear-gradient(0deg, #888f90, #888f90 40%, #727e90);
+}
+
+/*
+	top right bottom left
+
+*/
+button{
+	box-shadow: inset 0 0 1em rgba(0,16,0,0.5);
+	vertical-align:bottom;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+
+	margin:0em;
+	padding:0em 1em 0em 1em;
+	border-style: solid none none solid;
+	border-width: 0.75em 0.75em 0.75em 0.7em;
+	border-right-color: 0em none;
+	border-bottom-color: 0em none;
+}
+button:focus{
+	outline:0;
+}
+button:before {
+	content: "";
+	width: 200%;
+	height: 200%;
+	position: absolute;
+	top: -200%;
+	left: -225%;
+}
+button:hover:before {
+	top: 200%;
+	left: 200%;
+	background-image: linear-gradient(135deg, rgba(255,255,255,0), rgba(255,200,255,0.6), rgba(255,255,255,0)); 
+	transition: all 0.5s ease-out; 
+}
+
+/*
+	normal button
+*/
+button{
+	background:linear-gradient(30deg, #bbc2de, #0000ff);
+	border-left-color: #bbc2de;
+	border-top-color: #0000ff;
+}
+button:hover {
+	background:linear-gradient(30deg, #ffffff, #8484ff);
+	border-left-color: #ffffff;
+	border-top-color: #8484ff;
+}
+button:focus, button.callselect {
+	background:linear-gradient(30deg, #1c1d9f, #7881f8);
+	border-left-color: #1c1d9f;
+	border-top-color: #7881f8;
+}
+
+/*
+	call to action button
+*/
+button.call {
+	background:linear-gradient(30deg, #fdea9a, #c58611);
+	border-left-color: #fdea9a;
+	border-top-color: #c58611;
+}
+button.call:hover {
+	background:linear-gradient(30deg, #ffffff, #fde164);
+	border-left-color: #ffffff;
+	border-top-color: #fde164;
+}
+button.call:focus, button.callselect {
+	background:linear-gradient(30deg, #8c3b05, #c58611);
+	border-left-color: #8c3b05;
+	border-top-color: #c58611;
+}
+
+/*
+	warning, destructive action button
+*/
+button.destructive{
+	background:linear-gradient(30deg, #debbc2, #ff0000);
+	border-left-color: #debbc2;
+	border-top-color: #ff0000;
+}
+button.destructive:hover {
+	background:linear-gradient(30deg, #ffffff, #ff7f7f);
+	border-left-color: #ffffff;
+	border-top-color: #ff7f7f;
+}
+button.destructive:focus, button.destructiveselect {
+	background:linear-gradient(30deg, #9f1c1d, #f87881);
+	border-left-color: #9f1c1d;
+	border-top-color: #f87881;
+}
+
+/*
+	flex
+*/
+
+.test {
+	box-shadow: inset 0 0 1.0em rgba(255,255,255,1.0);
+	background: rgba(255,0,0,1.0);
+	width:6em;
+	height:2em;
+	position: relative;
+	z-index: 10;
+	display: inline-block;
+}
+.test:after {
+	box-shadow: inset 0 0 1.0em rgba(255,255,255,1.0);
+	background: rgba(50,50,255,0.25);
+	background:linear-gradient(30deg, #bbc2de, #0000ff);
+	content: "";
+	width: 100%;
+	height: 1em;
+	top:100%;
+	left:0.5em;
+	position:absolute;
+	z-index: -10;
+	transform: skew(45deg);
+ }
+.test:before {
+	box-shadow: inset 0 0 1.0em rgba(255,255,255,1.0);
+	background: rgba(50,50,255,0.75);
+	background:linear-gradient(30deg, #bbc2de, #0000ff);
+	content: "";
+	width: 1em;
+	height: 100%;
+	top:0.5em;
+	left:100%;
+	position:absolute;
+	z-index: -10;
+	transform: skewY(45deg);
+ }
+
+ .test1 {
+	display: inline-block;
+	box-shadow: inset 0 0 0.5em rgba(0,255,0,1.0);
+ }
+
+.test2 {
+	box-shadow: inset 0 0 0.5em rgba(0,0,0,1.0);
+	background: rgba(50,50,255,0.5);
+	left:1em;
+	top:1em;
+	width:6em;
+	height:2em;
+	z-index: -2;
+	position: relative;
+}
+.test2:after {
+	box-shadow: inset 0 0 0.5em rgba(0,0,0,1.0);
+	background: rgba(50,50,255,0.25);
+	content: "";
+	width: 100%;
+	height: 1em;
+	top:-50%;
+	left:-0.5em;
+	position:absolute;
+	z-index: -20;
+	transform: skew(45deg);
+ }
+.test2:before {
+	box-shadow: inset 0 0 0.5em rgba(0,0,0,1.0);
+	background: rgba(50,50,255,0.5);
+	content: "";
+	width: 1em;
+	height: 100%;
+	top:-0.5em;
+	right:100%;
+	position:absolute;
+	z-index: -20;
+	transform: skewY(45deg);
+ }
+
+.test3 {
+	position: absolute;
+	background: rgba(0,0,255,0.5);
+}
+
+.test4 {
+	display: inline-block;
+	position: relative;
+	background: rgba(0,255,0,0.5);
+}
+
+.outer {
+	position: relative;
+	display: inline-block;
+	padding:1em 2em 1em 2em;
+	margin-right:-1em;
+	margin-bottom:-1em;
+	overflow: hidden;
+}
+.v0 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(255,0,0,1.0);
+	width:calc(100% - 1em);
+	height:1em;
+	top:0.0em;
+	left:0.5em;
+	transform: skewX(45deg);
+}
+.v1 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(0,0,255,1.0);
+	width:1em;
+	height:calc(100% - 1em);
+	top:0.5em;
+	left:0em;
+	transform: skewY(45deg);
+}
+.v2 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(255,0,0,1.0);
+	width:calc(100% - 1em);
+	height:calc(100% - 1em);
+	top:1em;
+	left:1em;
+}
+.v3 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(255,0,0,1.0);
+	width:calc(100% - 1em);
+	height:1em;
+	bottom:0.0em;
+	right:0.5em;
+	transform: skewX(45deg);
+}
+.v4 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(0,0,255,1.0);
+	width:1em;
+	height:calc(100% - 1em);
+	bottom:0.5em;
+	right:0em;
+	transform: skewY(45deg);
+}
+.v5 {
+	position: absolute;
+	box-shadow: inset 0 0 0.5em rgba(255,0,0,1.0);
+	width:calc(100% - 1em);
+	height:calc(100% - 1em);
+	bottom:1em;
+	right:1em;
+}
+
+.outer:before {
+	content: "";
+	width: 200%;
+	height: 200%;
+	position: absolute;
+	top: -200%;
+	left: -225%;
+}
+.outer:hover:before {
+	top: 200%;
+	left: 200%;
+	background-image: linear-gradient(135deg, rgba(255,255,255,0), rgba(255,200,255,0.6), rgba(255,255,255,0)); 
+	transition: all 0.5s ease-out; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+html, body {
+	background: #7f7f7f;
+	width: 100%;
+	height: 100%;
+}
+
+button{
+	margin:0em;
+	padding:0em 1em 0em 1em;
+	border-right: 0em none transparent;
+	border-bottom: 0em none transparent;
+}
+
+button:focus{
+	outline:0;
+}
+
+button.call {
+	background:#fdd822;
+	border-left: 1em solid #7f2f04;
+	border-top: 1em solid #fdf8a8;
+}
+
+button.call:hover {
+	background:#fcea9d;
+	border-left: 1em solid #33200c;
+	border-top: 1em solid #a3935e;
+}
+button.call:focus, button.callactive {
+	background:#fef9b2;
+	border-left: 1em solid #020101;
+	border-top: 1em solid #561c03;
+}
+
+
+
+
+.parent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background:green;
+}
+
+.test2 {
+	margin:2em;
+	padding:0em 1em 0em 1em;
+	background:red;
+	border-style: inset none none inset;
+	border-width:1em;
+	border-color: red transparent transparent yellow;
+}
+
+
+/* Change background color of links on hover */
+.tabcontent:hover {
+	background: #ddd;
+	border-color: transparent;
+}
+
+/* Create an active/current tablink class */
+.tabcontent:focus, .active {
+	background: #ccc;
+	border-color: transparent;
+	outline:0;
+}
+
+/* Style the tab content */
+.tabcontent {
+	float:left;
+	cursor: pointer;
+	margin:0em;
+	padding:0em 1em 0em 1em;
+	background:red;
+	border-style: inset none none inset;
+	border-width:1em;
+	border-color: red transparent transparent yellow;
+}
+.tabcontentend {
+	float:left;
+	border-style: inset none none inset;
+	border-width:1em;
+	border-color: transparent transparent transparent yellow;
+}
+.content {
+	clear: left;
+	background: #ccc;
+	border-width:1em;
+	border-style: none outset outset none;
+	border-color: transparent #bbb #aaa transparent;
+}
+.dialog {
+	position: fixed;
+	top: 25%;
+	left: 50%;
+	width: 50%;
+	margin-left: -25%;
+	background: yellow;
+}
+.background {
+	border-style: inset none none inset;
+	border-width: 1em;
+	background: #888;
+	background: red;
+	width: 100%;
+	height: 100%;
+}
+
+.flexParentRowSpaceBetween {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.flexParentColumnSpaceBetween {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.flexItemMinor {
+flex-grow:1;
+	flex-shrink: 0;
+
+}
+.flexItemMajor {
+flex-grow:1;
+}
+
+.flexItemFill {
+	flex: 1;
+}
+.flexItemFooter {
+	flex-basis: 1em;
+	flex-shrink: 0;
+	align-self: center;
+}
+//flex-grow: 99;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+html, body {
+	background: #7f7f7f;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: linear-gradient(0deg, #888f90, #888f90 40%, #727e90);
+}
+
+button{
+	box-shadow: inset 0 0 1em rgba(0,0,0,0.5);
+	margin:0em;
+	padding:0em 1em 0em 1em;
+	border-right: 0em none transparent;
+	border-bottom: 0em none transparent;
+
+  .overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    /* This adds the nice overlay. */
+  background: green;
+  }
+}
+button:focus{
+	outline:0;
+}
+
+button{
+	background:linear-gradient(30deg, #bbc2de, #0000ff);
+	border-left: 1em solid #bbc2de;
+	border-top: 1em solid #0000ff;
+}
+button:hover {
+	background:linear-gradient(30deg, #ffffff, #8484ff);
+	border-left: 1em solid #ffffff;
+	border-top: 1em solid #8484ff;
+}
+button:focus, button.callselect {
+	background:linear-gradient(30deg, #1c1d9f, #7881f8);
+	border-left: 1em solid #1c1d9f;
+	border-top: 1em solid #7881f8;
+}
+
+
+.button {
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   
+   position: relative;
+   overflow: hidden;
+   display: inline-block;
+}
+
+.button:before {
+   content: "";
+   width: 200%;
+   height: 200%;
+   position: absolute;
+   top: -200%;
+   left: -225%;
+
+   background-image: -webkit-linear-gradient(135deg, rgba(255,255,255,0), rgba(255,255,255,0.6), rgba(255,255,255,0)); 
+   background-image: -moz-linear-gradient(135deg, rgba(255,255,255,0), rgba(255,255,255,0.6), rgba(255,255,255,0));  
+    
+     -moz-transition: all 0.5s ease-out; 
+       -o-transition: all 0.5s ease-out; 
+  -webkit-transition: all 0.5s ease-out;
+      -ms-transition: all 0.5s ease-out;
+}
+
+.button:hover:before {
+  top: 200%;
+  left: 200%;   
+}
+
+
+
+button.call {
+	background:linear-gradient(30deg, #fdea9a, #c58611);
+	border-left: 1em solid #fdea9a;
+	border-top: 1em solid #c58611;
+}
+button.call:hover {
+	background:linear-gradient(30deg, #ffffff, #fde164);
+	border-left: 1em solid #ffffff;
+	border-top: 1em solid #fde164;
+}
+button.call:focus, button.callselect {
+	background:linear-gradient(30deg, #8c3b05, #c58611);
+	border-left: 1em solid #8c3b05;
+	border-top: 1em solid #c58611;
+}
+
+
+button.destructive{
+	background:linear-gradient(30deg, #debbc2, #ff0000);
+	border-left: 1em solid #debbc2;
+	border-top: 1em solid #ff0000;
+}
+button.destructive:hover {
+	background:linear-gradient(30deg, #ffffff, #ff7f7f);
+	border-left: 1em solid #ffffff;
+	border-top: 1em solid #ff7f7f;
+}
+button.destructive:focus, button.destructiveselect {
+	background:linear-gradient(30deg, #9f1c1d, #f87881);
+	border-left: 1em solid #9f1c1d;
+	border-top: 1em solid #f87881;
+}

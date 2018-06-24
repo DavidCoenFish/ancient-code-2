@@ -1,0 +1,13 @@
+	for (var index = 0, length = arr.length; index < length; index++) {
+		var item = arr[index];
+	}
+
+
+	for (var key in dictionary) {
+		if (dictionary.hasOwnProperty(key)) {
+		}
+	}
+
+
+ {"root":[null,{"outer":[{"inner":1}],"foo":[{"bar":2}]},{"moo":[true],"goo":[false]}]} 
+ {"root":[null,[{"outer":{"inner":1}},{"foo":{"bar":2}}],[{"moo":true},{"goo":false}]]}

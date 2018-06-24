@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>SOM Colour</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+    <canvas id='canvasId' style = 'background-color: #00FF00; width: 200px; height: 200px;' >
+      This text is displayed if your browser does not support HTML5 Canvas.
+    </canvas>
+
+    <!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+//============================================================
+//  Cell
+//============================================================
+Cell = function (in_data)
+{
+	if (!(this instanceof Cell))
+		alert("Cell: call constuctor with new keyword");
+	this.m_data = in_data;
+
+	return;
+}
+
+Cell.prototype.AdjustWeights = function(in_cellTarget, in_influence)
+{
+  for (var index = 0; index < this.m_data.length; ++index)
+  {
+    this.m_data[index] += (in_cellTarget.m_data[index] - this.m_data[index]) * in_influence;
+  }
+
+  return;
+}
+
+//return a value
+Cell.prototype.Similarity = function(in_cellTarget)
+{
+  var distance = EuclideanDistanceSquared(this.m_data, in_cellTarget.m_data);
+  //if (0.0 != distance)
+  //  return 1.0 / distance;
+  //return 1e30;
+  return distance;
+}
+
+//============================================================
+//  Topology
+//============================================================
+Topology = function (in_width, in_height)
+{
+	if (!(this instanceof Topology))
+		alert("Topology: call constuctor with new keyword");
+	this.m_width = in_width;
+	this.m_height = in_height;
+
+	return;
+}
+
+//Manhattan distance
+Topology.prototype.LatticeDistance = function(in_indexLhs, in_indexRhs)
+{
+	var rowLhs = Math.floor(in_indexLhs / this.m_width);
+	var colLhs = in_indexLhs - (rowLhs * this.m_width);
+
+	var rowRhs = Math.floor(in_indexRhs / this.m_width);
+	var colRhs = in_indexRhs - (rowRhs * this.m_width);
+
+	return (Math.abs(rowLhs - rowRhs) + Math.abs(colLhs - colRhs));
+}
+
+Topology.prototype.NumberOfCells = function()
+{
+  return (this.m_width * this.m_height);
+}
+
+//============================================================
+//  Settings
+//============================================================
+Settings = function (
+  _totalIterations,
+  _trainingStepSize,			
+  _initialLearningRate,		
+  _finalLearningRate,			
+  _initialNeighborInfluence,	
+  _finalNeighborInfluence	
+  )
+{
+	if (!(this instanceof Settings))
+		alert("Settings: call constuctor with new keyword");
+    
+  this.m_totalIterations = (undefined == _totalIterations) ? 10000 : _totalIterations;
+  this.m_trainingStepSize = (undefined == _trainingStepSize) ? 5 : _trainingStepSize;
+  this.m_initialLearningRate = (undefined == _initialLearningRate) ? 0.1 : _initialLearningRate;
+  this.m_finalLearningRate = (undefined == _finalLearningRate) ? 0.005 : _finalLearningRate;
+  this.m_initialNeighborInfluence = (undefined == _initialNeighborInfluence) ? 5.0 : _initialNeighborInfluence;
+  this.m_finalNeighborInfluence = (undefined == _finalNeighborInfluence) ? 0.2 : _finalNeighborInfluence;
+}
+
+//============================================================
+//  CellFactory
+//============================================================
+CellFactory = function(in_arrayData)
+{
+	if (!(this instanceof CellFactory))
+		alert("CellFactory: call constuctor with new keyword");
+	this.m_arrayData = in_arrayData;
+
+	return;
+}
+
+CellFactory.prototype.MakeRandomCell = function()
+{
+  var data = [Math.random(), Math.random(), Math.random()];
+  return new Cell(data);
+}
+
+CellFactory.prototype.GetRandomCell = function()
+{
+  var data = this.m_arrayData[Math.floor(Math.random() * this.m_arrayData.length)];
+  return new Cell(data);
+}
+
+CellFactory.prototype.GetDataLength = function()
+{
+  return this.m_arrayData[0].length;
+}
+
+//============================================================
+//  Lattice
+//============================================================
+Lattice = function(in_settings, in_topology, in_cellFactory, _seedData)
+{
+	if (!(this instanceof Lattice))
+		alert("Lattice: call constuctor with new keyword");
+	this.m_settings = in_settings;
+	this.m_topology = in_topology;
+	this.m_cellFactory = in_cellFactory;
+  
+  this.m_currentIteration = 0;
+  this.m_arrayCell = [];
+
+  if (undefined == _seedData)
+  {
+    //random init
+ 
+    for (var index = 0; index < this.m_topology.NumberOfCells(); ++index)
+    {
+      this.m_arrayCell.push(this.m_cellFactory.MakeRandomCell());
+    }
+  }
+  else
+  {
+    //known init, then blur with random
+    var len = this.m_cellFactory.GetDataLength();
+    this.m_arrayCell.length = this.m_topology.NumberOfCells();
+    var that = this;
+    _seedData.forEach( function(item)
+    {
+      var index = item.m_x + (item.m_y * that.m_topology.m_width);
+      that.m_arrayCell[index] = new Cell(item.m_data);  
+    });
+    for (var y = 0; y < this.m_topology.m_height; ++y)
+    {
+      for (var x = 0; x < this.m_topology.m_width; ++x)
+      {
+        var index = x + (y * this.m_topology.m_width);
+        if (undefined != that.m_arrayCell[index])
+          continue;
+        var colourSum = [];
+        for (var subIndex = 0; subIndex < len; ++subIndex)
+        {
+          colourSum.push(0.0);
+        }
+        var coverage = 0.0;
+        _seedData.forEach( function(item)
+        {
+          var distance = EuclideanDistance([x, y], [item.m_x, item.m_y]);
+          var range = that.m_topology.m_width / 4;
+          if (range < distance)
+            return;
+          var factor = 1.0 - (distance / range);
+          coverage += factor;
+          for (var subIndex = 0; subIndex < len; ++subIndex)
+          {
+            colourSum[subIndex] += (factor * item.m_data[subIndex]);
+          }
+        });
+        
+        if (1.0 <= coverage)
+        {
+          for (var subIndex = 0; subIndex < len; ++subIndex)
+          {
+            colourSum[subIndex] /= coverage;
+          }
+        }
+        else
+        {
+          for (var subIndex = 0; subIndex < len; ++subIndex)
+          {
+            colourSum[subIndex] += (Math.random() * (1.0 - coverage));
+          }
+        }
+        that.m_arrayCell[index] = new Cell(colourSum);  
+      }
+    }
+  }
+  
+	return;
+}
+
+//return true to keep going
+Lattice.prototype.Train = function()
+{
+  var currentCell = this.m_cellFactory.GetRandomCell();
+  var closestIndex = this.ClosestCellIndex(currentCell);
+  var winningNodeIndex = closestIndex[Math.floor(Math.random() * closestIndex.length)];
+  
+	//http://www.neuroinformatik.ruhr-uni-bochum.de/ini/VDM/research/gsn/DemoGNG/SOM_2.html 
+	var epsilonT = 0.1 * Math.pow(0.005 / 0.1, this.m_currentIteration / this.m_settings.m_totalIterations);
+	var sigmaT = 5.0 * Math.pow(0.2 / 5.0, this.m_currentIteration / this.m_settings.m_totalIterations);
+
+  for (var index = 0; index < this.m_arrayCell.length; ++index)
+  {
+ 			var latticeDistance = this.m_topology.LatticeDistance(winningNodeIndex, index);
+			var hrs = Math.exp(-(latticeDistance * latticeDistance) / (2.0 * sigmaT * sigmaT));
+      this.m_arrayCell[index].AdjustWeights(currentCell, epsilonT * hrs);
+  }
+
+  this.m_currentIteration += this.m_settings.m_trainingStepSize;
+  return (this.m_currentIteration < this.m_settings.m_totalIterations);
+}
+
+Lattice.prototype.ClosestCellIndex = function(in_currentCell)
+{
+  var arrayIndex = [];
+  var currentClosestSim = undefined;
+
+  for (var index = 0; index < this.m_arrayCell.length; ++index)
+  {
+ 			var testCell = this.m_arrayCell[index];
+      var similarity = testCell.Similarity(in_currentCell);
+      if ((undefined == currentClosestSim) ||
+          (similarity < currentClosestSim))
+      {
+        arrayIndex = [];
+        arrayIndex.push(index);
+        currentClosestSim = similarity;
+      }
+      else if (similarity == currentClosestSim)
+      {
+        arrayIndex.push(index);
+      }
+  }
+  
+  return arrayIndex;
+}
+
+Lattice.prototype.Write = function(out_buf, in_width, in_height)
+{
+  for (var y = 0; y < in_height; ++y)
+  {
+    for (var x = 0; x < in_width; ++x)
+    {
+      var index = (y * in_width) + x;
+
+      var cell = this.m_arrayCell[index];
+      
+      var colourRed = Math.max(Math.min(Math.round(cell.m_data[0] * 255), 255), 0);
+      var colourGreen = Math.max(Math.min(Math.round(cell.m_data[1] * 255), 255), 0);
+      var colourBlue = Math.max(Math.min(Math.round(cell.m_data[2] * 255), 255), 0);
+      var colour = (colourRed) | (colourGreen << 8) | (colourBlue << 16) | (255 << 24);
+      out_buf[index] = colour;
+    }
+  }
+}
+
+Lattice.prototype.Log = function(in_arrayData)
+{
+  var that = this;
+  var count = 0;
+  var sumError = [0.0, 0.0, 0.0];
+  in_arrayData.forEach( function(item)
+  {
+    console.info("item " + item[0] + ", " + item[1] + ", " + item[2]);
+    var tempCell = new Cell(item);
+    var closestIndex = that.ClosestCellIndex(tempCell);
+    var indexString = "[";
+    closestIndex.forEach( function(index)
+    {
+      var cell = that.m_arrayCell[index];
+      var diff = [(cell.m_data[0] - item[0]) * 255, (cell.m_data[1] - item[1]) * 255, (cell.m_data[2] - item[2]) * 255];
+      indexString += "" + index + "(delta:" + diff[0] + ", " + diff[1] + ", " + diff[2] + "), ";
+      sumError[0] += Math.abs(diff[0]);
+      sumError[1] += Math.abs(diff[1]);
+      sumError[2] += Math.abs(diff[2]);
+      count += 1;
+    });
+    indexString += "]";
+    console.info(indexString);
+  });  
+  console.info("avr error: " + (sumError[0] / count) + ", " + (sumError[1] / count) + ", " + (sumError[2] / count));
+}
+
+
+//============================================================
+//  methods
+//============================================================
+function EuclideanDistanceSquared(in_lhs, in_rhs)
+{
+  var sum = 0;
+  for (var index = 0; index < in_lhs.length; ++index)
+  {
+    var diff = in_lhs[index] - in_rhs[index];
+    sum += (diff * diff);
+  }
+  return sum;
+}
+
+function EuclideanDistance(in_lhs, in_rhs)
+{
+  var sum = EuclideanDistanceSquared(in_lhs, in_rhs);
+  return Math.sqrt(sum);
+}
+
+//============================================================
+//  framework
+//============================================================
+function OnPageLoad()
+{
+	console.info("OnPageLoad");
+
+  var width = 13;
+  var height = 13;
+
+	var canvas = document.getElementById('canvasId');
+  var context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
+  var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  var buf = new ArrayBuffer(imageData.data.length);
+  var buf8 = new Uint8ClampedArray(buf);
+  var data = new Uint32Array(buf);
+
+  var arrayData = [];
+  arrayData.push([0.25, 0.25, 0.25]);
+  arrayData.push([0.75, 0.75, 0.75]);
+  for (var index0 = 0; index0 < 3; ++index0)
+  {
+    for (var index1 = 0; index1 < 3; ++index1)
+    {
+      for (var index2 = 0; index2 < 3; ++index2)
+      {
+        arrayData.push([index0 / 2.0, index1 / 2.0, index2 / 2.0]);
+      }
+    }
+  }
+  
+  var seedData = [];
+  if (false)
+  {
+    //middle black - white diagonal
+    seedData.push({ m_x :  0, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :  3, m_y :  3, m_data : [0.25, 0.25, 0.25] });
+    seedData.push({ m_x :  6, m_y :  6, m_data : [0.5,  0.5,  0.5] });
+    seedData.push({ m_x :  9, m_y :  9, m_data : [0.75, 0.75, 0.75] });
+    seedData.push({ m_x : 12, m_y : 12, m_data : [1.0,  1.0,  1.0] });
+
+    seedData.push({ m_x :  0, m_y :  6, m_data : [1.0,  0.0,  0.0] });
+    seedData.push({ m_x :  0, m_y : 12, m_data : [0.0,  1.0,  0.0] });
+    seedData.push({ m_x :  6, m_y : 12, m_data : [0.0,  0.0,  1.0] });
+
+    seedData.push({ m_x :  6, m_y :  0, m_data : [0.0,  0.0,  1.0] });
+    seedData.push({ m_x : 12, m_y :  0, m_data : [0.0,  1.0,  0.0] });
+    seedData.push({ m_x : 12, m_y :  6, m_data : [1.0,  0.0,  0.0] });
+    
+    //avr 15 error
+  }
+  else if (false)
+  {
+    seedData.push({ m_x :   0, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   6, m_y :  0, m_data : [1.0,  1.0,  1.0] });
+    seedData.push({ m_x :  12, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   6, m_y : 12, m_data : [1.0,  1.0,  1.0] });
+    seedData.push({ m_x :  12, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y :  6, m_data : [1.0,  1.0,  1.0] });
+    seedData.push({ m_x :   0, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :  12, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :  12, m_y :  6, m_data : [1.0,  1.0,  1.0] });
+    seedData.push({ m_x :  12, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    
+    seedData.push({ m_x :   6, m_y :  3, m_data : [1.0,  0.0,  0.0] });
+    seedData.push({ m_x :   3, m_y :  6, m_data : [0.0,  1.0,  0.0] });
+    seedData.push({ m_x :   6, m_y :  9, m_data : [0.0,  0.0,  1.0] });
+
+    seedData.push({ m_x :   3, m_y :  3, m_data : [1.0,  1.0,  0.0] });
+    seedData.push({ m_x :   3, m_y :  9, m_data : [0.0,  1.0,  1.0] });
+    seedData.push({ m_x :   6, m_y :  6, m_data : [1.0,  0.0,  1.0] });
+    //avr 14 error
+  }
+  else
+  {
+    seedData.push({ m_x :   0, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   6, m_y :  0, m_data : [1.0,  0.0,  0.0] });
+    seedData.push({ m_x :  12, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   6, m_y : 12, m_data : [0.0,  1.0,  0.0] });
+    seedData.push({ m_x :  12, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   0, m_y :  6, m_data : [0.0,  0.0,  1.0] });
+    seedData.push({ m_x :   0, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :  12, m_y :  0, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :  12, m_y :  6, m_data : [1.0,  1.0,  0.0] });
+    seedData.push({ m_x :  12, m_y : 12, m_data : [0.0,  0.0,  0.0] });
+    seedData.push({ m_x :   6, m_y :  6, m_data : [1.0,  1.0,  1.0] });
+    //avr 14 error
+  }
+
+  var settings = new Settings();
+  var topology = new Topology(width, height);
+  var cellFactory = new CellFactory(arrayData);
+  var lattice = new Lattice(settings, topology, cellFactory, seedData);
+
+  lattice.Write(data, canvas.width, canvas.height);
+  imageData.data.set(buf8);
+  context.putImageData(imageData, 0, 0);        
+
+  var callback = function()
+  {
+    if (!lattice.Train())
+    {
+      lattice.Log(arrayData);
+    	console.info("Exit");
+      return;
+    }
+    lattice.Write(data, canvas.width, canvas.height);
+    imageData.data.set(buf8);
+    context.putImageData(imageData, 0, 0);        
+		window.requestAnimationFrame(function(in_timeStamp){callback();});
+  }
+
+  callback();
+  
+	return;
+}
+
+window.addEventListener('load', OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

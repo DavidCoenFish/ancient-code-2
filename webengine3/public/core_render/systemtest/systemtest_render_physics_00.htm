@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>render physics 00</title>
+	</head>
+	<!-- <body style='background-color: #000000'> -->
+	<body>
+		<div id="containerId" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;justify-content: flex-start;">
+			<div>
+				<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+					This text is displayed if your browser does not support HTML5 Canvas.
+				</canvas>
+				<br/>
+				<button type="button" onclick="gMain.Stop()">Stop</button>
+				<span>FPS:</span>
+				<span id="fpsId">n/a</span>
+			</div>
+		</div>
+
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+/*
+physics simulation is essientually a series of sphere
+between the spheres we have capsules (2 spheres of same radius? or use smaller if different)
+2 capsules sharing a sphere can have a ik joint, spring target distance between the ends (force) and a force on the elbow joint)
+1 capsule can be child of body with offset, child gets told parent 
+sphere can also have virtual body (with at, up?)
+
+array spheres[]
+capsule (2 spheres, 1 physics body)
+physics body (at, up)
+joint (connect 1 sphere of a capsule to physics body at offset)
+ik joint (2 capsules sharing a "hinge joint" sphere)
+
+don't need to two types of joints to start with
+
+human body
+weigh(s) 1.01 gram per (cubic centimeter)
+
+body has contact table? or everything
+work out forces on sphere (including friction and resistance collision?)
+iterate movement for force
+*/
+
+PSphere = function(in_location, in_velocity, in_radius, in_mass){ //, in_materialType){
+	this.m_location = in_location;
+	this.m_velocity = in_velocity;
+	this.m_radius = in_radius;
+	this.m_mass = in_mass;
+	this.m_forceSum = c.Vector3.Factory();
+	//this.m_materialType = in_materialType;
+	return;
+}
+
+PSphere.prototype.ClearForce = function(){
+	c.Vector3.Set(this.m_forceSum, 0.0, 0.0, 0.0);
+	return;
+}
+
+PSphere.prototype.AddForce = function(in_forceGenerator){
+	in_forceGenerator.Apply(this.m_forceSum, this.m_location, this.m_mass);
+	return;
+}
+
+PSphere.prototype.ResolveMovement = function(in_arrayStaticCollision, in_timeDelta){
+	var ns = PSphere.prototype.ResolveMovement;
+
+	ns.sPrevLocation = c.Vector3.Factory(0.0, 0.0, 0.0, ns.sPrevLocation);
+	ns.sMoveDelta = c.Vector3.Factory(0.0, 0.0, 0.0, ns.sMoveDelta);
+	ns.sAcceleration = c.Vector3.Factory(0.0, 0.0, 0.0, ns.sAcceleration);
+
+	sAcceleration = c.Vector3.MultiplyNumeric(this.m_forceSum, in_timeDelta / this.m_mass, ns.sAcceleration);
+	this.m_velocity = c.Vector3.Plus(this.m_velocity, ns.sAcceleration, this.m_velocity);
+
+	c.Vector3.Clone(this.m_location, ns.sPrevLocation);
+	ns.sMoveDelta = c.Vector3.MultiplyNumeric(this.m_velocity, in_timeDelta, ns.sMoveDelta);
+	this.m_location = c.Vector3.Plus(this.m_location, ns.sMoveDelta, this.m_location);
+
+
+
+	return;
+}
+
+PCapsule = function(in_psphereA, in_psphereB, in_targetDistance){
+	this.m_psphereA = in_psphereA;
+	this.m_psphereB = in_psphereB;
+	this.m_targetDistance = in_targetDistance;
+	return;
+}
+
+PPlane = function(in_normal, in_distance){
+	this.m_normal = in_normal;
+	this.m_distance = in_distance;
+	return;
+}
+
+/*
+	don't allow movement through solid objects
+*/
+PPlane.prototype.AttempMoveSphere = function(in_prevLocation, in_newLocation, in_radius){
+	
+	return;
+}
+
+Main = function(in_renderer, in_sceneCameraTransform, in_sceneCamera, in_dagMatrixVP, in_container, in_fpsDiv){
+	this.m_renderer = in_renderer;
+	this.m_sceneCameraTransform = in_sceneCameraTransform;
+	this.m_sceneCamera = in_sceneCamera;
+	this.m_dagMatrixV = in_sceneCameraTransform.GetMatrixInvert();
+	this.m_dagMatrixP = in_sceneCamera.GetMatrix();
+	this.m_dagMatrixVP = in_dagMatrixVP;
+	this.m_container = in_container;
+	this.m_fpsDiv = in_fpsDiv;
+	this.m_keepGoing = true;
+
+	this.m_arraySphere = [];
+	this.m_arrayCapsule = [];
+
+	this.m_arrayDynamicBody = [];
+	this.m_arrayForceGenerator = [];
+	this.m_arrayStaticCollision = [];
+	this.m_arrayStaticCollision.push(new PPlane(c.Vector3.s_unitY, 0.0));
+
+	this.m_arrayRender = [];
+	this.m_arrayRender.push({Render : function(in_render){
+		in_render.Clear(c.ColourRGBA.s_grey, 1.0);
+		}});
+
+	c.SceneGrid.Factory(this.m_arrayRender, this.m_dagMatrixVP, this.m_renderer);
+
+	this.MakeContent();
+
+	return;
+};
+
+Main.Factory = function(){	
+
+	var renderer = undefined;
+	var canvas = document.getElementById('canvasId');	
+	paramObject = {
+		depth : true
+	};
+	var renderer = c.Render.Factory(canvas, paramObject);
+
+	var container = document.getElementById('containerId');	
+	var fpsDiv = document.getElementById('fpsId');
+
+	var sceneCameraTransform = c.SceneTransformOrbit.Factory(0, 0, 0, 0, 0, 50.0);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "PosX", -100, 100, sceneCameraTransform.GetDagPosX());
+	c.UISlider.Factory(document, div, "PosY", -100, 100, sceneCameraTransform.GetDagPosY());
+	c.UISlider.Factory(document, div, "PosZ", -100, 100, sceneCameraTransform.GetDagPosZ());
+	c.UISlider.Factory(document, div, "Latitude", -90, 90, sceneCameraTransform.GetLatitude());
+	c.UISlider.Factory(document, div, "Longitude", -180, 180, sceneCameraTransform.GetLongitude());
+	c.UISlider.Factory(document, div, "Distance", 0, 200, sceneCameraTransform.GetDistance());
+	container.appendChild(div);
+
+	var sceneCamera = c.SceneCameraFov.Factory(renderer.GetViewport(), 0.1, 100, 90);
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "Near", 0.1, 1000.0, sceneCamera.GetDagNear());
+	c.UISlider.Factory(document, div, "Far", 0.1, 1000.0, sceneCamera.GetDagFar());
+	c.UISlider.Factory(document, div, "Fov", 5, 150, sceneCamera.GetDagFov());
+	container.appendChild(div);
+
+	var instructionContext = {
+		"matrix_mul" : function(lhs, rhs, _prevValue) { 
+			return c.Matrix4.Multiply(lhs, rhs, _prevValue);
+		},
+	};
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node, //V
+			"node" : sceneCameraTransform.GetMatrixInvert()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,  //P
+			"node" : sceneCamera.GetMatrix()
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn2,
+			"data" : "matrix_mul"
+		}
+	];
+	var dagMatrixVP = c.DagNodeCalculate.Factory("MatrixMV", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(sceneCameraTransform.GetMatrixInvert(), dagMatrixVP);
+	c.DagNodeCollection.SetNodesLinked(sceneCamera.GetMatrix(), dagMatrixVP);
+
+	return new Main(renderer, sceneCameraTransform, sceneCamera, dagMatrixVP, container, fpsDiv);
+}
+
+Main.prototype.MakeContent = function(){
+	var instructionContext = {
+		"V3_Factory" : c.Vector3.Factory
+	};
+
+	var dagGravityX = c.DagNodeValue.Factory("posX", 0.0);
+	var dagGravityY = c.DagNodeValue.Factory("posY", -9.8);
+	var dagGravityZ = c.DagNodeValue.Factory("posZ", 0.0);
+	var instructionArray = [
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : dagGravityX
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : dagGravityY
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.push_node,
+			"node" : dagGravityZ
+		},
+		{
+			"op" : c.DagNodeInstructionEnum.fn3,
+			"data" : "V3_Factory"
+		}
+	];
+	var dagGravity = c.DagNodeCalculate.Factory("Gravity", instructionArray, instructionContext);
+	c.DagNodeCollection.SetNodesLinked(dagGravityX, dagGravity);
+	c.DagNodeCollection.SetNodesLinked(dagGravityY, dagGravity);
+	c.DagNodeCollection.SetNodesLinked(dagGravityZ, dagGravity);
+	this.m_dagGravity = dagGravity;
+
+	var div = document.createElement("div");
+	c.UISlider.Factory(document, div, "GravityX", -20, 20, dagGravityX);
+	c.UISlider.Factory(document, div, "GravityY", -20, 20, dagGravityY);
+	c.UISlider.Factory(document, div, "GravityZ", -20, 20, dagGravityZ);
+	this.m_container.appendChild(div);
+
+	Main.prototype.MakeContent.sForce = c.Vector3.Factory();
+	this.m_arrayForceGenerator.push({Apply : function(inout_forceSum, in_location, in_mass){
+		var gravity = dagGravity.GetValue();
+		var sForce = Main.prototype.MakeContent.sForce;
+		c.Vector3.MultiplyNumeric(gravity, in_mass, sForce);
+		inout_forceSum = c.Vector3.Plus(inout_forceSum, sForce, inout_forceSum);
+	}});
+
+	this.m_capsuleCollection = c.CapsuleCollection.Factory(this.m_renderer, 100, this.m_dagMatrixV, this.m_dagMatrixP, this.m_sceneCamera.GetNearFarFocalLengthAspect());
+	this.m_arrayRender.push(this.m_capsuleCollection);
+
+	//m_arraySphere
+	var sphere0 = new PSphere(c.Vector3.Factory(10.0, 10.0, 10.0), c.Vector3.Clone(c.Vector3.s_zero), 5.0, 1.0);
+	this.m_arraySphere.push(sphere0);
+	this.m_arrayDynamicBody.push(sphere0);
+	var sphere1 = new PSphere(c.Vector3.Factory(0.0, 20.0, 0.0), c.Vector3.Clone(c.Vector3.s_zero), 5.0, 1.0);
+	this.m_arraySphere.push(sphere1);
+	this.m_arrayDynamicBody.push(sphere1);
+	
+	var capsule0 = PCapsule(sphere0, sphere1, 10.0);
+	this.m_arrayCapsule.push(capsule0);
+
+	//m_arrayCapsule
+
+	return;
+}
+
+Main.prototype.AdvancePhysics = function(in_timeDelta){
+	in_timeDelta = Math.min(in_timeDelta, 0.05);
+	var gravity = this.m_dagGravity.GetValue();
+
+	//sum all the forces on the dynamic bodys
+	for (var index = 0, count = this.m_arrayDynamicBody.length; index < count; ++index){
+		var dynamicBody = this.m_arrayDynamicBody[index];
+		dynamicBody.ClearForce();
+
+		for (var subIndex = 0, subCount = this.m_arrayForceGenerator.length; subIndex < subCount; ++subIndex){
+			var forceGenerator = this.m_arrayForceGenerator[subIndex];
+			dynamicBody.AddForce(forceGenerator);
+		}
+	}
+
+	//resolve movement
+	for (var index = 0, count = this.m_arrayDynamicBody.length; index < count; ++index){
+		var dynamicBody = this.m_arrayDynamicBody[index];
+		dynamicBody.ResolveMovement(this.m_arrayStaticCollision, in_timeDelta);
+	}
+
+	return;
+}
+
+Main.prototype.UpdateCapsuleCollection = function(){
+	this.m_capsuleCollection.Begin();
+
+	//m_arraySphere
+	//m_arrayCapsule
+	for (var index = 0, count = this.m_arraySphere.length; index < count; ++index){
+		var sphere = this.m_arraySphere[index];
+		this.m_capsuleCollection.AddCapsule(sphere.m_location, c.Vector3.s_unitX, sphere.m_radius, 0.0);
+	}
+
+	this.m_capsuleCollection.Flush(this.m_renderer);
+	return;
+}
+
+Main.prototype.Stop = function(){
+	this.m_keepGoing = false;
+	return;
+}
+
+Main.prototype.OnRun = function(in_timeDelta){
+	if (false === this.m_keepGoing){
+		return false;
+	}
+
+	//update 
+	this.m_time += in_timeDelta;
+	this.m_fpsDiv.innerHTML = 1.0 / in_timeDelta;
+
+	this.AdvancePhysics(in_timeDelta);
+	this.UpdateCapsuleCollection();
+
+	//draw
+	for (var index = 0, count = this.m_arrayRender.length; index < count; ++index){
+		var render = this.m_arrayRender[index];
+		render.Render(this.m_renderer);
+	}
+
+	//console.log(c.Matrix4.AsString(this.m_dagMatrixMV.GetValue()));
+	//console.log(this.m_sceneCamera.GetNearFarFocalLengthAspect().GetValue());
+
+	return this.m_keepGoing;
+}
+
+var gMain = undefined;
+
+c.OnPageLoad = function() {
+	console.info("OnPageLoad");
+	var task = function(in_timeDelta){
+		if (undefined === gMain){
+			gMain = Main.Factory();
+		}
+		return gMain.OnRun(in_timeDelta);
+	};
+	c.Framework.Factory(task);
+}
+
+c.OnShutdown = function() {
+	console.info("OnShutdown");
+}
+
+window.addEventListener('load', c.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build\build.bat" />
+    <None Include="build\build.py" />
+    <None Include="build\clean.bat" />
+    <None Include="build\clean.py" />
+    <None Include="build\deploy.bat" />
+    <None Include="build\deploy.py" />
+    <None Include="build\rebuild.bat" />
+    <None Include="notes\baicwebgl.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\css\style.css" />
+    <None Include="source\library\dsc.js" />
+    <None Include="source\library\dsc\contextcanvas.js" />
+    <None Include="source\library\dsc\contextrecord.js" />
+    <None Include="source\library\dsc\contextwebgl.js" />
+    <None Include="source\library\dsc\dngcalculate.js" />
+    <None Include="source\library\dsc\dngnode.js" />
+    <None Include="source\library\dsc\dngrecord.js" />
+    <None Include="source\library\dsc\dngvalue.js" />
+    <None Include="source\library\dsc\framework.js" />
+    <None Include="source\library\dsc\math.js" />
+    <None Include="source\library\dsc\randomsequence.js" />
+    <None Include="source\library\dsc\taskrecord.js" />
+    <None Include="source\library\lq.js" />
+    <None Include="source\library\lq\businesslogic.js" />
+    <None Include="source\library\lq\businesslogiccreategame.js" />
+    <None Include="source\library\lq\businesslogicdata.js" />
+    <None Include="source\library\lq\businesslogicdatagamedynamic.js" />
+    <None Include="source\library\lq\businesslogicdatagamestatic.js" />
+    <None Include="source\library\lq\businesslogicdatahero.js" />
+    <None Include="source\library\lq\businesslogicdataworlddynamic.js" />
+    <None Include="source\library\lq\businesslogicdataworlddynamicdata.js" />
+    <None Include="source\library\lq\businesslogicdataworldstatic.js" />
+    <None Include="source\library\lq\businesslogicdataworldstaticdata.js" />
+    <None Include="source\library\lq\businesslogicdestroygame.js" />
+    <None Include="source\library\lq\businesslogicgetactiondata.js" />
+    <None Include="source\library\lq\businesslogicgetgamestatus.js" />
+    <None Include="source\library\lq\businesslogicperrformaction.js" />
+    <None Include="source\library\lq\businesslogicresult.js" />
+    <None Include="source\library\lq\datastoreeception.js" />
+    <None Include="source\library\lq\datastoremock.js" />
+    <None Include="source\library\lq\datastoremockapplication.js" />
+    <None Include="source\library\lq\datastoremockdata.js" />
+    <None Include="source\library\lq\datastoremockgame.js" />
+    <None Include="source\library\lq\datastoremocktranslation.js" />
+    <None Include="source\library\lq\datastorerecord.js" />
+    <None Include="source\library\lq\datastoreresult.js" />
+    <None Include="source\library\lq\presentationlayer.js" />
+    <None Include="source\library\lq\presentationlayerdatagamestatus.js" />
+    <None Include="source\library\lq\resourcerecoverydata.js" />
+    <None Include="source\library\lq\resourcerecoveryhelper.js" />
+    <None Include="source\nodejs\server.js" />
+    <None Include="source\nodejs\test.js" />
+    <None Include="source\systemtest\task.js" />
+    <None Include="source\template\index.tmp.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\template\indexsystemtest.tmp.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\template\indexunittest.tmp.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\template\systemtest.tmp.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\template\systemtest.tmp.js" />
+    <None Include="source\template\unittest.tmp.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="source\template\unittest.tmp.js" />
+    <None Include="source\unittest\businesslogic.js" />
+    <None Include="source\unittest\datastoremock.js" />
+    <None Include="source\unittest\dngnode.js" />
+    <None Include="source\unittest\dsc.js" />
+    <None Include="source\unittest\experementaljson.js" />
+    <None Include="source\unittest\math.js" />
+    <None Include="source\unittest\randomsequence.js" />
+    <None Include="source\unittest\resourcerecoveryhelper.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes\lq.txt" />
+    <Text Include="notes\notes.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3382EA29-65FE-409F-9E02-DB12FB89F283}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <IntermediateOutputPath>$(ProjectDir)</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <IntermediateOutputPath>$(ProjectDir)</IntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)output\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)output\temp\$(Configuration)\</IntDir>
+    <TargetName>index</TargetName>
+    <TargetExt>.htm</TargetExt>
+    <NMakeBuildCommandLine>$(ProjectDir)\build\build.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)
+</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(ProjectDir)\build\rebuild.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(ProjectDir)\build\clean.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)output\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)output\temp\$(Configuration)\</IntDir>
+    <TargetName>index</TargetName>
+    <TargetExt>.htm</TargetExt>
+    <NMakeBuildCommandLine>$(ProjectDir)\build\build.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)
+</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(ProjectDir)\build\rebuild.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(ProjectDir)\build\clean.bat $(Configuration) $(ProjectDir) $(OutDir) $(IntDir)</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

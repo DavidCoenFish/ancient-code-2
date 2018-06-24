@@ -1,0 +1,35 @@
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+
+https://google.github.io/styleguide/javascriptguide.xml
+
+There are 5 primitive types in JavaScript: {null}, {undefined}, {boolean}, {number}, and {string}.
+
+{Array.<number>}
+
+
+rather than accessors functions, just provide enums to get values out of arrays data (colour, vector, matrix, bounds [lowx, lowy, highx, highy], frame[lowx, lowy, sizex, sizey]~ 
+dont have both bounds and frame. bounds more useful?
+
+
+todo
+bussineee layer 
+	create new game, return game status
+	get game stuatus
+	take hero choice
+	get map/ actions
+	[scout, ambush, dialog]
+	get sprit bath tokens
+	spend sprit bath tokens
+presentation layer
+	mockup layout
+	test drag drop
+server
+	setup apachi
+	get javascript plugin working
+	database
+
+skills for incubus, minatour? 
+enlarged secondary seual characteristics, hynoticism opposit sex
+
+
+

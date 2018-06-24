@@ -1,0 +1,15 @@
+.shadow{box-shadow: 0.125em 0.25em 0.25em 0.125em #000 inset;}
+.shadow:hover{box-shadow: 0.125em 0.25em 0.5em 0.25em #000;}
+.shadowoutset{box-shadow: 0.125em 0.25em 0.5em 0.25em #000;}
+
+.pagebackground{background:#444;}
+.pageforeground{background:#555;}
+.appbackground{background:#666;}
+.appforeground{background:#777;}
+
+.interactive{background: #AAA;}
+.interactive:hover{background: #CCC;}
+.interactive:active{background: #EEE;}
+.interactivecallaction{background: #BBB;}
+.interactivecallaction:hover{background: #DDD;}
+.interactivecallaction:active{background: #FFF;}

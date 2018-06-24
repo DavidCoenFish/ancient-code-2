@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>gratuitous rpg battles</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+    <!--[if IE]><script src="script/excanvas.js"></script><![endif]-->
+  </head>
+  <body>
+		<canvas id="canvasId" width="760" height="620">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+    <script type='text/javascript' src="script/battleaction.js" ></script>
+    <script type='text/javascript' src="script/battleactionmodifier.js" ></script>
+    <script type='text/javascript' src="script/battleactionmodifierlock.js" ></script>
+    <script type='text/javascript' src="script/battlecharacterdata.js" ></script>
+    <script type='text/javascript' src="script/battledistancestore.js" ></script>
+    <script type='text/javascript' src="script/battledistancestoredata.js" ></script>
+    <script type='text/javascript' src="script/battlereport.js" ></script>
+    <script type='text/javascript' src="script/common.js" ></script>
+    <script type='text/javascript' src="script/commondraw.js" ></script>
+    <script type='text/javascript' src="script/deploycharacterdata.js" ></script>
+    <script type='text/javascript' src="script/descriptiondata.js" ></script>
+    <script type='text/javascript' src="script/game.js" ></script>
+    <script type='text/javascript' src="script/gamecharacter.js" ></script>
+    <script type='text/javascript' src="script/gamedraw.js" ></script>
+    <script type='text/javascript' src="script/gameentity.js" ></script>
+    <script type='text/javascript' src="script/gamemodebattle.js" ></script>
+    <script type='text/javascript' src="script/gamemodedeploy.js" ></script>
+    <script type='text/javascript' src="script/gamemodedrag.js" ></script>
+    <script type='text/javascript' src="script/gamemodedroplist.js" ></script>
+    <script type='text/javascript' src="script/gamemodeedit.js" ></script>
+    <script type='text/javascript' src="script/gamemodeeditmember.js" ></script>
+    <script type='text/javascript' src="script/gamemodehelp.js" ></script>
+    <script type='text/javascript' src="script/gamemodelocalbattle.js" ></script>
+    <script type='text/javascript' src="script/gamemodemain.js" ></script>
+    <script type='text/javascript' src="script/gamemodeonlinebattle.js" ></script>
+    <script type='text/javascript' src="script/gamemoderanking.js" ></script>
+    <script type='text/javascript' src="script/gamemoderesult.js" ></script>
+    <script type='text/javascript' src="script/gamemodeunlockskill.js" ></script>
+    <script type='text/javascript' src="script/gamevar.js" ></script>
+    <script type='text/javascript' src="script/guibackground.js" ></script>
+    <script type='text/javascript' src="script/guibutton.js" ></script>
+    <script type='text/javascript' src="script/guigamebattleminimap.js" ></script>
+    <script type='text/javascript' src="script/guigamebattlenote.js" ></script>
+    <script type='text/javascript' src="script/guigamebattletrace.js" ></script>
+    <script type='text/javascript' src="script/guigamebattleview.js" ></script>    
+    <script type='text/javascript' src="script/guigamecharacter.js" ></script>
+    <script type='text/javascript' src="script/guigamecharacterinfo.js" ></script>
+    <script type='text/javascript' src="script/guigameslot.js" ></script>
+    <script type='text/javascript' src="script/guigameslotinfo.js" ></script>
+    <script type='text/javascript' src="script/guigameslotitem.js" ></script>
+    <script type='text/javascript' src="script/guigameslottable.js" ></script>
+    <script type='text/javascript' src="script/guilist.js" ></script>
+    <script type='text/javascript' src="script/guilistdata.js" ></script>
+    <script type='text/javascript' src="script/guipanel.js" ></script>
+    <script type='text/javascript' src="script/guipanelfancy.js" ></script>
+    <script type='text/javascript' src="script/guiscrollbarvertical.js" ></script>
+    <script type='text/javascript' src="script/guitext.js" ></script>
+    <script type='text/javascript' src="script/modaldialog.js" ></script>
+    <script type='text/javascript' src="script/modaldialogbuttondata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacter.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterai.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterbattle.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterclass.js" ></script>
+    <script type='text/javascript' src="script/modifiercharactergender.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterrace.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslot.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdataaction.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdatadescription.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotnodeconnectdata.js" ></script>
+    <script type='text/javascript' src="script/modifiercharacterslotdragtarget.js" ></script>
+    <script type='text/javascript' src="script/modifiercharactervalid.js" ></script>
+    <script type='text/javascript' src="script/modifiermap.js" ></script>
+    <script type='text/javascript' src="script/modifierplusstat.js" ></script>
+    <script type='text/javascript' src="script/node.js" ></script>
+    <script type='text/javascript' src="script/nodegraph.js" ></script>
+    <script type='text/javascript' src="script/nodeinput.js" ></script>
+    <script type='text/javascript' src="script/vector.js" ></script>
+    <script type='text/javascript' src="script/vector3.js" ></script>
+
+    <script type='text/javascript'>
+			<!-- 
+var g_canvas = document.getElementById('canvasId');
+var g_context = g_canvas.getContext('2d');
+var g_mouseDown = false;
+var g_mouseDownOld = false;
+var g_mouseEdge = false;
+var g_mouseXOld = 0;
+var g_mouseX = 0;
+var g_mouseYOld = 0;
+var g_mouseY = 0;
+
+var g_game = null;
+
+var s_targetFPS = 30.0;
+
+
+/////////////////////////////////////////////////////////////////////////////
+//private methods
+function OnPageLoadInit()
+{
+  g_canvas.addEventListener("mousedown", CallbackMouseDown, false);
+  g_canvas.addEventListener("mouseup", CallbackMouseUp, false);
+  g_canvas.addEventListener("mousemove", CallbackMouseMove, false);
+  g_canvas.addEventListener("touchstart", TouchHandler, false);
+  g_canvas.addEventListener("touchmove", TouchHandler, false);
+  g_canvas.addEventListener("touchend", TouchHandler, false);
+  g_canvas.addEventListener("touchcancel", TouchHandler, false);  
+
+  InitGameVar();
+  g_game = new Game(g_context, g_canvas);
+
+  //setInterval(CallbackInterval, 1000/s_targetFPS);
+  CallbackInterval();
+}
+
+function CallbackInterval()
+{
+  g_game.Update(g_context, g_canvas);
+
+  g_mouseDownOld = g_mouseDown;
+  g_mouseEdge = false;  
+  g_mouseXOld = g_mouseX;
+  g_mouseYOld = g_mouseY;
+  
+  setTimeout(CallbackInterval, 0) ; 
+}
+
+function CallbackMouseDown(in_event)
+{
+  g_mouseDown = true;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function CallbackMouseUp(in_event)
+{
+  g_mouseDown = false;
+  if (g_mouseDownOld != g_mouseDown)
+  {
+    g_mouseEdge = true;
+  }
+};
+
+function GetTrueOffsetLeft(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetLeft || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function GetTrueOffsetTop(in_element)
+{
+  var traceElement = in_element;
+  var result = 0;
+  while (traceElement)
+  {
+    result += traceElement.offsetTop || 0;
+    traceElement = traceElement.offsetParent;
+  }
+  return result;
+}
+
+function CallbackMouseMove(in_event)
+{
+  g_mouseX = in_event.clientX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = in_event.clientY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+}
+
+function TouchHandler(in_event)
+{
+  in_event.preventDefault();
+  var touches = in_event.changedTouches;
+  var first = touches[0];
+
+  switch(event.type)
+  {
+    case "touchmove":  
+      break;
+    case "touchstart": 
+      CallbackMouseDown(in_event);
+      break;
+    case "touchend":   
+    case "touchcancel":   
+      CallbackMouseUp(in_event);
+      break;
+    default: 
+      return;
+  }
+  g_mouseX = first.pageX - GetTrueOffsetLeft(g_canvas) + window.pageXOffset;
+  g_mouseY = first.pageY - GetTrueOffsetTop(g_canvas) + window.pageYOffset;
+  
+  return;
+}
+
+//onpageload operations
+window.addEventListener('load', OnPageLoadInit, true);
+
+			// -->
+		</script>
+	</body>
+</html>

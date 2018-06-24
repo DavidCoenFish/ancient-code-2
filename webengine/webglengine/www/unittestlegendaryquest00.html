@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unit test</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="javascript/dsc.js" ></script>
+		<script type='text/javascript'>
+			<!-- 
+DSC.g_arrayUnitTest = [];
+			// -->
+		</script>
+
+		<!-- common  -->
+		<script type='text/JavaScript' SRC="javascript/dsc/common.js" ></script>
+
+    <!-- dng  -->
+    <script type='text/JavaScript' SRC="javascript/dsc/dng.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/node.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/container.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/pool/matrixaxispos.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/dng/updatefunction.js" ></script>
+
+    <!-- math  -->
+		<script type='text/JavaScript' SRC="javascript/dsc/math.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/angle.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/colour.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/coordinate.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/frame.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/matrix3.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/matrix4.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/quaternion.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/dsc/math/vector2.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/vector3.js" ></script>
+		<script type='text/JavaScript' SRC="javascript/dsc/math/vector4.js" ></script>
+
+    <!-- legendaryquest  -->
+    <script type='text/JavaScript' SRC="javascript/legendaryquest.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/enum.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/antgiantdewpot.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/antgiantqueen.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/antgiantwarrior.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/antgiantworker.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/spidergiantaboveaverage.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/spidergiantaverage.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/spidergiantbelowaverage.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/example/spidergiantexceptional.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/monster.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/pool.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/pool/antgiant.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/bestiary/pool/spidergiant.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/combatant.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/combatant/_character.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/combatant/_monster.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/enum.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/environment.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/combat/side.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/gamestate.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/gamestate/character.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/roll.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/rules.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/rules/enum.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/rules/data.js" ></script>
+    <script type='text/JavaScript' SRC="javascript/legendaryquest/rules/dngkeys.js" ></script>
+
+    <!-- unittest  -->
+		<script type='text/javascript'>
+			<!-- 
+
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> g_arrayUnitTest.length " + DSC.g_arrayUnitTest.length + "<\/p>");
+
+DSC.g_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.UnitTest)
+	{ 
+		var result = in_item.UnitTest(); 
+		document.write('<span>' + result + '<\/span></br>');
+	} 
+});
+
+			// -->
+		</script>
+	</body>
+</html>

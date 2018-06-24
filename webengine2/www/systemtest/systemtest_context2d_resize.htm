@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>context2d resize</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<style>html, body { width: 100%; height: 100%; margin: 0px; border: 0; overflow: hidden; display: block; background-color: #000000; }</style>
+	</head>
+	<body>
+		<canvas id='canvasId' style = 'position: absolute; left: 0px; top: 0px; background-color: #000000;' >
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+DSC.OnPageLoad = function()
+{
+	console.info("OnPageLoad");
+	var Task = function(){};
+	Task.prototype.Run = function(in_framework, in_timeDelta, _lowX, _lowY, _highX, _highY)
+	{
+		//console.info("Run in_timeDelta:" + in_timeDelta + " _lowX:" + _lowX + " _lowY:" + _lowY + " _highX:" + _highX + " _highY:" + _highY);
+		var context = in_framework.GetContext();
+		context.SetViewport(_lowX, _lowY, _highX, _highY);
+		context.Clear(DSC.Math.ColourRGB.s_grey);
+		var input = in_framework.GetInput();
+		if (true == input.m_mouseDown)
+		{
+			return false;
+		}
+		return true;
+	};
+	var task = new Task();
+	var taskArray = [task];
+	var paramObject = {};
+	paramObject.Context2D = {};
+	paramObject.Input = {};
+	var framework = DSC.Framework.Create(document, taskArray, paramObject);
+
+ 	DSC.Framework.Resize(window); 
+}
+
+DSC.OnPageResize = function()
+{
+	console.info("OnPageResize");
+	DSC.Framework.Resize(window);
+}
+
+DSC.OnShutdown = function()
+{
+	console.info("OnShutdown");
+	window.removeEventListener('resize', DSC.OnPageResize);
+	DSC.Framework.Destroy()
+}
+
+window.addEventListener('load', DSC.OnPageLoad, true);
+window.addEventListener('resize', DSC.OnPageResize, false);
+
+			// -->
+		</script>
+	</body>
+</html>

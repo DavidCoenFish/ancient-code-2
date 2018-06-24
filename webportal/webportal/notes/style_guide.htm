@@ -1,0 +1,309 @@
+<!doctype html>
+
+<html lang="en" class="pagebackground">
+<head>
+	<meta charset="utf-8">
+
+	<title>style guide</title>
+	<meta name="description" content="template">
+	<meta name="author" content="David Coen">
+
+	<style media="screen" type="text/css">
+
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
+	margin:0;
+	padding:0;
+	border:0;
+	font-size:1em;
+	font-weight:normal;
+	vertical-align:baseline;
+	background:transparent;
+}
+article, aside, figure, footer, header, nav, section, details, summary {display:block;}
+html{height:100%;}
+body{min-height:100%;}
+
+.bodyheader{font-size:1.5em;}
+.footertext{font-size:0.75em;}
+.noselect{
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none; 
+	cursor:pointer;
+}
+
+.center{text-align:center;}
+
+.bigmargin{margin:1em;}
+.bigleftrightmargin{margin:0 1em 0 1em;}
+.smallmargin{margin:0.25em;}
+.smallleftrightmargin{margin:0 0.25em 0 0.25em;}
+
+.bigpadding{padding:1em;}
+.smallpadding{padding:0.25em;}
+.smallleftrightpadding{padding:0 0.25em 0 0.25em;}
+
+.bigsquare{min-width:10em;min-height:10em;}
+
+.fillverticle {
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+
+	flex-direction:column;
+	flex-wrap:nowrap;
+	align-items:stretch;
+	align-content:stretch;
+	justify-content:space-between;
+}
+.fillitem {
+	flex-grow:1;
+	flex-shrink:1;
+	flex-basis:auto;
+}
+
+.flowonelineright {
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+
+	flex-direction:row;
+	flex-wrap:nowrap;
+	align-items:stretch;
+	align-content:flex-start;
+	justify-content:flex-end;
+}
+
+.flowonelineleft {
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+
+	flex-direction:row;
+	flex-wrap:nowrap;
+	align-items:stretch;
+	align-content:flex-start;
+	justify-content:flex-start;
+}
+
+.flowhorizontal {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display:flex;
+
+	flex-direction:row;
+	flex-wrap:wrap;
+	align-items:baseline;
+	align-content:flex-start;
+	justify-content: flex-start;
+}
+
+.popuptarget:hover .popup{
+	visibility: visible;
+}
+.popup {
+	visibility: hidden;
+	position: absolute;
+	z-index: 2;
+}
+
+#modalbackground{
+	display:none; /* Hidden by default */
+	position:fixed;
+	z-index:3;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	background:#000;/* fallback */
+	background:rgba(0,0,0,0.8);
+}
+#modal{margin: 15% auto;}
+#modalclose{
+	float:right;
+	width:1.5em;
+	height:1.5em;
+	margin-top:-0.5em;
+	margin-right:-0.5em;
+	border-radius:1.5em;
+	text-align:center;
+	font-size:1em;
+	font-weight:bold;
+	line-height: 1.5em;
+}
+
+.shadowignore{position:relative;}
+
+.shadow{box-shadow: 0.125em 0.25em 0.25em 0.125em #222 inset;}
+.shadow:hover{box-shadow: 0.125em 0.25em 0.5em 0.25em #222;}
+.shadowoutset{box-shadow: 0.125em 0.25em 0.5em 0.25em #222;}
+
+.pagebackground{background:#444;}
+.pageforeground{background:#555;}
+.appbackground{background:#666;}
+.appforeground{background:#777;}
+
+.interactive{background: #F65;}
+.interactive:hover{background: #F87;}
+.interactive:active{background: #FA8;}
+.interactivecallaction{background: #FF5;}
+.interactivecallaction:hover{background: #FF8;}
+.interactivecallaction:active{background: #FFE;}
+
+	</style>
+
+</head>
+<body class="fillverticle">
+
+	<div id="modalbackground" class="center">
+		<div id="modal" class="appforeground" style="width:20em;min-height:10em;">
+			<div id="modalclose" class="interactive shadow noselect">
+				<p>X</p>
+			</div>
+			<div id="modalcontent">
+				<p>Some text in a Modal</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="pagebackground flowonelineright">
+		<div class="popuptarget shadow smallleftrightmargin noselect">
+			<div class="smallleftrightpadding noselect">
+				<p>helloA my darling</p>
+			</div>
+			<div class="popup fillverticle pagebackground shadowoutset">
+				<div class="interactive smallleftrightpadding noselect">
+					<p>world1</p>
+				</div>
+				<div class="interactive smallleftrightpadding noselect">
+					<p>world2 long</p>
+				</div>
+				<div class="interactive smallleftrightpadding noselect">
+					<p>world3</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="popuptarget shadow smallleftrightmargin smallleftrightpadding noselect">
+			<p>helloB</p>
+		</div>
+
+	</div>
+	<div class="fillitem pageforeground">
+		<!--<p style="position:absolute;">body</p>-->
+		<div class="bigleftrightmargin">
+			<p class="bodyheader">Body Header</p>
+		</div>
+
+		<div class="flowhorizontal">
+			<div class="appbackground center bigmargin bigsquare">
+				<p>item</p>
+				<div id="testopenmoald" class="interactive shadow bigmargin noselect">
+					<p>Open Modal</p>
+				</div>
+			</div>
+
+			<div class="appbackground center bigmargin bigsquare">
+				<p>item</p>
+				<div class="interactivecallaction shadow bigmargin noselect">
+					<p>call action</p>
+				</div>
+			</div>
+
+			<div class="appbackground center bigmargin bigsquare">
+				<p>item</p>
+				<div class ="flowonelineleft">
+					<div class="interactive shadow smallleftrightmargin smallleftrightpadding noselect">
+						<p>tab</p>
+					</div>
+					<div class="interactive shadowoutset smallleftrightmargin smallleftrightpadding noselect">
+						<p>tab</p>
+					</div>
+					<div class="interactive shadow smallleftrightmargin smallleftrightpadding noselect">
+						<p>tab</p>
+					</div>
+				</div>
+				<div class="appforeground shadowignore">
+					<p>hello</p>
+				</div>
+			</div>
+
+			<div class="appbackground center bigmargin bigsquare shadow">
+				<p>item</p>
+			</div>
+		</div>
+
+	</div>
+	<div class="pagebackground center">
+		<p class="footertext">footer1</p>
+		<p class="footertext">footer2</p>
+	</div>
+
+	<script type="text/javascript">
+
+const modalBackground = document.getElementById("modalbackground");
+const modalClose = document.getElementById("modalclose");
+const modalContent = document.getElementById("modalcontent");
+
+const ShowModal = function(elementContents, allowDismiss, onDismissCallback) {
+	modalBackground.allowDismiss = allowDismiss;
+	modalBackground.onDismissCallback = onDismissCallback;
+	//replace children of modalcontent with elementContents
+	while(modalContent.firstChild){
+		modalContent.removeChild(modalContent.firstChild);
+	}
+	modalContent.appendChild(elementContents);
+	modalClose.style.visibility = (modalBackground.allowDismiss) ? "visible" : "hidden";
+	modalBackground.style.display = "block";
+	return;
+}
+
+const DismissModal = function() {
+	modalBackground.style.display = "none";
+	if (modalBackground.onDismissCallback !== undefined){
+		modalBackground.onDismissCallback();
+	}
+	return;
+}
+
+modalClose.onclick = function() {
+	if (modalBackground.allowDismiss == true){
+		DismissModal();
+	}
+	return;
+}
+
+window.onclick = function(event) {
+	if ((event.target == modalBackground) && (modalBackground.allowDismiss == true)){
+		DismissModal();
+	}
+	return;
+}
+
+//stylesheet test
+var testOpenModal = document.getElementById("testopenmoald");
+testOpenModal.onclick = function() {
+	//modalBackground.style.display = "block";
+	var elementContents = document.createElement("div");
+	elementContents.innerHTML = "<p>Open Modal clicked</p>";
+	ShowModal(elementContents, true);
+	return;
+}
+//end test
+
+	</script>
+
+</body>
+</html>

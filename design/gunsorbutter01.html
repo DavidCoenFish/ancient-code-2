@@ -1,0 +1,1475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+	<title>guns or butter 01</title>
+	<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body style='background-color: #7F7F7F'>
+	<canvas id='canvasId' style = 'background-color: #0000FF; width: 640px; height: 360px;' >
+		This text is displayed if your browser does not support HTML5 Canvas.
+	</canvas>
+
+	<script type='text/javascript'>
+		<!-- 
+var DSC = {};
+
+DSC.OnPageLoad = function()
+{
+	console.info("OnPageLoad");
+	DSC.m_canvas = document.getElementById('canvasId');
+	if (DSC.m_canvas)
+	{
+		DSC.m_canvas.width = DSC.m_canvas.clientWidth;
+		DSC.m_canvas.height = DSC.m_canvas.clientHeight;
+		DSC.m_context = DSC.m_canvas.getContext('2d');
+		DSC.m_input = DSC.Input.FactoryRaw(DSC.m_canvas);
+	}
+	if (DSC.m_context)
+	{
+		DSC.m_context.save();
+	}
+
+	DSC.m_time = undefined;
+	DSC.m_averageFPS = undefined;
+	DSC.m_defaultDrawStyle = DSC.DrawStyle.FactoryRaw();
+	DSC.m_defaultTextStyle = DSC.TextStyle.FactoryRaw();
+
+	DSC.m_textStyleButton = DSC.TextStyle.FactoryRaw("rgb(255, 255, 0)", "rgb(0, 0, 0)", 1.0, "left", "top", "16px sans-serif");
+	DSC.m_drawStyleButton = DSC.DrawStyle.FactoryRaw("rgb(0, 64, 0)", "rgb(255, 0, 255)");
+	DSC.m_drawStyleButtonTrue = DSC.DrawStyle.FactoryRaw("rgb(0, 0, 255)", "rgb(255, 0, 255)");
+	DSC.m_drawStyleButtonFalse = DSC.DrawStyle.FactoryRaw("rgb(64, 64, 64)", "rgb(255, 0, 255)");
+	DSC.m_drawStyleRollover = DSC.DrawStyle.FactoryRaw("rgb(0, 0, 64)", "rgb(255, 255, 0)");
+	DSC.m_drawStyleClick = DSC.DrawStyle.FactoryRaw("rgb(255, 0, 0)", "rgb(0, 255, 255)");
+
+	DSC.Game.s_players.push(DSC.Game.Player.FactoryRaw("Player 1", DSC.Game.Player.s_controller.TSimpleAI));
+	DSC.Game.s_players.push(DSC.Game.Player.FactoryRaw("Player 2", DSC.Game.Player.s_controller.TSimpleAI));
+	DSC.Game.s_players.push(DSC.Game.Player.FactoryRaw("Player 3", DSC.Game.Player.s_controller.TRandomAI));
+	DSC.Game.s_players.push(DSC.Game.Player.FactoryRaw("Player 4", DSC.Game.Player.s_controller.THuman));
+
+	DSC.Game.s_players[0].m_attackTargetArray = [DSC.Game.s_players[1], DSC.Game.s_players[2], DSC.Game.s_players[3]];
+	DSC.Game.s_players[1].m_attackTargetArray = [DSC.Game.s_players[0], DSC.Game.s_players[2], DSC.Game.s_players[3]];
+	DSC.Game.s_players[2].m_attackTargetArray = [DSC.Game.s_players[0], DSC.Game.s_players[1], DSC.Game.s_players[3]];
+	DSC.Game.s_players[3].m_attackTargetArray = [DSC.Game.s_players[0], DSC.Game.s_players[1], DSC.Game.s_players[2]];
+
+	DSC.PushState(DSC.StateMain.FactoryRaw());
+	DSC.PushState(DSC.StateSetup.FactoryRaw());
+
+	//lines up a new frame to be rendered once thread is passed back to browser
+	DSC.m_requestAnimationFrameId = window.requestAnimationFrame(function(in_timeStamp){DSC.RequestAnimationFrameCallback(in_timeStamp);}); 
+}
+
+DSC.RequestAnimationFrameCallback = function(_timeStamp)
+{
+	var runKeepGoing = false;
+	var timeDelta = DSC.IncrementTime(_timeStamp);
+
+	DSC.Clear();
+
+	if (undefined != DSC.m_state)
+	{
+		runKeepGoing = DSC.m_state.Run(timeDelta, DSC.m_input, DSC.m_canvas, DSC.m_context);
+		if (true != runKeepGoing)
+		{
+			DSC.PopState();
+			runKeepGoing = (undefined != DSC.m_state);
+		}
+	}
+
+	DSC.m_context.save();
+	DSC.m_defaultTextStyle.Apply(DSC.m_context);
+	DSC.m_context.fillText("" + ((undefined != DSC.m_averageFPS) ? DSC.m_averageFPS.toFixed(2) : ""), 10.0, 10.0)
+	DSC.m_context.fillText("x: " + DSC.m_input.m_mouseX + "y: " + DSC.m_input.m_mouseY, 10.0, 20.0)
+	DSC.m_context.restore();
+
+	if (true == runKeepGoing)
+	{
+		DSC.m_requestAnimationFrameId = window.requestAnimationFrame(function(in_timeStamp){DSC.RequestAnimationFrameCallback(in_timeStamp);}); 
+		//run input last, resets edge change states
+		DSC.m_input.Run();
+	}
+	else
+	{
+		console.info("RequestAnimationFrameCallback not requesting new frame");
+	}
+
+	return;
+}
+
+DSC.IncrementTime = function(_timeStamp)
+{
+	if (undefined == _timeStamp)
+	{
+		return 0;
+	}
+	var timeDelta = 0.0;
+	if (undefined == DSC.m_time)
+	{
+		DSC.m_time = _timeStamp;
+	}
+	else
+	{
+		timeDelta = (_timeStamp - DSC.m_time) / 1000.0;
+		DSC.m_time = _timeStamp;
+
+		if (0.0 != timeDelta)
+		{
+			var fps = 1.0 / timeDelta;
+			if (undefined == DSC.m_averageFPS)
+			{
+				DSC.m_averageFPS = fps;
+			}
+			else
+			{
+				DSC.m_averageFPS = (fps * 0.05) + (DSC.m_averageFPS * 0.95);
+			}
+		}
+	}
+	return timeDelta;
+}
+
+DSC.PushState = function(_state)
+{
+	if (undefined != _state)
+	{
+	_state.m_nextState = DSC.m_state;
+	}
+	DSC.m_state = _state;
+}
+
+DSC.PopState = function()
+{
+	if (undefined != DSC.m_state)
+	{
+	DSC.m_state = DSC.m_state.m_nextState;
+	}
+}
+
+DSC.SetState = function(_state)
+{
+	DSC.m_state = _state;
+}
+
+DSC.Clear = function()
+{
+	DSC.m_context.save();
+	DSC.m_defaultDrawStyle.Apply(DSC.m_context);
+	DSC.m_context.fillRect(
+		0,
+		0,
+		DSC.m_canvas.width,
+		DSC.m_canvas.height
+		);
+	DSC.m_context.restore();
+}
+
+DSC.DrawStyle = function(_stringFill, _stringStroke, _alpha)
+{
+	if ( !(this instanceof DSC.DrawStyle) )
+		alert("DSC.DrawStyle: call constuctor with new keyword");
+	this.m_stringFill = (undefined == _stringFill) ? "rgb(0, 0, 0)" : _stringFill;
+	this.m_stringStroke = (undefined == _stringStroke) ? "rgb(0, 0, 0)" : _stringStroke;
+	this.m_alpha = (undefined == _alpha) ? 1.0 : _alpha;
+}
+
+DSC.DrawStyle.prototype.Apply = function(in_context)
+{
+	in_context.fillStyle = this.m_stringFill;
+	in_context.strokeStyle = this.m_stringStroke;
+	in_context.globalAlpha = this.m_alpha;
+}
+
+DSC.DrawStyle.FactoryRaw = function(_stringFill, _stringStroke, _alpha)
+{
+	return new DSC.DrawStyle(_stringFill, _stringStroke, _alpha);
+}
+
+DSC.TextStyle = function(_stringFill, _stringStroke, _alpha, _textAlign, _textBaseLine, _font)
+{
+	if ( !(this instanceof DSC.TextStyle) )
+		alert("DSC.TextStyle: call constuctor with new keyword");
+	this.m_stringFill = (undefined == _stringFill) ? "rgb(255, 255, 255)" : _stringFill;
+	this.m_stringStroke = (undefined == _stringStroke) ? "rgb(0, 0, 0)" : _stringStroke;
+	this.m_alpha = (undefined == _alpha) ? 1.0 : _alpha;
+	this.m_textAlign = (undefined == _textAlign) ? "left" : _textAlign;
+	this.m_textBaseLine = (undefined == _textBaseLine) ? "top" : _textBaseLine;
+	this.m_font = (undefined == _font) ? "10px sans-serif" : _font;
+	return;
+}
+
+DSC.TextStyle.prototype.Apply = function(in_context)
+{
+	in_context.fillStyle = this.m_stringFill;
+	in_context.strokeStyle = this.m_stringStroke;
+	in_context.globalAlpha = this.m_alpha;
+	in_context.textAlign = this.m_textAlign;
+	in_context.textBaseline = this.m_textBaseLine;
+	in_context.font = this.m_font;
+}
+
+DSC.TextStyle.FactoryRaw = function(_stringFill, _stringStroke, _alpha, _textAlign, _textBaseLine, _font)
+{
+	return new DSC.TextStyle(_stringFill, _stringStroke, _alpha, _textAlign, _textBaseLine, _font);
+}
+
+DSC.Input = function(_canvas)
+{
+	if ( !(this instanceof DSC.Input) )
+		alert("DSC.Input: call constuctor with new keyword");
+
+	this.m_mouseDownOld = false;
+	this.m_mouseDown = false;
+	this.m_mouseEdge = false;
+	this.m_mouseX = undefined;
+	this.m_mouseY = undefined;
+	this.m_mouseXOld = undefined;
+	this.m_mouseYOld = undefined;
+	this.m_canvas = _canvas;
+	
+	this.AddEvents();
+
+	return;
+}
+
+DSC.Input.prototype.AddEvents = function()
+{
+	if (!this.m_canvas)
+		return;
+	
+	var input = this;
+	this.m_mousedownCallback = function(){ input.CallbackMouseDown(); };
+	this.m_canvas.addEventListener("mousedown", this.m_mousedownCallback, false);
+
+	this.m_mouseupCallback = function(){ input.CallbackMouseUp(); };
+	this.m_canvas.addEventListener("mouseup", this.m_mouseupCallback, false);
+	
+	this.m_mousemoveCallback = function(in_event){ input.CallbackMouseMove(in_event); };
+	this.m_canvas.addEventListener("mousemove", this.m_mousemoveCallback, false);
+
+	this.m_touchCallback = function(in_event){ input.CallbackTouch(in_event); };
+	this.m_canvas.addEventListener("touchstart", this.m_touchCallback, false);
+	this.m_canvas.addEventListener("touchmove", this.m_touchCallback, false);
+	this.m_canvas.addEventListener("touchend", this.m_touchCallback, false);
+	this.m_canvas.addEventListener("touchcancel", this.m_touchCallback, false);
+}
+
+DSC.Input.prototype.DeleteEvents = function()
+{
+	if (!this.m_canvas)
+		return;
+	this.m_canvas.removeEventListener("mousedown", this.m_mousedownCallback);
+	this.m_canvas.removeEventListener("mouseup", this.m_mouseupCallback);
+	this.m_canvas.removeEventListener("mousemove", this.m_touchCallback);
+
+	this.m_canvas.removeEventListener("touchstart", this.m_touchCallback);
+	this.m_canvas.removeEventListener("touchmove", this.m_touchCallback);
+	this.m_canvas.removeEventListener("touchend", this.m_touchCallback);
+	this.m_canvas.removeEventListener("touchcancel", this.m_touchCallback);
+}
+
+DSC.Input.prototype.Run = function()
+{
+	this.m_mouseDownOld = this.m_mouseDown;
+	this.m_mouseEdge = false;
+	this.m_mouseXOld = this.m_mouseX;
+	this.m_mouseYOld = this.m_mouseY;
+}
+	
+DSC.Input.prototype.CallbackMouseDown = function()
+{
+	this.m_mouseDown = true;
+	if (this.m_mouseDownOld != this.m_mouseDown)
+	{
+		this.m_mouseEdge = true;
+	}
+}
+	
+DSC.Input.prototype.CallbackMouseUp = function()
+{
+	this.m_mouseDown = false;
+	if (this.m_mouseDownOld != this.m_mouseDown)
+	{
+		this.m_mouseEdge = true;
+	}
+}
+
+DSC.Input.prototype.CallbackMouseMove = function(in_event)
+{
+	this.m_mouseX = in_event.clientX - DSC.Input.GetTrueOffsetLeft(this.m_canvas) + window.pageXOffset;
+	this.m_mouseY = in_event.clientY - DSC.Input.GetTrueOffsetTop(this.m_canvas) + window.pageYOffset;
+}
+
+DSC.Input.prototype.CallbackTouch = function(in_event)
+{
+	in_event.preventDefault();
+
+	switch(event.type)
+	{
+	case "touchmove":
+		break;
+	case "touchstart":
+		this.m_input.CallbackMouseDown(in_event);
+		break;
+	case "touchend":
+	case "touchcancel":
+		this.CallbackMouseUp(in_event);
+		break;
+	default: 
+		return;
+	}
+
+	var touches = in_event.changedTouches;
+	var first = touches[0];
+
+	this.m_mouseX = first.pageX - DSC.Input.GetTrueOffsetLeft(this.m_canvas) + window.pageXOffset;
+	this.m_mouseY = first.pageY - DSC.Input.GetTrueOffsetTop(this.m_canvas) + window.pageYOffset;
+
+	return;
+}
+
+DSC.Input.GetTrueOffsetLeft = function(in_element)
+{
+	var traceElement = in_element;
+	var result = 0;
+	while (traceElement)
+	{
+		result += traceElement.offsetLeft || 0;
+		traceElement = traceElement.offsetParent;
+	}
+	return result;
+}
+
+DSC.Input.GetTrueOffsetTop = function(in_element)
+{
+	var traceElement = in_element;
+	var result = 0;
+	while (traceElement)
+	{
+		result += traceElement.offsetTop || 0;
+		traceElement = traceElement.offsetParent;
+	}
+	return result;
+}
+
+DSC.Input.FactoryRaw = function(_canvas)
+{
+	return new DSC.Input(_canvas);
+}
+
+/*
+_functor
+	CallbackOver(relX, relY)
+	CallbackHeld(duration, _timeDelta);
+	CallbackDrag(x, y);
+	CallbackDown(x, y);
+	CallbackUp(x, y);
+*/
+DSC.Button = function(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyle, _rolloverDrawStyle, _clickDrawStyle)
+{
+	if ( !(this instanceof DSC.Button) )
+		alert("DSC.Button: call constuctor with new keyword");
+
+	this.m_text = (undefined == _text) ? "" : _text;
+	this.m_x = in_x;
+	this.m_y = in_y;
+	this.m_width = in_width;
+	this.m_height = in_height;
+	this.m_functor = _functor;
+	this.m_textStyle = _textStyle;
+	this.m_drawStyle = _drawStyle;
+	this.m_rolloverDrawStyle = _rolloverDrawStyle;
+	this.m_clickDrawStyle = _clickDrawStyle;
+	this.m_state = DSC.Button.s_state.TDefault;
+	this.m_over = false;
+  
+	return;
+}
+
+DSC.Button.s_state = 
+{
+	TDefault : 0,
+	TRollover : 1,
+	TClick : 2,
+	THidden : 3
+}
+
+DSC.Button.s_stateClickCooldown = 0.1;
+
+DSC.Button.StaitcRun = function(in_button, in_timeDelta, in_input)
+{
+	if (DSC.Button.s_state.THidden == in_button.m_state)
+	{
+		return;
+	}
+
+	if (0.0 < in_button.m_clickCooldown)
+	{
+		in_button.m_clickCooldown -= in_timeDelta;
+	}
+
+	var x = in_input.m_mouseX - in_button.m_x;
+	var y = in_input.m_mouseY - in_button.m_y;
+  
+	var over = ((0 <= x) &&
+		(x <= in_button.m_width) &&
+		(0 <= y) &&
+		(y <= in_button.m_height));
+
+	if (over != in_button.m_over)
+	{
+		in_button.m_over = over;
+		if ((undefined != in_button.m_functor) &&
+			("CallbackOver" in in_button.m_functor))
+		{
+			in_button.m_functor.CallbackOver(x, y);
+		}
+	}
+
+	if (true == in_input.m_mouseEdge)
+	{
+		if (true == in_input.m_mouseDown)
+		{
+			//mouse down edge
+			if (true == in_button.m_over)
+			{
+				in_button.m_clicked = true;
+				in_button.m_clickDuration = 0.0;
+				if ((undefined != in_button.m_functor) &&
+					("CallbackDown" in in_button.m_functor))
+				{
+					in_button.m_functor.CallbackDown(x, y);
+				}
+			}
+			else
+			{
+				//a new click, deactivate incase old click up got lost
+				in_button.m_clicked = false;
+			}
+		}
+		else
+		{
+			//mouse up edge
+			if (true == in_button.m_clicked)
+			{
+				in_button.m_clicked = false;
+				in_button.m_clickCooldown = DSC.Button.s_stateClickCooldown;
+				if ((true == in_button.m_over) &&  
+					(undefined != in_button.m_functor) &&
+					("CallbackUp" in in_button.m_functor))
+				{
+					in_button.m_functor.CallbackUp(x, y);
+				}
+			}
+		}
+	}
+	else if ((true == in_input.m_mouseDown) &&
+		(true == in_button.m_clicked))
+	{
+		in_button.m_clickDuration += in_timeDelta;
+		if ((undefined != in_button.m_functor) &&
+			("CallbackHeld" in in_button.m_functor))
+		{
+			in_button.m_functor.CallbackHeld(in_button.m_clickDuration, _timeDelta);
+		}
+		if ((undefined != in_button.m_functor) &&
+			("CallbackDrag" in in_button.m_functor))
+		{
+			in_button.m_functor.CallbackDrag(x, y);
+		}
+	}
+  
+	if ((0.0 < in_button.m_clickCooldown) ||
+		(true == in_button.m_clicked))
+	{
+		in_button.m_state = DSC.Button.s_state.TClick;
+	}
+	else if (true == in_button.m_over)
+	{
+		in_button.m_state = DSC.Button.s_state.TRollover;
+	}
+	else if (DSC.Button.s_state.TDefault != in_button.m_state)
+	{
+		in_button.m_state = DSC.Button.s_state.TDefault;
+	}
+
+	return;
+}
+
+DSC.Button.prototype.Run = function(in_timeDelta, in_input, in_canvas, in_context)
+{
+  DSC.Button.StaitcRun(this, in_timeDelta, in_input);
+}
+
+DSC.Button.prototype.Draw = function(in_canvas, in_context)
+{
+	switch (this.m_state)
+	{
+	default:
+		return;
+	case DSC.Button.s_state.TDefault:
+		this.m_drawStyle.Apply(in_context);
+		break;
+	case DSC.Button.s_state.TRollover:
+		this.m_rolloverDrawStyle.Apply(in_context);
+		break;
+	case DSC.Button.s_state.TClick:
+		this.m_clickDrawStyle.Apply(in_context);
+		break;
+	}
+	in_context.beginPath();
+	in_context.rect(
+		this.m_x,
+		this.m_y,
+		this.m_width,
+		this.m_height
+		);
+	in_context.closePath();
+	in_context.fill();
+	in_context.stroke();
+
+	this.m_textStyle.Apply(in_context);
+	in_context.fillText(this.m_text, this.m_x + 8, this.m_y + 8);
+	in_context.stroke();
+
+	return;
+}
+
+DSC.Button.FactoryRaw = function(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyle, _rolloverDrawStyle, _clickDrawStyle)
+{
+	return new DSC.Button(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyle, _rolloverDrawStyle, _clickDrawStyle);
+}
+
+/*
+_functor
+	CallbackOver(relX, relY)
+	CallbackHeld(duration, _timeDelta);
+	CallbackDrag(x, y);
+	CallbackDown(x, y);
+	CallbackUp(x, y);
+	CallbackEvalue(); // return true or false
+	CallbackInteractive(); // pay attention to input?
+	CallbackVisible(); // draw?
+*/
+DSC.ButtonToggle = function(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyleTrue, _drawStyleFalse, _rolloverDrawStyle, _clickDrawStyle)
+{
+	if ( !(this instanceof DSC.ButtonToggle) )
+		alert("DSC.ButtonToggle: call constuctor with new keyword");
+
+	this.m_text = (undefined == _text) ? "" : _text;
+	this.m_x = in_x;
+	this.m_y = in_y;
+	this.m_width = in_width;
+	this.m_height = in_height;
+	this.m_functor = _functor;
+	this.m_textStyle = _textStyle;
+	this.m_drawStyleTrue = _drawStyleTrue;
+	this.m_drawStyleFalse = _drawStyleFalse;
+	this.m_rolloverDrawStyle = _rolloverDrawStyle;
+	this.m_clickDrawStyle = _clickDrawStyle;
+	this.m_state = DSC.Button.s_state.TDefault;
+	this.m_over = false;
+  
+	return;
+}
+
+DSC.ButtonToggle.prototype.Run = function(in_timeDelta, in_input, in_canvas, in_context)
+{
+	var inputEnabled = true;
+	if ((undefined != this.m_functor) &&
+		("CallbackInteractive" in this.m_functor))
+	{
+		inputEnabled = this.m_functor.CallbackInteractive();
+	}
+
+	if (true == inputEnabled)
+	{
+		DSC.Button.StaitcRun(this, in_timeDelta, in_input);
+	}
+
+	return;
+}
+
+DSC.ButtonToggle.prototype.Draw = function(in_canvas, in_context)
+{
+	var visible = true;
+	if ((undefined != this.m_functor) &&
+		("CallbackVisible" in this.m_functor))
+	{
+		visible = this.m_functor.CallbackVisible();
+	}
+
+	if (true != visible)
+	{
+		return;
+	}
+
+	switch (this.m_state)
+	{
+	default:
+		return;
+	case DSC.Button.s_state.TDefault:
+		var evalueResult = false;
+		if ((undefined != this.m_functor) &&
+			("CallbackEvalue" in this.m_functor))
+		{
+			evalueResult = this.m_functor.CallbackEvalue();
+		}
+		if (true == evalueResult)
+			this.m_drawStyleTrue.Apply(in_context);
+		else
+			this.m_drawStyleFalse.Apply(in_context);
+		break;
+	case DSC.Button.s_state.TRollover:
+		this.m_rolloverDrawStyle.Apply(in_context);
+		break;
+	case DSC.Button.s_state.TClick:
+		this.m_clickDrawStyle.Apply(in_context);
+		break;
+	}
+	in_context.beginPath();
+	in_context.rect(
+		this.m_x,
+		this.m_y,
+		this.m_width,
+		this.m_height
+		);
+	in_context.closePath();
+	in_context.fill();
+	in_context.stroke();
+
+	this.m_textStyle.Apply(in_context);
+	in_context.fillText(this.m_text, this.m_x + 8, this.m_y + 8);
+	in_context.stroke();
+
+	return;
+}
+
+DSC.ButtonToggle.FactoryRaw = function(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyleTrue, _drawStyleFalse, _rolloverDrawStyle, _clickDrawStyle)
+{
+	return new DSC.ButtonToggle(_text, in_x, in_y, in_width, in_height, _functor, _textStyle, _drawStyleTrue, _drawStyleFalse, _rolloverDrawStyle, _clickDrawStyle);
+}
+
+/*
+	CallbackVisible: return bool
+	CallbackUpdateText: return string
+*/
+DSC.Lable = function(_text, in_x, in_y, _textStyle, _functor)
+{
+	if ( !(this instanceof DSC.Lable) )
+		alert("DSC.Lable: call constuctor with new keyword");
+
+	this.m_text = (undefined == _text) ? "" : _text;
+	this.m_x = in_x;
+	this.m_y = in_y;
+	this.m_textStyle = _textStyle;
+	this.m_functor = _functor;
+
+	return;
+}
+
+DSC.Lable.prototype.Draw = function(in_canvas, in_context)
+{
+	if ((undefined != this.m_functor) &&
+		("CallbackVisible" in this.m_functor))
+	{
+		if (true != this.m_functor.CallbackVisible())
+		{
+			return;
+		}
+	}
+
+	if ((undefined != this.m_functor) &&
+		("CallbackUpdateText" in this.m_functor))
+	{
+		this.m_text = this.m_functor.CallbackUpdateText();
+	}
+
+	this.m_textStyle.Apply(in_context);
+	in_context.fillText(this.m_text, this.m_x + 8, this.m_y + 8);
+	in_context.stroke();
+
+	return;
+}
+
+DSC.Lable.FactoryRaw = function(_text, in_x, in_y, _textStyle, _functor)
+{
+	return new DSC.Lable(_text, in_x, in_y, _textStyle, _functor);
+}
+
+DSC.Game = {};
+DSC.Game.Player = function(in_name, in_controller)
+{
+	if ( !(this instanceof DSC.Game.Player) )
+		alert("DSC.Game.Player: call constuctor with new keyword");
+	this.m_name = in_name;
+	this.m_controller = in_controller;
+	this.m_state = DSC.Game.Player.s_state.TUpgrade;
+	this.m_attackTargetArray = [];
+
+	this.m_alive = true;
+	this.m_health = 30.0;
+	this.m_maxHealth = 30.0;
+	this.m_defence = 1.0;
+	this.m_energyRate = 1.0;
+
+	this.m_aiTimerCountdown = 0.0; //random ai
+	this.m_aiAttackerArray = {};
+	this.m_totalAttackThisUpdate = 0.0;
+
+	var parent = this;
+	this.m_simpleAIFunctor = {
+		Run : function(in_timeDelta)
+		{
+			parent.m_state = DSC.Game.Player.s_state.TUpgrade;
+			m_countdown -= in_timeDelta;
+			if (m_countdown <= 0.0)
+			{
+				parent.m_simpleAIFunctor = null;
+			}
+		},
+		m_countdown : (0.5 + Math.random() * 2.0)
+	}
+}
+
+DSC.Game.Player.prototype.RunAI = function(in_timeDelta)
+{
+	switch (this.m_controller)
+	{
+	default:
+		break;
+	case DSC.Game.Player.s_controller.TRandomAI:
+		this.RunRandomAI(in_timeDelta);
+		break;
+	case DSC.Game.Player.s_controller.TSimpleAI:
+		this.RunSimpleAI(in_timeDelta);
+		break;
+	}
+
+	for (var key in this.m_aiAttackerArray)
+	{
+		this.m_aiAttackerArray[key] = 0.0;
+	}
+	this.m_totalAttackThisUpdate = 0.0;
+}
+
+DSC.Game.Player.prototype.RunRandomAI = function(in_timeDelta)
+{
+	this.m_aiTimerCountdown -= in_timeDelta;
+	if (0.0 < this.m_aiTimerCountdown)
+	{
+		return;
+	}
+	this.m_aiTimerCountdown = 0.5 + (Math.random() * 2.0);
+	if (0.8 < Math.random())
+	{
+		this.m_state = DSC.Game.Player.s_state.TUpgrade;
+	}
+	else
+	{
+		if (0.4 < Math.random())
+		{
+			this.m_state = DSC.Game.Player.s_state.TAttack;
+		}
+		else
+		{
+			this.m_state = DSC.Game.Player.s_state.TDefence;
+		}
+	}
+
+	return;
+}
+
+DSC.Game.Player.prototype.RunSimpleAI = function(in_timeDelta)
+{
+	if (this.m_simpleAIFunctor)
+	{
+		this.m_simpleAIFunctor.Run(in_timeDelta);
+	}
+	if (this.m_simpleAIFunctor)
+	{
+		return;
+	}
+
+	//how long would i live if everyone attacked me
+	var playerMe = this;
+	var totalAttack = 0.0;
+	DSC.Game.s_players.forEach( function(player)
+	{
+		if ((playerMe == player) ||
+			(true != this.m_alive))
+		{
+			continue;
+		}
+		totalAttack += DSC.StateMain.CalculateAttackDamage(1.0, player.m_energyRate, playerMe.m_defence);
+	}
+	var allAttackLifespan = 0.0;
+	if (0.0 != totalAttack)
+	{
+		allAttackLifespan = this.m_health / allAttackLifespan;
+	}
+
+	//how long will i live at current attack
+	var currentLifeExpectancy = undefined;
+	if (0.0 != this.m_totalAttackThisUpdate)
+	{
+	}
+	//how long would it take to kill each player
+	var minTimeToKill = undefined;
+	var minTimePlayer = undefined;
+	DSC.Game.s_players.forEach( function(player)
+	{
+		if ((playerMe == player) ||
+			(true != this.m_alive))
+		{
+			continue;
+		}
+		var myAttack = DSC.StateMain.CalculateAttackDamage(1.0, playerMe.m_energyRate, player.m_defence);
+		if (0.0 == myAttack)
+		{
+			continue;
+		}
+		var timeToKill = player.m_health / myAttack;
+		if ((undefined == minTimeToKill) ||
+			(timeToKill < minTimeToKill))
+		{
+			minTimeToKill = timeToKill;
+			minTimePlayer = player;
+		}
+	}
+
+	//so, what shall we do next
+
+	return;
+}
+
+DSC.Game.Player.prototype.Attack = function(in_damage, in_attacker, in_timeDelta)
+{
+	this.m_health -= in_damage;
+	if (in_attacker in this.m_aiAttackerArray)
+		this.m_aiAttackerArray[in_attacker] += in_damage;
+	else
+		this.m_aiAttackerArray[in_attacker] = in_damage;
+	if (0.0 != in_timeDelta)
+	{
+		this.m_totalAttackThisUpdate += (in_damage / in_timeDelta);
+	}
+	return;
+}
+
+DSC.Game.Player.FactoryRaw = function(in_name, in_controller)
+{
+	return new DSC.Game.Player(in_name, in_controller);
+}
+
+DSC.Game.Player.s_controller = 
+{
+	THuman : 0,
+	TRandomAI : 1,
+	TSimpleAI : 2
+}
+
+DSC.Game.Player.s_state = 
+{
+	TAttack : 0,
+	TDefence : 1,
+	TUpgrade : 2,
+	TAuction : 3
+}
+
+DSC.Game.s_players = [];
+
+DSC.StateMain = function()
+{
+	if ( !(this instanceof DSC.StateMain) )
+		alert("DSC.StateMain: call constuctor with new keyword");
+	this.m_keepGoing = true;
+	this.m_arrayDraw = [];
+	this.m_statusText = "Ready";
+	this.m_time = 0.0;
+	this.m_countDown = 1.5;
+	this.m_eventState = DSC.StateMain.s_state.TReady;
+
+	var that = this;
+	this.m_arrayDraw.push(DSC.Button.FactoryRaw(
+		"exit", 
+		640 - 100, 360 - 32, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				that.m_keepGoing = false;
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButton, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+	));
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		"", 
+		5, 360 - 32,
+		DSC.m_textStyleButton,
+		{
+			CallbackUpdateText : function()
+			{
+				return that.m_statusText;
+			},
+		}
+		));
+
+	this.AddPlayer(DSC.Game.s_players[0], 0, 0, true, DSC.Game.s_players[1], DSC.Game.s_players[2], DSC.Game.s_players[3]);
+	this.AddPlayer(DSC.Game.s_players[1], 320, 0, false, DSC.Game.s_players[0], DSC.Game.s_players[2], DSC.Game.s_players[3]);
+	this.AddPlayer(DSC.Game.s_players[2], 0, 160, true, DSC.Game.s_players[0], DSC.Game.s_players[1], DSC.Game.s_players[3]);
+	this.AddPlayer(DSC.Game.s_players[3], 320, 160, false, DSC.Game.s_players[0], DSC.Game.s_players[1], DSC.Game.s_players[2]);
+
+	return;
+}
+
+DSC.StateMain.s_state = 
+{
+	TReady : 0,
+	TSet : 1,
+	TGo : 2,
+	TAction : 3,
+	TGameOver : 4
+}
+
+DSC.StateMain.prototype.AddPlayer = function(in_player, in_originX, in_originY, in_alignLeft, in_otherPlayerA, in_otherPlayerB, in_otherPlayerC)
+{
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		"", 
+		(true == in_alignLeft) ? in_originX + 5 : in_originX + 320 - 105,
+		in_originY + 5,
+		DSC.m_textStyleButton,
+		{
+			CallbackUpdateText : function()
+			{
+				return in_player.m_name + " " + ((true == in_player.m_alive) ? "Alive" : "Dead");
+			},
+		}
+		));
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		"", 
+		(true == in_alignLeft) ? in_originX : in_originX + 320 - 110,
+		in_originY + 10 + 32,
+		DSC.m_textStyleButton,
+		{
+			CallbackUpdateText : function()
+			{
+				return "" + in_player.m_health.toFixed(1) + "//" + in_player.m_maxHealth.toFixed(1);
+			},
+		}
+		));
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		in_player.m_name, 
+		(true == in_alignLeft) ? in_originX : in_originX + 320 - 110,
+		in_originY + 15 + 64,
+		DSC.m_textStyleButton,
+		{
+			CallbackUpdateText : function()
+			{
+				return "Def: " + in_player.m_defence.toFixed(1);
+			},
+		}
+		));
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		in_player.m_name, 
+		(true == in_alignLeft) ? in_originX : in_originX + 320 - 110,
+		in_originY + 20 + 96,
+		DSC.m_textStyleButton,
+		{
+			CallbackUpdateText : function()
+			{
+				return "Rate: " + in_player.m_energyRate.toFixed(1);
+			},
+		}
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"Attack", 
+		in_originX + 110, in_originY + 5, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_state = DSC.Game.Player.s_state.TAttack;
+			},
+			CallbackEvalue : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TAttack);
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"Defence", 
+		in_originX + 110, in_originY + 10 + 32, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_state = DSC.Game.Player.s_state.TDefence;
+			},
+			CallbackEvalue : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TDefence);
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"Upgrade", 
+		in_originX + 110, in_originY + 15 + 64, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_state = DSC.Game.Player.s_state.TUpgrade;
+			},
+			CallbackEvalue : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TUpgrade);
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	//this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+	//	"Auction", 
+	//	in_originX + 110, in_originY + 20 + 96, 100, 32, 
+	//	{
+	//		CallbackUp : function(x, y)
+	//		{
+	//			in_player.m_state = DSC.Game.Player.s_state.TAuction;
+	//		},
+	//		CallbackEvalue : function()
+	//		{
+	//			return (in_player.m_state == DSC.Game.Player.s_state.TAuction);
+	//		},
+	//		CallbackInteractive : function()
+	//		{
+	//			return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+	//		}
+	//	}, //_functor, 
+	//	DSC.m_textStyleButton, 
+	//	DSC.m_drawStyleButtonTrue, 
+	//	DSC.m_drawStyleButtonFalse, 
+	//	DSC.m_drawStyleRollover, 
+	//	DSC.m_drawStyleClick
+	//	));
+
+	var tempX = (true == in_alignLeft) ? in_originX + 320 - 105 : in_originX + 5;
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		in_otherPlayerA.m_name, 
+		tempX, in_originY + 5, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_attackTargetArray = [in_otherPlayerA];
+			},
+			CallbackEvalue : function()
+			{
+				return ((1 == in_player.m_attackTargetArray.length) && (in_player.m_attackTargetArray[0] == in_otherPlayerA));
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			},
+			CallbackVisible : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TAttack);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		in_otherPlayerB.m_name, 
+		tempX, in_originY + 10 + 32, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_attackTargetArray = [in_otherPlayerB];
+			},
+			CallbackEvalue : function()
+			{
+				return ((1 == in_player.m_attackTargetArray.length) && (in_player.m_attackTargetArray[0] == in_otherPlayerB));
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			},
+			CallbackVisible : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TAttack);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		in_otherPlayerC.m_name, 
+		tempX, in_originY + 15 + 64, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_attackTargetArray = [in_otherPlayerC];
+			},
+			CallbackEvalue : function()
+			{
+				return ((1 == in_player.m_attackTargetArray.length) && (in_player.m_attackTargetArray[0] == in_otherPlayerC));
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			},
+			CallbackVisible : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TAttack);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"Everyone", 
+		tempX, in_originY + 20 + 96, 100, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_attackTargetArray = [in_otherPlayerA, in_otherPlayerB, in_otherPlayerC];
+			},
+			CallbackEvalue : function()
+			{
+				return (3 == in_player.m_attackTargetArray.length);
+			},
+			CallbackInteractive : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman) && in_player.m_alive);
+			},
+			CallbackVisible : function()
+			{
+				return (in_player.m_state == DSC.Game.Player.s_state.TAttack);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	return;
+}
+
+DSC.StateMain.prototype.Run = function(in_timeDelta, in_input, in_canvas, in_context)
+{
+	if (0.0 <= this.m_countDown)
+	{
+		this.m_countDown -= in_timeDelta;
+		if (this.m_countDown <= 0.0)
+		{
+			switch (this.m_eventState)
+			{
+			default:
+				this.m_countDown = -1.0;
+				break;
+			case DSC.StateMain.s_state.TReady:
+				this.m_statusText = "Set";
+				this.m_eventState = DSC.StateMain.s_state.TSet;
+				this.m_countDown = 1.5;
+				break;
+			case DSC.StateMain.s_state.TSet:
+				this.m_statusText = "Go";
+				this.m_eventState = DSC.StateMain.s_state.TGo;
+				this.m_countDown = 1.5;
+				break;
+			case DSC.StateMain.s_state.TGo:
+				this.m_statusText = "";
+				this.m_eventState = DSC.StateMain.s_state.TAction;
+				this.m_countDown = -1.0;
+				break;
+			}
+		}
+	}
+
+	if (this.m_eventState == DSC.StateMain.s_state.TAction)
+	{
+		this.m_time += in_timeDelta;
+		this.RunGame(in_timeDelta);
+	}
+
+	this.m_arrayDraw.forEach(function(item)
+	{
+		if (undefined != item.Run)
+			item.Run(in_timeDelta, in_input, in_canvas, in_context);
+	});
+
+	this.Draw(in_canvas, in_context);
+
+	return this.m_keepGoing;
+}
+
+DSC.StateMain.prototype.Draw = function(in_canvas, in_context)
+{
+	this.m_arrayDraw.forEach(function(item)
+	{
+		if (undefined != item.Draw)
+			item.Draw(in_canvas, in_context);
+	});
+}
+
+DSC.StateMain.prototype.RunGame = function(in_timeDelta)
+{
+	DSC.Game.s_players.forEach( function(player)
+	{
+		if (true == player.m_alive)
+		{
+			player.RunAI(in_timeDelta);
+		}
+	});
+
+	var playerAliveCount = 0;
+	DSC.Game.s_players.forEach( function(player)
+	{
+		if (true == player.m_alive)
+		{
+			playerAliveCount += 1;
+			switch (player.m_state)
+			{
+			default:
+				break;
+			case DSC.Game.Player.s_state.TAttack:
+				var aliveOpponents = 0;
+				player.m_attackTargetArray.forEach( function(target)
+				{
+					if (true == target.m_alive)
+					{
+						aliveOpponents += 1;
+					}
+				});
+
+				if (0 < aliveOpponents)
+				{
+					var damage = player.m_energyRate / aliveOpponents;
+					player.m_attackTargetArray.forEach( function(target)
+					{
+						if (true == target.m_alive)
+						{
+							var attackDamage = DSC.StateMain.CalculateAttackDamage(in_timeDelta, damage, target.m_defence);
+							target.Attack(attackDamage, player, in_timeDelta);
+						}
+					});
+				}
+				break;
+			case DSC.Game.Player.s_state.TDefence:
+				player.m_defence += in_timeDelta * 0.3 * player.m_energyRate;
+				break;
+			case DSC.Game.Player.s_state.TUpgrade:
+				player.m_energyRate += in_timeDelta * 0.075 * player.m_energyRate;
+				break;
+			case DSC.Game.Player.s_state.TAuction:
+				break;
+			}
+		}
+	});
+
+	if (playerAliveCount <= 1)
+	{
+		this.m_statusText = "Game Over. Time:" + this.m_time.toFixed(2);
+		this.m_eventState = DSC.StateMain.s_state.TGameOver;
+		return;
+	}
+
+	DSC.Game.s_players.forEach( function(player)
+	{
+		if (true == player.m_alive)
+		{
+			if (player.m_health < 0.0)
+			{
+				player.m_alive = false;
+			}
+		}
+	});
+
+	return;
+}
+
+DSC.StateMain.CalculateAttackDamage = function(in_timeDelta, in_energeyRate, in_targetDefence)
+{
+	if (0.0 == in_targetDefence)
+	{
+		return 0.0;
+	}
+	
+	return (3.0 * in_timeDelta * in_energeyRate / in_targetDefence);
+}
+
+DSC.StateMain.FactoryRaw = function()
+{
+	return new DSC.StateMain();
+}
+
+DSC.StateSetup = function()
+{
+	if ( !(this instanceof DSC.StateSetup) )
+		alert("DSC.StateSetup: call constuctor with new keyword");
+	this.m_keepGoing = true;
+	this.m_arrayDraw = [];
+	var that = this;
+	this.m_arrayDraw.push(DSC.Button.FactoryRaw(
+		"Go", 
+		256, 144, 128, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				that.m_keepGoing = false;
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButton, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+	this.AddPlayerButton(DSC.Game.s_players[0], 0, 0);
+	this.AddPlayerButton(DSC.Game.s_players[1], 320, 0);
+	this.AddPlayerButton(DSC.Game.s_players[2], 0, 160);
+	this.AddPlayerButton(DSC.Game.s_players[3], 320, 160);
+
+	return;
+}
+
+DSC.StateSetup.prototype.AddPlayerButton = function(in_player, in_originX, in_originY)
+{
+	this.m_arrayDraw.push(DSC.Lable.FactoryRaw(
+		in_player.m_name, 
+		in_originX + 96, in_originY + 32,
+		DSC.m_textStyleButton
+		));
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"Human", 
+		in_originX + 96, in_originY + 64, 128, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_controller = DSC.Game.Player.s_controller.THuman;
+			},
+			CallbackEvalue : function()
+			{
+				return ((in_player.m_controller == DSC.Game.Player.s_controller.THuman));
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"RandomAI", 
+		in_originX + 96, in_originY + 96, 128, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_controller = DSC.Game.Player.s_controller.TRandomAI;
+			},
+			CallbackEvalue : function()
+			{
+				return (in_player.m_controller == DSC.Game.Player.s_controller.TRandomAI);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+	this.m_arrayDraw.push(DSC.ButtonToggle.FactoryRaw(
+		"SimpleAI", 
+		in_originX + 96, in_originY + 128, 128, 32, 
+		{
+			CallbackUp : function(x, y)
+			{
+				in_player.m_controller = DSC.Game.Player.s_controller.TSimpleAI;
+			},
+			CallbackEvalue : function()
+			{
+				return (in_player.m_controller == DSC.Game.Player.s_controller.TSimpleAI);
+			}
+		}, //_functor, 
+		DSC.m_textStyleButton, 
+		DSC.m_drawStyleButtonTrue, 
+		DSC.m_drawStyleButtonFalse, 
+		DSC.m_drawStyleRollover, 
+		DSC.m_drawStyleClick
+		));
+
+}
+
+DSC.StateSetup.prototype.Run = function(in_timeDelta, in_input, in_canvas, in_context)
+{
+	this.m_arrayDraw.forEach(function(item)
+	{
+		if (undefined != item.Run)
+			item.Run(in_timeDelta, in_input, in_canvas, in_context);
+	});
+
+	this.Draw(in_canvas, in_context);
+
+	return this.m_keepGoing;
+}
+
+DSC.StateSetup.prototype.Draw = function(in_canvas, in_context)
+{
+	this.m_arrayDraw.forEach(function(item)
+	{
+		if (undefined != item.Draw)
+			item.Draw(in_canvas, in_context);
+	});
+}
+
+DSC.StateSetup.FactoryRaw = function()
+{
+	return new DSC.StateSetup();
+}
+
+window.addEventListener('load', DSC.OnPageLoad, true);
+
+			// -->
+	</script>
+	</body>
+</html>

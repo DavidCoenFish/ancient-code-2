@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+		<title>unittest matrix4</title>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../../js/fubar_core_render.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create a matrix4",
+	Run : function()
+	{
+		var m1 = c.Matrix4.Factory(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.5, 0.6, 0.7, 1.0
+			);
+		var m1i = c.Matrix4.Inverse(m1);
+		var m2 = c.Matrix4.Multiply(m1, m1i);
+		var result = (true === c.Matrix4.AlmostEqual(m2, c.Matrix4.s_identity));
+
+		var m3 = c.Matrix4.FactoryPosRot(c.Vector3.Factory(1.0, 2.0, 3.0), c.Matrix3.FromEuler(0.4, 0.5, 0.6));
+		var m3i = c.Matrix4.Inverse(m3);
+		var m4 = c.Matrix4.Multiply(m3, m3i);
+		var result = (true === c.Matrix4.AlmostEqual(m4, c.Matrix4.s_identity));
+
+		return result;
+	}
+});
+
+
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'c.DNG'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

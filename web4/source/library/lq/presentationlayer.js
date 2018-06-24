@@ -1,0 +1,6 @@
+/**
+ * @const
+ * @unrestricted
+ */
+LQ.PresentationLayer = {}
+

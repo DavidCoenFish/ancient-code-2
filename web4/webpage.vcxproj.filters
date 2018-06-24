@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="notes">
+      <UniqueIdentifier>{89aad4dc-e0ce-4536-b78e-1b5ac8def0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{af3faabe-43b0-46b3-a206-3aa3aef3a055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{eab8a804-6df2-41d3-b0bd-e3c567bf3dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\systemtest">
+      <UniqueIdentifier>{084d2145-60df-400c-9d72-c5863bec9e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\template">
+      <UniqueIdentifier>{9519a971-8e80-44a5-9e39-fa0daf3317f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\unittest">
+      <UniqueIdentifier>{6c50bd0a-f704-4ab4-a140-1acb2d4e6b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library">
+      <UniqueIdentifier>{0e1a6260-f067-43ef-a5ff-2b3dd2f73ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\css">
+      <UniqueIdentifier>{09cb8767-1c30-47a3-a33b-60607dfff6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\dsc">
+      <UniqueIdentifier>{c89a8a85-f308-400c-906f-2f05b922f03d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq">
+      <UniqueIdentifier>{1fd366b9-11b4-40fa-a4de-033b586ebd2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq\businesslogic">
+      <UniqueIdentifier>{7bf53434-8876-46d6-97d0-08f727e222aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq\datastore">
+      <UniqueIdentifier>{77443d9d-c290-4e8a-a7f5-fc37058f694a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq\businesslogic\data">
+      <UniqueIdentifier>{926f68e1-bc9d-4ef4-9447-99c38eca336e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq\presentationlayer">
+      <UniqueIdentifier>{36203328-bdd0-43fe-9e9a-b4274eed1336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\library\lq\presentationlayer\data">
+      <UniqueIdentifier>{25b33235-62a5-4b4d-948d-d5145ef25e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\nodejs">
+      <UniqueIdentifier>{a4108848-45f0-4002-b6bc-ec763ae1d4e3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build\build.bat">
+      <Filter>build</Filter>
+    </None>
+    <None Include="build\build.py">
+      <Filter>build</Filter>
+    </None>
+    <None Include="build\clean.bat">
+      <Filter>build</Filter>
+    </None>
+    <None Include="build\clean.py">
+      <Filter>build</Filter>
+    </None>
+    <None Include="build\rebuild.bat">
+      <Filter>build</Filter>
+    </None>
+    <None Include="build\deploy.bat">
+      <Filter>build</Filter>
+    </None>
+    <None Include="source\library\dsc.js">
+      <Filter>source\library</Filter>
+    </None>
+    <None Include="source\css\style.css">
+      <Filter>source\css</Filter>
+    </None>
+    <None Include="source\template\indexsystemtest.tmp.htm">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\indexunittest.tmp.htm">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\systemtest.tmp.htm">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\systemtest.tmp.js">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\unittest.tmp.htm">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\unittest.tmp.js">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="source\template\index.tmp.htm">
+      <Filter>source\template</Filter>
+    </None>
+    <None Include="build\deploy.py">
+      <Filter>build</Filter>
+    </None>
+    <None Include="source\unittest\dsc.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="notes\baicwebgl.htm">
+      <Filter>notes</Filter>
+    </None>
+    <None Include="source\unittest\dngnode.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\dsc\dngvalue.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\dngcalculate.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\dngnode.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\math.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\unittest\math.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\dsc\dngrecord.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\taskrecord.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\framework.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\systemtest\task.js">
+      <Filter>source\systemtest</Filter>
+    </None>
+    <None Include="source\library\dsc\contextrecord.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\contextwebgl.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\library\dsc\contextcanvas.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\unittest\datastoremock.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\lq.js">
+      <Filter>source\library</Filter>
+    </None>
+    <None Include="source\unittest\businesslogic.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\dsc\randomsequence.js">
+      <Filter>source\library\dsc</Filter>
+    </None>
+    <None Include="source\unittest\randomsequence.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\unittest\experementaljson.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicresult.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogic.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogiccreategame.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdestroygame.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicgetgamestatus.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\datastoreeception.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoremock.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoremockapplication.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoremockdata.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoremockgame.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoremocktranslation.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastorerecord.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\datastoreresult.js">
+      <Filter>source\library\lq\datastore</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdatahero.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdataworlddynamic.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdataworlddynamicdata.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdataworldstatic.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdataworldstaticdata.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\presentationlayer.js">
+      <Filter>source\library\lq\presentationlayer</Filter>
+    </None>
+    <None Include="source\library\lq\presentationlayerdatagamestatus.js">
+      <Filter>source\library\lq\presentationlayer\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdatagamedynamic.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdatagamestatic.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicgetactiondata.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicperrformaction.js">
+      <Filter>source\library\lq\businesslogic</Filter>
+    </None>
+    <None Include="source\library\lq\resourcerecoveryhelper.js">
+      <Filter>source\library\lq</Filter>
+    </None>
+    <None Include="source\unittest\resourcerecoveryhelper.js">
+      <Filter>source\unittest</Filter>
+    </None>
+    <None Include="source\library\lq\businesslogicdata.js">
+      <Filter>source\library\lq\businesslogic\data</Filter>
+    </None>
+    <None Include="source\library\lq\resourcerecoverydata.js">
+      <Filter>source\library\lq</Filter>
+    </None>
+    <None Include="source\nodejs\server.js">
+      <Filter>source\nodejs</Filter>
+    </None>
+    <None Include="source\nodejs\test.js">
+      <Filter>source\nodejs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes\notes.txt">
+      <Filter>notes</Filter>
+    </Text>
+    <Text Include="notes\lq.txt">
+      <Filter>notes</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

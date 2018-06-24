@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<head>
+	<title>Monster Mash2</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<!--[if IE]><script SRC="script/excanvas.js"></script><![endif]-->
+</head>
+<body>
+	<canvas id="canvasId" width="760" height="620"> This text is
+	displayed if your browser does not support HTML5 Canvas. </canvas>
+
+	<script type='text/JavaScript' SRC="gamemonstermash/gameground.js"></script>
+	<script type='text/JavaScript' SRC="gamemonstermash/part.js"></script>
+	<script type='text/JavaScript' SRC="gamemonstermash/skintype.js"></script>
+	<script type='text/JavaScript' SRC="gamemonstermash/stateworkbench.js"></script>
+	<script type='text/JavaScript' SRC="gamemonstermash/variable.js"></script>
+
+	<script type='text/JavaScript' SRC="script2/array.js"></script>
+	<script type='text/JavaScript' SRC="script2/box.js"></script>
+	<script type='text/JavaScript' SRC="script2/circle.js"></script>
+	<script type='text/JavaScript' SRC="script2/collision.js"></script>
+	<script type='text/JavaScript' SRC="script2/dragdropmanager.js"></script>
+	<script type='text/JavaScript' SRC="script2/game.js"></script>
+	<script type='text/JavaScript' SRC="script2/gameview.js"></script>
+	<script type='text/JavaScript' SRC="script2/guibutton.js"></script>
+	<script type='text/JavaScript' SRC="script2/guitext.js"></script>
+	<script type='text/JavaScript' SRC="script2/input.js"></script>
+	<script type='text/JavaScript' SRC="script2/math.js"></script>
+	<script type='text/JavaScript' SRC="script2/multishape.js"></script>
+	<script type='text/JavaScript' SRC="script2/ngon.js"></script>
+	<script type='text/JavaScript' SRC="script2/node.js"></script>
+	<script type='text/JavaScript' SRC="script2/nodegraph.js"></script>
+	<script type='text/JavaScript' SRC="script2/onpageload.js"></script>
+	<script type='text/JavaScript' SRC="script2/touch.js"></script>
+	<script type='text/JavaScript' SRC="script2/vector.js"></script>
+
+	<script type='text/JavaScript'>
+	<!--
+		function PrintConsole(in_message)
+		{
+			console.log(in_message);
+		}
+	
+		function FactoryFirstGameMode(in_canvas, in_context)
+		{
+			return new StateWorkbench(in_canvas, in_context);
+		}
+
+		//onpageload operations
+		window.addEventListener('load', OnPageLoad, true);
+	</script>
+</body>
+</HTML>

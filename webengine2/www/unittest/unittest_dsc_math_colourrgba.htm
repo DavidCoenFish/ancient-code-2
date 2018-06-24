@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unittest dsc math colour RGBA</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body>
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!-- unittest setup -->
+		<script type='text/javascript'>
+			<!-- 
+var s_arrayUnitTest = [];
+var s_pass = true;
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Create Colour",
+	Run : function()
+	{
+		var colourA = DSC.Math.ColourRGBA.Factory();
+		var result = (undefined != colourA);
+		result &= (DSC.Math.ColourRGBA.GetRed(colourA) == 0.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(colourA) == 0.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(colourA) == 0.0);
+		var colourB = DSC.Math.ColourRGBA.Factory(1.0, 0.5, 0.25, 0.125);
+		result &= (undefined != colourB);
+		result &= (DSC.Math.ColourRGBA.GetRed(colourB) == 1.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(colourB) == 0.5);
+		result &= (DSC.Math.ColourRGBA.GetBlue(colourB) == 0.25);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(colourB) == 0.125);
+		return result;
+	}
+});
+
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Express ColourRGBA as string",
+	Run : function()
+	{
+		var vectorA = DSC.Math.ColourRGBA.Factory(8.0, 0.5, 0.2, 7.0);
+		var vectorB = DSC.Math.ColourRGBA.Factory(8.0, 0.6, 0.2, 7.0);
+		var stringA = DSC.Math.ColourRGBA.AsString(vectorA);
+		var stringB = DSC.Math.ColourRGBA.AsString(vectorB);
+		var stringC = DSC.Math.ColourRGBA.AsString(vectorA);
+		var result = ("string" == (typeof stringA));
+		result &= ("string" == (typeof stringB));
+		result &= (stringA != stringB);
+		result &= (stringA == stringC);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Set and Get values in ColourRGBA",
+	Run : function()
+	{
+		var vector = DSC.Math.ColourRGBA.Factory();
+		var result = (undefined != vector);
+		result &= (DSC.Math.ColourRGBA.GetRed(vector) == 0.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vector) == 0.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vector) == 0.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vector) == 0.0);
+		DSC.Math.ColourRGBA.Set(vector, 2.0, 3.0, 4.0, 5.0);
+		result &= (DSC.Math.ColourRGBA.GetRed(vector) == 2.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vector) == 3.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vector) == 4.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vector) == 5.0);
+		DSC.Math.ColourRGBA.SetRed(vector, 5.0);
+		DSC.Math.ColourRGBA.SetGreen(vector, 6.0);
+		DSC.Math.ColourRGBA.SetBlue(vector, 7.0);
+		DSC.Math.ColourRGBA.SetAlpha(vector, 8.0);
+		result &= (DSC.Math.ColourRGBA.GetRed(vector) == 5.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vector) == 6.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vector) == 7.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vector) == 8.0);
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To Clone a ColourRGBA",
+	Run : function()
+	{
+		var vectorA = DSC.Math.ColourRGBA.Factory(7.0, 8.0, 9.0, 10.0);
+		var vectorB = DSC.Math.ColourRGBA.Clone(vectorA);
+		var vectorC = DSC.Math.ColourRGBA.Factory();
+		var vectorD = DSC.Math.ColourRGBA.Clone(vectorA, vectorC);
+
+		var result = (undefined != vectorB);
+		result &= (undefined != vectorD);
+		result &= (DSC.Math.ColourRGBA.GetRed(vectorB) == 7.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vectorB) == 8.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vectorB) == 9.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vectorB) == 10.0);
+		result &= (DSC.Math.ColourRGBA.GetRed(vectorC) == 7.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vectorC) == 8.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vectorC) == 9.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vectorC) == 10.0);
+		result &= (DSC.Math.ColourRGBA.GetRed(vectorD) == 7.0);
+		result &= (DSC.Math.ColourRGBA.GetGreen(vectorD) == 8.0);
+		result &= (DSC.Math.ColourRGBA.GetBlue(vectorD) == 9.0);
+		result &= (DSC.Math.ColourRGBA.GetAlpha(vectorD) == 10.0);
+		return result;
+	}
+});
+
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test ColourRGBA is almost zero",
+	Run : function()
+	{
+		var result = true;
+		var vectorA = DSC.Math.ColourRGBA.Factory();
+		var vectorB = DSC.Math.ColourRGBA.Factory(0.001, -0.001, 0.001, -0.001);
+		var vectorC = DSC.Math.ColourRGBA.Factory(3.0, 4.0, 5.0, 6.0);
+
+		result &= (true == DSC.Math.ColourRGBA.AlmostZero(vectorA));
+		result &= (true == DSC.Math.ColourRGBA.AlmostZero(vectorB, 0.01));
+		result &= (false == DSC.Math.ColourRGBA.AlmostZero(vectorC));
+		return result;
+	}
+});
+
+s_arrayUnitTest.push({
+	m_name : "Client Should Be Able To test ColourRGBA is almost equal",
+	Run : function()
+	{
+		var result = true;
+		var result = true;
+		var vectorA = DSC.Math.ColourRGBA.Factory();
+		var vectorB = DSC.Math.ColourRGBA.Factory(0.001, -0.001, 0.001, -0.001);
+		var vectorC = DSC.Math.ColourRGBA.Factory(3.0, 4.0, 5.0, 6.0);
+		var vectorD = DSC.Math.ColourRGBA.Factory(3.0, 0.0, 0.0, 0.0);
+		var vectorE = DSC.Math.ColourRGBA.Factory(0.0, 4.0, 0.0, 0.0);
+		var vectorF = DSC.Math.ColourRGBA.Factory(3.0, 0.0, 5.0, 0.0);
+		var vectorG = DSC.Math.ColourRGBA.Factory(3.0, 0.0, 0.0, 6.0);
+
+		result &= (true == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorA));
+		result &= (true == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorB, 0.01));
+		result &= (false == DSC.Math.ColourRGBA.AlmostEqual(vectorB, vectorC));
+		result &= (false == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorD));
+		result &= (false == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorE));
+		result &= (false == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorF));
+		result &= (false == DSC.Math.ColourRGBA.AlmostEqual(vectorA, vectorG));
+		return result;
+	}
+});
+			// -->
+		</script>
+		<!-- unittest run -->
+		<script type='text/javascript'>
+			<!-- 
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{ 
+	if (in_item.Run)
+	{ 
+		var result = in_item.Run();
+		var resultString = ((true == result) ? "Pass:" : "Fail:") + in_item.m_name
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result;
+	} 
+});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, 'DSC.Math.ColourRGBA'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>

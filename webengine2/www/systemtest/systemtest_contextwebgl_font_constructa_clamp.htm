@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>contextwebgl font constructa clamp</title>
+		<meta http-equiv="Content-Style-Type" content="text/css"/>
+	</head>
+	<body style='background-color: #000000'>
+		<canvas id='canvasId' style = 'background-color: #000000; width: 512px; height: 256px;' >
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+
+		<script type='text/JavaScript' SRC="../javascript/dsc_core.js" ></script>
+
+		<!--hook events-->
+		<script type='text/javascript'>
+			<!-- 
+
+	console.info("OnPageLoad ");
+
+DSC.Framework.Pool.Model.FrameAPos2 = 
+{
+	"m_mode" : DSC.Framework.Context.WebGL.LINES,
+	"m_elementCount" : 8,
+	"m_mapDataStream" : 
+	{
+		"a_position" : DSC.Framework.Asset.Model.DataStream.Factory(
+			DSC.Framework.Context.WebGL.UNSIGNED_BYTE,
+			2,
+			new DSC.Common.t_u8Array([
+				0, 0, 0, 255,
+				0, 255, 255, 255, 
+				255, 255, 255, 0,
+				255, 0, 0, 0
+				]),
+				DSC.Framework.Context.WebGL.STATIC_DRAW,
+				true
+			),
+	},
+	"m_elementIndex" : undefined
+}
+DSC.Framework.Pool.Material.MaterialFrame = 
+{
+	"m_getShaderName" : "APos2UFrame4UColour4",
+	"m_vertexTransformHint" : DSC.Framework.Asset.Material.s_vertexTransformHint.T2DFrame
+}
+
+DSC.Framework.Pool.Material.MaterialFont = 
+{
+	"m_getShaderName" : "APos2UFrame4UColour4",
+	"m_vertexTransformHint" : DSC.Framework.Asset.Material.s_vertexTransformHint.T2DFrameClamp
+}
+
+DSC.Framework.Pool['Font']['Constructa']['m_materialName'] = "Default";
+DSC.Framework.Pool['Font']['Constructa']['m_materialOverload'] = {};
+DSC.Framework.Pool['Font']['Constructa']['m_materialOverload']['m_getShaderName'] = "APos2UFrame4UColour4";
+DSC.Framework.Pool['Font']['Constructa']['m_materialOverload']['m_vertexTransformHint'] = DSC.Framework.Asset.Material.s_vertexTransformHint.T2DFrame;
+
+
+DSC.OnPageLoad = function()
+{
+	console.info("OnPageLoad " + DSC.Framework.Context.WebGL.BYTE);
+
+	var Task = function(){};
+	Task.prototype.Run = function(in_framework, in_timeDelta, _lowX, _lowY, _highX, _highY)
+	{
+		console.info("Run in_timeDelta:" + in_timeDelta + " _lowX:" + _lowX + " _lowY:" + _lowY + " _highX:" + _highX + " _highY:" + _highY);
+		var context = in_framework.GetContext();
+		context.Clear(DSC.Math.ColourRGB.s_grey);
+		var asset = in_framework.GetAsset();
+
+		var frameMaterial = asset.GetAsset("Material", "MaterialFrame", context);
+		context.ApplyMaterial(frameMaterial);
+		var bounds2 = DSC.Math.Bound2.Factory(-0.5, -0.5, 1.0, 1.0);
+		context.SetUniform(DSC.Framework.Context.Uniform.Collection.s_frame, bounds2, true);
+		var frame = asset.GetAsset("Model", "FrameAPos2", context);
+		context.DrawModel(frame);
+
+		var fontOverload = {
+			"m_materialName" : "Default", 
+			"m_materialOverload" : {
+				"m_getShaderName" : "APos2UFrame4UClamp4UColour4",
+				"m_vertexTransformHint" : DSC.Framework.Asset.Material.s_vertexTransformHint.T2DFrameClamp
+				}
+			};
+		var font = asset.NewAsset("Font", "Constructa", context, fontOverload);
+		context.ApplyMaterial(font.GetMaterial());
+		var bounds3 = DSC.Math.Bound2.Factory(-0.5, -0.5, 0.5, 0.5);
+		context.SetUniform(DSC.Framework.Context.Uniform.Collection.s_clamp, bounds3, true);
+		font.Draw(context, "HELLO WORLD NOW IS THE TIME", DSC.Math.Vector2.s_zero, 0.06, 0.1);
+		font.Draw(context, "0123456789===========", DSC.Math.Vector2.Factory(-0.9, 0.55), 0.06, 0.1);
+		font.Draw(context, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", DSC.Math.Vector2.Factory(-0.9, 0.25), 0.06, 0.1);
+
+		return false;
+	};
+	var task = new Task();
+	var taskArray = [task];
+	var paramObject = {};
+	paramObject.Asset = {};
+	paramObject.ContextWebGL = {};
+	var framework = DSC.Framework.Create(document, taskArray, paramObject);
+}
+
+DSC.OnShutdown = function()
+{
+	console.info("OnShutdown");
+	DSC.Framework.Destroy()
+}
+
+window.addEventListener('load', DSC.OnPageLoad, true);
+
+			// -->
+		</script>
+	</body>
+</html>

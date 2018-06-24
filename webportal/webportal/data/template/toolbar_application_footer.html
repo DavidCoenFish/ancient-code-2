@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html lang="{{locale}}" class="pagebackground">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="{{description}}">
+	<meta name="author" content="{{author}}">
+
+	<title>{{title}}</title>
+
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/style/{{style}}.css">
+</head>
+
+<body class="fillverticle">
+
+	<div id="modalbackground" class="center">
+		<div id="modal" class="appforeground" style="width:20em;min-height:10em;">
+			<div id="modalcontent"></div>
+		</div>
+	</div>
+
+	<div class ="pagebackground flowonelineright">
+
+{{#menu}}
+		<div class ="popuptarget shadow smallleftrightmargin noselect">
+			<div class="smallleftrightpadding noselect">{{name}}</div>
+			<div class="popup fillverticle pagebackground shadowoutset">
+{{#submenu}}
+					<a href="{{{link}}}" class ="interactive smallleftrightpadding noselect">{{item}}</a>
+{{/submenu}}
+			</div>
+		</div>
+{{/menu}}
+	</div>
+
+	<div class ="fillitem pageforeground" id="applicationDiv">
+	</div>
+
+	<div class ="pagebackground center">
+		{{#footer}}
+			<p class="footertext">{{.}}</p>
+		{{/footer}}
+	</div>
+
+	<script type="text/javascript">
+
+const modalBackground = document.getElementById("modalbackground");
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modalcontent");
+
+const ShowModal = function(elementContents, allowDismiss, onDismissCallback) {
+	modalBackground.allowDismiss = allowDismiss;
+	modalBackground.onDismissCallback = onDismissCallback;
+	modalBackground.onclick = function(){
+		event.stopPropagation();
+		console.log("modalBackground.onclick");
+		if (modalBackground.allowDismiss == true){
+			DismissModal();
+		}
+		return false;
+	}
+	modal.onclick = function(event){
+		event.stopPropagation();
+		console.log("modal.onclick");
+		return false;
+	}
+	while(modalContent.firstChild){
+		modalContent.removeChild(modalContent.firstChild);
+	}
+	modalContent.appendChild(elementContents);
+	modalBackground.style.display = "block";
+	return;
+}
+
+const DismissModal = function() {
+	if (modalBackground.onDismissCallback !== undefined){
+		modalBackground.onDismissCallback();
+	}
+	HideModal();
+	return;
+}
+const HideModal = function(){
+	modalBackground.style.display = "none";
+}
+
+	</script>
+
+	{{#scripts}}
+		<script src="{{{.}}}"></script>
+	{{/scripts}}
+</body>
+</html>

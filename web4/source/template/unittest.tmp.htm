@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>unittest {name} {configuration}</title>
+		<meta name="description" content="unittest {name} {configuration}" />
+		<meta name="keywords" content="unittest {name} {configuration}" />
+	</head>
+	<body>
+		<!-- content -->
+
+		<!-- script -->
+{scriptInclude}
+		<script type='text/javascript'>
+			<!-- 
+var s_pass = true;
+var s_date = new Date();
+document.write("<p> unitTest " + s_date.toTimeString() + "<\/p>");
+document.write("<p> s_arrayUnitTest.length " + s_arrayUnitTest.length + "<\/p>");
+s_arrayUnitTest.forEach(function(in_item)
+{{ 
+	try
+	{{
+		var result = in_item();
+		var resultString = ((true == result["Result"]) ? "Pass:" : "Fail:") + result["Name"]
+		document.write('<span>' + resultString + '<\/span></br>');
+		s_pass &= result["Result"];
+	}}
+	catch (in_error)
+	{{
+		document.write('<span>Fail: Exception:' + in_error + '<\/span></br>');
+		s_pass = false;
+	}}
+}});
+s_pass &= (0 < s_arrayUnitTest.length);
+var resultString = "Done " + ((true == s_pass) ? "all Passed" : "something Failed");
+document.write("<p>" + resultString + "<\/p>");
+
+window.parent.postMessage(['result', s_pass, '{name}'], '*');
+
+			// -->
+		</script>
+	</body>
+</html>
